@@ -21,4 +21,5 @@ python manage.py makemigrations
 python manage.py migrates
 
 メモ
+
 ・各アプリのtemplatesの中に各アプリ名のフォルダを追加してください(そうでないとbaseを持ってこれなくなります)
