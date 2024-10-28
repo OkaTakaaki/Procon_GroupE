@@ -20,6 +20,17 @@ python manage.py makemigrations
 
 python manage.py migrates
 
+#htmlの最初に記載
+
+  {% extends 'base_app/base.html' %}
+  {% load static %}
+  
+  {% block title%}
+  {% endblock %}
+  
+  {% block contents %}
+  {% endblock %}
+
 メモ
 
 ・各アプリのtemplatesの中に各アプリ名のフォルダを追加してください(そうでないとbaseを持ってこれなくなります)
