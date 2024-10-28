@@ -22,6 +22,8 @@ python manage.py migrates
 
 #htmlの最初に記載
 
+ーーーーーーーーーーーーーーーーーーーーーーーーー
+
   {% extends 'base_app/base.html' %}
   {% load static %}
   
@@ -30,6 +32,8 @@ python manage.py migrates
   
   {% block contents %}
   {% endblock %}
+
+ーーーーーーーーーーーーーーーーーーーーーーーーー
 
 メモ
 
