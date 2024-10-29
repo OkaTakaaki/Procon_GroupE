@@ -4,5 +4,6 @@ from . import views
 app_name = 'reception_system'
 
 urlpatterns = [
-    path('index/', views.index, name="index"),
+    path('', views.index, name="index"),
+    path('reception/', views.reception, name='reception')
 ]
