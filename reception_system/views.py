@@ -9,3 +9,6 @@ def reception(request):
 
 def language(request):
     return render(request, 'reception_system/language.html')
+
+def complate(request):
+    return render(request, 'reception_system/complate.html')
