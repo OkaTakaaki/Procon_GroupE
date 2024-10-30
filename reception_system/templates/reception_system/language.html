@@ -1,0 +1,18 @@
+{% extends 'base_app/base.html' %}
+{% load static %}
+
+{% block title %}
+    <link rel="stylesheet" href="{% static 'css/language_styles.css' %}">
+    <title>Language</title>
+{% endblock %}
+
+{% block contents %}
+<ul>
+    <li>Japanese</li>
+    <li>English</li>
+    <li>Korean</li>
+    <li>Chinese</li>
+</ul>
+
+<a href="/">戻る</a>
+{% endblock %}

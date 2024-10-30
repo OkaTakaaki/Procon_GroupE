@@ -6,3 +6,6 @@ def index(request):
 
 def reception(request):
     return render(request, 'reception_system/reception.html')
+
+def language(request):
+    return render(request, 'reception_system/language.html')
