@@ -31,8 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'base_app.apps.BaseAppConfig',
-    'reception_system.apps.ReceptionSystemConfig',
+    'employee.apps.EmployeeConfig', #従業員アプリ
+    'base_app.apps.BaseAppConfig', #baseアプリ
+    'reception_system.apps.ReceptionSystemConfig', #受付アプリ
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
