@@ -1,10 +1,17 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
 
-{% block title%}
-<h1>title</h1>
+{% block title %}
+    <title>あなたのページタイトル</title>
+{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    {% block extra_head %}{% endblock %}
 {% endblock %}
 
 {% block contents %}
-<h3>contents</h3>
+    <h3>ここにコンテンツを記述</h3>
 {% endblock %}
+
