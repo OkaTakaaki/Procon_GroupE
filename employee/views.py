@@ -5,3 +5,9 @@ def employee(request):
 
 def item(request):
     return render(request, 'employee/item.html')
+
+def confirm(request):
+    return render(request, 'employee/confirm.html')
+
+def register(request):
+    return render(request, 'employee/register.html')

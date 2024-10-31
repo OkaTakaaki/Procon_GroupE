@@ -7,6 +7,6 @@
 
 
 {% block contents %}
-<h2>新規座席登録</h2>
-<h2>座席状況確認</h2>
+<a href="{% url 'employee:employee_register' %}"><h2>座席情報登録</h2></a>
+<a href="{% url 'employee:employee_confirm' %}"><h2>座席状況確認</h2></a>
 {% endblock %}
