@@ -11,3 +11,9 @@ def confirm(request):
 
 def register(request):
     return render(request, 'employee/register.html')
+
+def add(request):
+    return render(request, 'employee/add.html')
+
+def new_seat(request):
+    return render(request, 'employee/new_seat.html')
