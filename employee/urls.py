@@ -5,5 +5,9 @@ app_name = 'employee'
 
 urlpatterns = [
     path('employee/', views.employee, name="employee"),
-    path('item/', views.item, name="item"),
+    path('item/', views.item, name="employee_item"),
+    path('confirm/', views.confirm, name="employee_confirm"),
+    path('register/', views.register, name="employee_register"),
+    path('add/', views.add, name="employee_add"),
+    path('new_seat/', views.new_seat, name="employee_new_seat"),
 ]
