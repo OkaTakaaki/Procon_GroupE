@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* ビューポートの高さに合わせる */
+}
+
+.header, .footer {
+    background-color: #f1f1f1; /* ヘッダーとフッターの背景色 */
+    padding: 10px;
+    text-align: center;
+}
+
+.content {
+    flex: 1; /* 残りのスペースを埋める */
+    overflow-y: auto; /* 縦方向のスクロールを許可 */
+    padding: 10px;
+    background-color: #fff; /* コンテンツエリアの背景色 */
+}
