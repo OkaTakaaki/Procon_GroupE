@@ -8,5 +8,12 @@
 
 {% block contents %}
 <h2>従業員用</h2>
-<a href="/employee/item/"><h3>画面をタッチしてください</h3></a>
+
+<script>
+    // body全体をクリックしたら遷移するようにする
+    document.body.addEventListener('click', function() {
+        window.location.href = "{% url 'employee:employee_item' %}";  // 'next_page'は遷移先のURLパターン名
+    });
+</script>
+
 {% endblock %}
