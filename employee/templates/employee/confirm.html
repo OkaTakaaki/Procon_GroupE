@@ -1,0 +1,25 @@
+{% extends 'base_app/base.html'%}
+{% load static %}
+
+{% block title %}
+<title>座席状況確認</title>
+<head>
+    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+</head>
+{% endblock %}
+
+{% block contents%}
+<body>
+    <div class="header">
+        <h1>座席状況確認</h1>
+    </div>
+    <div class="content">
+        <p>ここにスクロール可能なコンテンツを入れます。</p>
+        <p>テーブル１</p>
+
+    </div>
+    <div class="footer">
+        <a href="{% url 'employee:employee_item' %}">戻る</a>
+    </div>
+</body>
+{% endblock %}

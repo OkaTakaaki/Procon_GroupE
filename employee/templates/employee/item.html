@@ -1,0 +1,12 @@
+{% extends 'base_app/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>従業員</title>
+{% endblock %}
+
+
+{% block contents %}
+<a href="{% url 'employee:employee_new_seat' %}"><h2>座席新規登録</h2></a>
+<a href="{% url 'employee:employee_confirm' %}"><h2>座席状況確認</h2></a>
+{% endblock %}          
