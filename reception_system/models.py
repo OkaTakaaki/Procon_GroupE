@@ -2,12 +2,13 @@ from django.db import models
 
 #座席テーブル
 class Seat(models.Model):
-    teble_number = models.IntegerField(verbose_name="テーブル番号", null=False)
+    table_number = models.IntegerField(verbose_name="テーブル番号", null=False)
     table_resevation = models.BooleanField(verbose_name="使用されているか", null=False)
     recommended_capacity = models.IntegerField(verbose_name="座席人数", null=False)
     table_type = models.IntegerField(verbose_name="座席種別", null=False)
     electrical_outlet = models.BooleanField(verbose_name="コンセント有、無", null=True)
     clean = models.BooleanField(verbose_name="清掃済、未", null=True)
+    table_connect = models.BooleanField(verbose_name="連結有、無", null=False)
 
 #受付テーブル
 class Reception(models.Model):
