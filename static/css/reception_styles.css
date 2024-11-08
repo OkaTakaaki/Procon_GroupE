@@ -70,3 +70,11 @@ body {
     margin-bottom: 10px;
     margin-top: 20px;
 }
+
+/*new_seat.html*/
+.new_title {
+    font-size: 56px;
+    font-weight: bold;
+    margin: auto 0;
+    height: 400px;
+}
