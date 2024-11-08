@@ -3,10 +3,15 @@
 
 {% block title %}
 <title>従業員</title>
+<link rel="">
 {% endblock %}
 
 
 {% block contents %}
-<a href="{% url 'employee:employee_new_seat' %}"><h2>座席新規登録</h2></a>
-<a href="{% url 'employee:employee_confirm' %}"><h2>座席状況確認</h2></a>
+<div class="item_new_seat">
+    <a href="{% url 'employee:employee_new_seat' %}"><h2>座席新規登録</h2></a>
+</div>
+<div class="item_confirm">
+    <a href="{% url 'employee:employee_confirm' %}"><h2>座席状況確認</h2></a>
+</div>
 {% endblock %}          
