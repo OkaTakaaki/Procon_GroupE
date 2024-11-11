@@ -5,75 +5,89 @@
     <title>新規座席登録</title>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
     <style>
+        /* 全体的なスタイル */
         body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-/* コンテナ */
-.container {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-}
-/* 新規登録のタイトル */
-.new_title {
-    font-size: 36px;   /* タイトルを大きく */
-    font-weight: bold;
-    margin-bottom: 30px; /* 上のスペースを確保 */
-    text-align: center;
-}
+        /* コンテナ */
+        .container {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
 
-/* 背景暗めのグレー */
-.gray-background {
-    background-color: #f0f0f0; /* ダークグレーに近い色 */
-    height: 20px;
-    margin-bottom: 30px; /* ボタン間のスペース */
-}
+        /* 新規登録のタイトル */
+        .new_title {
+            font-size: 36px;   /* タイトルを大きく */
+            font-weight: bold;
+            margin-bottom: 30px; /* 上のスペースを確保 */
+            text-align: center;
+        }
 
-/* ボタンコンテナ */
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto; /* 中央揃え */
-}
+        /* 背景暗めのグレー */
+        .gray-background {
+            background-color: #f0f0f0; /* ダークグレーに近い色 */
+            height: 20px;
+            margin-bottom: 30px; /* ボタン間のスペース */
+        }
 
-/* 戻るボタン（左） */
-.back-button {
-    background-color: #d3d3d3; /* 薄灰色 */
-    color: #333;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 45%; /* ボタンの幅を制限 */
-}
+        /* チェックボックスグループ */
+        .checkbox-group {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
 
-.back-button:hover {
-    background-color: #c0c0c0; /* ホバー時の色 */
-}
+        .checkbox-group input[type="radio"],
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
 
-/* 次へボタン（右） */
-.next-button {
-    background-color: #007bff; /* 青色 */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 45%; /* ボタンの幅を制限 */
-}
+        /* ボタンコンテナ */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto; /* 中央揃え */
+        }
 
-.next-button:hover {
-    background-color: #0056b3; /* ホバー時の色 */
-}
+        /* 戻るボタン（左） */
+        .back-button {
+            background-color: #d3d3d3; /* 薄灰色 */
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 45%; /* ボタンの幅を制限 */
+        }
+
+        .back-button:hover {
+            background-color: #c0c0c0; /* ホバー時の色 */
+        }
+
+        /* 次へボタン（右） */
+        .next-button {
+            background-color: #007bff; /* 青色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 45%; /* ボタンの幅を制限 */
+        }
+
+        .next-button:hover {
+            background-color: #0056b3; /* ホバー時の色 */
+        }
 
     </style>
 {% endblock %}
@@ -86,11 +100,35 @@
         <!-- 背景暗めのグレー -->
         <div class="gray-background"></div>
 
-        <div class="button-container">
-            <button type="button" class="back-button" onclick="window.location.href='/employee/item'">戻る</button>
+        <form action="/employee/register" method="post">
+            {% csrf_token %}  <!-- CSRFトークン（DjangoでPOST送信するために必要） -->
 
-            <button type="button" class="next-button">次へ</button>
-        </div>
+            <!-- チェックボックスグループ1: カウンター席かテーブル席 -->
+            <div class="checkbox-group">
+                <label for="counter_seat">
+                    <input type="radio" id="counter_seat" name="seat_type" value="counter" required>
+                    カウンター席
+                </label>
+                <label for="table_seat">
+                    <input type="radio" id="table_seat" name="seat_type" value="table">
+                    テーブル席
+                </label>
+            </div>
+
+            <!-- チェックボックスグループ2: 座席連結するかしないか -->
+            <div class="checkbox-group">
+                <label for="seat_connection">
+                    <input type="checkbox" id="seat_connection" name="seat_connection">
+                    座席連結する
+                </label>
+            </div>
+
+            <div class="button-container">
+                <button type="button" class="back-button" onclick="window.location.href='/employee/item'">戻る</button>
+
+                <button type="submit" class="next-button">登録</button>
+            </div>
+        </form>
     </div>
 </body>
 {% endblock %}
