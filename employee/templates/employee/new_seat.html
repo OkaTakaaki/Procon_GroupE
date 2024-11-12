@@ -3,41 +3,126 @@
 
 {% block title %}
 <head>
-    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <style>
+        /* 全体的なスタイル */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* コンテナ */
+        .container {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 新規登録のタイトル */
+        .new_title {
+            font-size: 36px;   /* タイトルを大きく */
+            font-weight: bold;
+            margin-bottom: 30px; /* 上のスペースを確保 */
+            text-align: center;
+        }
+
+        /* 背景暗めのグレー */
+        .gray-background {
+            background-color: #f0f0f0; /* ダークグレーに近い色 */
+            height: 20px;
+            margin-bottom: 30px; /* ボタン間のスペース */
+        }
+
+        /* チェックボックスグループ */
+        .checkbox-group {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .checkbox-group input[type="radio"],
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        /* ボタンコンテナ */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto; /* 中央揃え */
+        }
+
+        /* 戻るボタン（左） */
+        .back-button {
+            background-color: #d3d3d3; /* 薄灰色 */
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 45%; /* ボタンの幅を制限 */
+        }
+
+        .back-button:hover {
+            background-color: #c0c0c0; /* ホバー時の色 */
+        }
+
+        /* 次へボタン（右） */
+        .next-button {
+            background-color: #007bff; /* 青色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 45%; /* ボタンの幅を制限 */
+        }
+
+        .next-button:hover {
+            background-color: #0056b3; /* ホバー時の色 */
+        }
+</style>
 </head>
 {% endblock %}
 
 {% block contents %}
 <body>
-    <div class="header">
-        <h1>新規座席登録</h1>
-    </div>
-    <div class="content">
-        <form action="" method="POST">
-            {% csrf_token %}
-            
-            <label for="table_typ">座席種類:</label>
-            <select id="table_typ" id="table_typ">
-                <option value="1">テーブル席</option>
-                <option value="2">カウンター席</option>
-            </select><br>
-            <br>
-            <label for="table_number">テーブル番号:</label>
-            <input type="text" id="table_number" name="table_number"><br>
-            <br>
-            <label for="seats">座席数:</label>
-            <select id="seats" name="seats">
-                <option value="1">1人席</option>
-                <option value="2">2人席</option>
-                <option value="4">4人席</option>                
-            </select><br>
-            <br>
-            <form>
-            <input type="radio" id="connection" name="connection" value="あり">座席連結する<br>
-            <input type="radio" id="connection" name="connection" value="なし">座席連結しない<br>
-            </form>
-            <button type="submit">登録</button>
+<div class="header">
+    <h1>新規座席登録</h1>
+</div>
+<div class="content">
+    <form action="" method="POST">
+        {% csrf_token %}
+        
+        <label for="table_typ">座席種類:</label>
+        <select id="table_typ" id="table_typ">
+            <option value="1">テーブル席</option>
+            <option value="2">カウンター席</option>
+        </select><br>
+        <br>
+        <label for="table_number">テーブル番号:</label>
+        <input type="text" id="table_number" name="table_number"><br>
+        <br>
+        <label for="seats">座席数:</label>
+        <select id="seats" name="seats">
+            <option value="1">1人席</option>
+            <option value="2">2人席</option>
+            <option value="4">4人席</option>                
+        </select><br>
+        <br>
+        <form>
+        <input type="radio" id="connection" name="connection" value="あり">座席連結する<br>
+        <input type="radio" id="connection" name="connection" value="なし">座席連結しない<br>
         </form>
-    </div>
+        <button type="submit">登録</button>
+    </form>
+</div>
 </body>
 {% endblock %}
