@@ -8,6 +8,11 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* ビューポートの高さに合わせる */
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
 }
 
 .header, .footer {
@@ -107,4 +112,46 @@ body, html {
     gap: 10px; /* 空席とテーブル番号の間のスペースを調整 */
     align-items: center; /* 縦方向に中央揃え */
     
+}
+/* 追加 */
+
+
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    height: 600px; /* 縦長の高さを指定 */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 56px;
+    font-weight: bold;
+    margin: auto 0;
+    height: 300px;
+}
+
+.touch-text {
+    color: #aaa;
+    font-size: 18px;
+    margin-bottom: auto;
+    height: 50px;
+}
+
+.language-button {
+    font-size: 14px;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 10px;
+    margin-top: 20px;
 }

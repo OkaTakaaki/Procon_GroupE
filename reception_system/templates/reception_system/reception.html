@@ -1,14 +1,112 @@
-{% extends 'base_app/base.html'%}
-{% load static %}
-
-{% block title %}
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターフェース</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+    }
+    .container {
+        display: flex;
+        border: 2px solid #333;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+    }
+    .image-box {
+        width: 100px;
+        height: 150px;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        margin-right: 20px;
+        position: relative;
+    }
+    .person-label {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 20px;
+    }
+    .display-numbers {
+        font-size: 36px;
+        margin-top: 10px;
+    }
+    .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 60px);
+        gap: 10px;
+    }
+    .button, .action-button {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        background-color: #ddd;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .button:hover, .action-button:hover {
+        background-color: #bbb;
+    }
+    .action-button {
+        width: 80px;
+        height: 40px;
+        font-size: 16px;
+        color: #fff;
+        border-radius: 5px;
+    }
+    .submit-button {
+        background-color: red;
+    }
+    .cancel-button {
+        background-color: #ccc;
+    }
+</style>
 </head>
-{% endblock %}
-
-{% block contents%}
 <body>
+
+    <div class="container">
+        <div class="image-box">
+            <div id="display" class="display-numbers"></div>
+            <div class="person-label">人</div>
+        </div>
+        <div>
+            <form method="post">
+                {% csrf_token %}
+                <!-- 隠しフィールドを追加 -->
+                <input type="hidden" name="reception_count" id="hidden-input">
+                
+                <div class="keypad">
+                    <button class="button" type="button" onclick="addToDisplay('1')">1</button>
+                    <button class="button" type="button" onclick="addToDisplay('2')">2</button>
+                    <button class="button" type="button" onclick="addToDisplay('3')">3</button>
+                    <button class="button" type="button" onclick="addToDisplay('4')">4</button>
+                    <button class="button" type="button" onclick="addToDisplay('5')">5</button>
+                    <button class="button" type="button" onclick="addToDisplay('6')">6</button>
+                    <button class="button" type="button" onclick="addToDisplay('7')">7</button>
+                    <button class="button" type="button" onclick="addToDisplay('8')">8</button>
+                    <button class="button" type="button" onclick="addToDisplay('9')">9</button>
+                    <button class="button" type="button" onclick="addToDisplay('0')">0</button>
+                </div>
+                <div style="display: flex; margin-top: 10px;">
+                    <button class="action-button submit-button" type="submit" onclick="submitForm()">決定</button>
+                    <button class="action-button cancel-button" type="button" style="margin-left: 10px;" onclick="clearDisplay()">取消</button>
+                </div>
+            </form>
+        </div>
     <div class="header">
         <h1>ヘッダー</h1>
     </div>
@@ -25,15 +123,29 @@
             </div>
         </div>
     </div>
-    <!-- <style>
-        body{
-            width:450px;
-            margin: 0 auto;
+    
+    <script>
+        // 表示エリアの要素を取得
+        const display = document.getElementById('display');
+        const hiddenInput = document.getElementById('hidden-input');
+    
+        // 数字を表示エリアに追加する関数
+        function addToDisplay(value) {
+            display.innerText += value;
         }
-    </style> -->
-    <div class="footer">
-        <a href="/">戻る</a>
-        <a href="/complate">次へ</a>
-    </div>
+
+        // フォーム送信時に表示エリアの値を隠しフィールドにコピー
+        function submitForm() {
+            hiddenInput.value = display.innerText;
+        }
+
+        // 「取消」ボタンを押した時の処理（表示をクリア）
+        function clearDisplay() {
+            display.innerText = '';
+            hiddenInput.value = '';
+        }
+    </script>
+    
+
 </body>
-{% endblock %}
+</html>
