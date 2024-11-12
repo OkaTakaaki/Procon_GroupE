@@ -131,13 +131,6 @@ body, html {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
     border-radius: 8px;
-<<<<<<< HEAD
-=======
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0 auto; /* 中央揃え */
->>>>>>> 04b5717fbb3da5c71457620e6c74b2256df21b46
 }
 
 
