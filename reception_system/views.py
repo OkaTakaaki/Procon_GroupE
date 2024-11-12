@@ -33,3 +33,6 @@ def language(request):
 
 def complate(request):
     return render(request, 'reception_system/complate.html')
+
+def kari(request):
+    return render(request, 'reception_system/kari.html')
