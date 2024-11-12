@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    <title>新規座席登録</title>
+<head>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
     <style>
         /* 全体的なスタイル */
@@ -88,47 +88,41 @@
         .next-button:hover {
             background-color: #0056b3; /* ホバー時の色 */
         }
-
-    </style>
+</style>
+</head>
 {% endblock %}
 
 {% block contents %}
 <body>
-    <div class="container">
-        <div class="new_title">座席新規登録</div>
-
-        <!-- 背景暗めのグレー -->
-        <div class="gray-background"></div>
-
-        <form action="" method="post">
-            {% csrf_token %}
-
-            <!-- チェックボックスグループ1: カウンター席かテーブル席 -->
-            <div class="checkbox-group">
-                <label for="counter_seat">
-                    <input type="radio" id="counter_seat" name="seat_type" value="counter" required>
-                    カウンター席
-                </label>
-                <label for="table_seat">
-                    <input type="radio" id="table_seat" name="seat_type" value="table">
-                    テーブル席
-                </label>
-            </div>
-
-            <!-- チェックボックスグループ2: 座席連結するかしないか -->
-            <div class="checkbox-group">
-                <label for="seat_connection">
-                    <input type="checkbox" id="seat_connection" name="seat_connection">
-                    座席連結する
-                </label>
-            </div>
-
-            <div class="button-container">
-                <button type="button" class="back-button" onclick="window.location.href='/employee/item'">戻る</button>
-
-                <button type="submit" class="next-button">登録</button>
-            </div>
+<div class="header">
+    <h1>新規座席登録</h1>
+</div>
+<div class="content">
+    <form action="" method="POST">
+        {% csrf_token %}
+        
+        <label for="table_typ">座席種類:</label>
+        <select id="table_typ" id="table_typ">
+            <option value="1">テーブル席</option>
+            <option value="2">カウンター席</option>
+        </select><br>
+        <br>
+        <label for="table_number">テーブル番号:</label>
+        <input type="text" id="table_number" name="table_number"><br>
+        <br>
+        <label for="seats">座席数:</label>
+        <select id="seats" name="seats">
+            <option value="1">1人席</option>
+            <option value="2">2人席</option>
+            <option value="4">4人席</option>                
+        </select><br>
+        <br>
+        <form>
+        <input type="radio" id="connection" name="connection" value="あり">座席連結する<br>
+        <input type="radio" id="connection" name="connection" value="なし">座席連結しない<br>
         </form>
-    </div>
+        <button type="submit">登録</button>
+    </form>
+</div>
 </body>
 {% endblock %}
