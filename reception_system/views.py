@@ -33,3 +33,6 @@ def language(request):
 
 def complate(request):
     return render(request, 'reception_system/complate.html')
+
+def reserve(request):
+    return render(request, 'reception_system/condition.html')

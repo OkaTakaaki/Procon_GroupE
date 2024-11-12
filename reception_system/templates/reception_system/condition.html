@@ -1,0 +1,36 @@
+{% extends 'base_app/base.html' %}
+{% load static %}
+
+{% block contents %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>座席条件</title>
+</head>
+<body>
+    <div class="container">
+        <div class="condition_message">ご希望の座席の条件を入力してください</div>
+            <div class="seat-selection">
+                <br><label>希望の座席を選択してください</label>
+                <span><label><input type="checkbox"> カウンター席</label></span>
+                <label><input type="checkbox"> テーブル席</label>
+    
+                <br><label>コンセントは必要ですか</label>
+                <span><label><input type="checkbox"> はい</label></span>
+                <label><input type="checkbox"> 無くてもよい</label>
+    
+                <br><label>隣の座席と席を繋げますか</label>
+                <label><input type="checkbox"> <span>はい</span></label>
+                <label><input type="checkbox"> いいえ</label>
+            </div>
+            <div class="button-container">
+                <button class="circle-button">戻る</button>
+                <button class="circle-button">手動選択</button>
+                <button class="circle-button">次へ</button>
+            </div>
+    </div>
+    
+
+</body>
+</html>
+{% endblock %}
