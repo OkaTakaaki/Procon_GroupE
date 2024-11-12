@@ -2,14 +2,19 @@
 {% load static %}
 
 {% block title %}
-<title>従業員</title>
+<head>
+    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <title>従業員</title>
+</head>
 {% endblock %}
 
 
 {% block contents %}
-<h2>従業員用</h2>
+<div class="container">
+    <div class="title">従業員用</div>
+    <div class="touch-text">画面をタッチしてください</div></a>
+</div>
 
-<h3>画面をタッチしてください</h3>
 <script>
     // body全体をクリックしたら遷移するようにする
     document.body.addEventListener('click', function() {

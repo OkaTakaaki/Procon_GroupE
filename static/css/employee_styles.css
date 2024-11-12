@@ -8,6 +8,11 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* ビューポートの高さに合わせる */
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
 }
 
 .header, .footer {
@@ -21,4 +26,122 @@ body {
     overflow-y: auto; /* 縦方向のスクロールを許可 */
     padding: 10px;
     background-color: #fff; /* コンテンツエリアの背景色 */
+}
+
+.item_new_seat{
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    background-color: #87BFE1;
+}
+
+.item_confirm {
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    background-color: #F06062;
+}
+
+/*employee.html*/
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px; /* 必要に応じて調整 */
+    height: 600px; /* 必要に応じて調整 */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;  /* 上下に要素を配置 */
+    justify-content: center; /* 上下方向に中央揃え */
+    align-items: center;     /* 横方向に中央揃え */
+    gap: 80px;               /* アイテム間の間隔を狭くする */
+}
+
+
+.title {
+    font-size: 56px;
+    font-weight: bold;
+    margin: auto 0;
+    height: 300px;
+}
+
+.touch-text {
+    color: #aaa;
+    font-size: 18px;
+    margin-bottom: auto;
+    height: 50px;
+}
+
+
+
+/*new_seat.html*/
+
+
+
+  /* iPad (768px 幅) 以上のタブレット向け */
+@media screen and (max-width: 1024px) {
+    .container {
+        max-width: 90%;  /* 最大幅を広げる */
+        height: 500px;   /* 高さを調整 */
+        gap: 60px;       /* アイテム間隔を少し狭くする */
+    }
+
+    .title {
+        font-size: 48px;  /* タイトルフォントサイズを調整 */
+        height: 250px;    /* 高さを縮小 */
+    }
+
+    .touch-text {
+        font-size: 16px;  /* 文字サイズを調整 */
+    }
+}
+
+/* iPad 縦向き(768px) および小さいタブレット向け */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 14px;  /* フォントサイズを調整 */
+    }
+
+    .container {
+        max-width: 100%;   /* コンテナ幅を100%に調整 */
+        height: auto;      /* 高さを自動調整 */
+        gap: 40px;         /* アイテム間隔を狭める */
+        padding: 15px;     /* パディングを調整 */
+    }
+
+    .title {
+        font-size: 40px;  /* タイトルフォントサイズを調整 */
+        height: auto;     /* 高さを調整 */
+    }
+
+    .touch-text {
+        font-size: 14px;  /* 小さいタブレットでは文字を少し小さく */
+    }
+
+    .item_new_seat, .item_confirm {
+        padding: 12px 18px;  /* ボタンサイズを調整 */
+    }
+}
+
+/* iPhoneやさらに小さいスクリーン向け (600px以下) */
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 10px;      /* さらに余白を調整 */
+        gap: 30px;          /* アイテム間隔を更に縮小 */
+    }
+
+    .title {
+        font-size: 30px;   /* タイトルフォントサイズをさらに調整 */
+    }
+
+    .touch-text {
+        font-size: 12px;   /* タッチ文字のサイズを縮小 */
+    }
+
+    .item_new_seat, .item_confirm {
+        padding: 10px 15px; /* ボタンの余白を小さく */
+    }
 }
