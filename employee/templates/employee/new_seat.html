@@ -2,27 +2,42 @@
 {% load static %}
 
 {% block title %}
-    <title>新規座席登録</title>
+<head>
+    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+</head>
 {% endblock %}
 
 {% block contents %}
-
-    <div>
-        <input type="checkbox" id="counter" name="counter" />
-        <label for="counter">カウンター席</label>
+<body>
+    <div class="header">
+        <h1>新規座席登録</h1>
     </div>
-    <div>
-        <input type="checkbox" id="table" name="table" />
-        <label for="table">テーブル席</label>
+    <div class="content">
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            <label for="table_typ">座席種類:</label>
+            <select id="table_typ" id="table_typ">
+                <option value="1">テーブル席</option>
+                <option value="2">カウンター席</option>
+            </select><br>
+            <br>
+            <label for="table_number">テーブル番号:</label>
+            <input type="text" id="table_number" name="table_number"><br>
+            <br>
+            <label for="seats">座席数:</label>
+            <select id="seats" name="seats">
+                <option value="1">1人席</option>
+                <option value="2">2人席</option>
+                <option value="4">4人席</option>                
+            </select><br>
+            <br>
+            <form>
+            <input type="radio" id="connection" name="connection" value="あり">座席連結する<br>
+            <input type="radio" id="connection" name="connection" value="なし">座席連結しない<br>
+            </form>
+            <button type="submit">登録</button>
+        </form>
     </div>
-
-    <div>
-        <input type="checkbox" id="passage" name="passage" />
-        <label for="passage">通路側</label>
-    </div>
-    <div>
-        <input type="checkbox" id="window" name="window" />
-        <label for="window">窓側</label>
-    </div>
-
+</body>
 {% endblock %}

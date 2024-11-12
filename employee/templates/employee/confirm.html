@@ -14,8 +14,17 @@
         <h1>座席状況確認</h1>
     </div>
     <div class="content">
-        <p>ここにスクロール可能なコンテンツを入れます。</p>
-        <p>テーブル１</p>
+        {% for table in tables %}
+            <div class="table-card">
+                <div class="table-status">{{ table.status }}</div>
+                <div class="table-number">{{ table.table_number }}</div>
+                <div class="table-details">
+                    <div class="detail-item">{{ table.position }}</div>
+                    <div class="detail-item">{{ table.seats }}</div>
+                    <div class="detail-item">{{ table.connection }}</div>
+                </div>
+            </div>
+        {% endfor %}
 
     </div>
     <div class="footer">
