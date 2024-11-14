@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends 'base_app/base.html' %}
+{% load static %}
+
+{% block title %}
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>インターフェース</title>
 <style>
@@ -76,6 +77,9 @@
     }
 </style>
 </head>
+{% endblock %}
+
+{% block contents %}
 <body>
 
     <div class="container">
@@ -132,4 +136,4 @@
     
 
 </body>
-</html>
+{% endblock %}

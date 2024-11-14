@@ -28,29 +28,19 @@ body {
     background-color: #fff; /* コンテンツエリアの背景色 */
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-}
 
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 400px;
-    max-width: 450px;
-    height: 90vh;
+    justify-content: flex-start; /* 上に配置する */
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    height: 90vh; /* 高さを画面の90%に設定 */
+    padding: 20px;
     background-color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
     border-radius: 8px;
 }
 
@@ -59,12 +49,6 @@ body, html {
     padding: 10px;
     background-color: #e9e9e9;
     font-size: 18px;
-}
-
-.content {
-    padding: 10px;
-    overflow-y: auto; /* スクロール可能にする */
-    height: 100%;
 }
 
 .table-card {
@@ -114,23 +98,6 @@ body, html {
     gap: 10px; /* 空席とテーブル番号の間のスペースを調整 */
     align-items: center; /* 縦方向に中央揃え */
     
-}
-/* 追加 */
-
-
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* 上に配置する */
-    align-items: center;
-    width: 100%;
-    max-width: 400px;
-    height: 90vh; /* 高さを画面の90%に設定 */
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    border-radius: 8px;
 }
 
 
