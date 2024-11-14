@@ -185,3 +185,26 @@ body {
 .seat-selection input[type="checkbox"] {
     margin-right: 5px;
 }
+
+.reservation-number-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 auto 20px;
+}
+
+.reservation-number-circle .number {
+    font-size: 36px;
+}
+
+.footer-text {
+    font-size: 14px;
+    margin-top: 10px;
+}

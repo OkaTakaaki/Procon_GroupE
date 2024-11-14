@@ -1,0 +1,42 @@
+{% extends 'base_app/base.html' %}
+{% load static %}
+
+{% block contents %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約完了画面</title>
+</head>
+<body>
+
+    <body>
+
+        <div class="container">
+            <div class="header-text">
+                ご利用いただきありがとうございます<br>
+                お呼び出しまでお待ちください
+            </div>
+        
+            <div class="reservation-number-circle">
+                <div>
+                    予約番号<br>
+                    <span class="number">12</span>
+                </div>
+            </div>
+        
+            <div class="footer-text">
+                受付が完了しました<br>
+                発券された券を持ってお待ちください
+            </div>
+        </div>
+        
+        </body>
+
+<script>
+    document.body.addEventListener('click', function() {
+        window.location.href = "{% url 'reception_system:reception' %}"; 
+    });
+</script>
+
+</body>
+{% endblock %}

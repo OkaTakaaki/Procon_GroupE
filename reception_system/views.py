@@ -36,5 +36,8 @@ def complate(request):
 
 def reserve(request):
     return render(request, 'reception_system/condition.html')
+
+def reserveSuccess(request):
+    return render(request, 'reception_system/reserve_success.html')
 def kari(request):
     return render(request, 'reception_system/kari.html')
