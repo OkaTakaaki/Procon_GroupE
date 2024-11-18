@@ -30,29 +30,19 @@ body {
     width: 100%; /* 幅を100%に設定 */
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-}
 
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 400px;
-    max-width: 450px;
-    height: 90vh;
+    justify-content: flex-start; /* 上に配置する */
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    height: 90vh; /* 高さを画面の90%に設定 */
+    padding: 20px;
     background-color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
     border-radius: 8px;
 }
 
@@ -61,12 +51,6 @@ body, html {
     padding: 15px;
     background-color: #e9e9e9;
     font-size: 18px;
-}
-
-.content {
-    padding: 10px;
-    overflow-y: auto; /* スクロール可能にする */
-    height: 100%;
 }
 
 .table-card {
@@ -169,6 +153,13 @@ input[type="checkbox"] {
     height: 300px;
 }
 
+.condition_message {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .touch-text {
     color: #aaa;
     font-size: 18px;
@@ -185,4 +176,80 @@ input[type="checkbox"] {
     align-self: flex-end;
     margin-bottom: 10px;
     margin-top: 20px;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 20px; /* コンテナの下部に固定 */
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 0;
+    background-color: #f8f9fa;
+}
+
+
+/* 丸いボタンのスタイル */
+.circle-button {
+    width: 80px; /* ボタンのサイズを設定 */
+    height: 80px;
+    border-radius: 50%; /* 丸くするための設定 */
+    border: none;
+    background-color: #007bff; /* ボタンの背景色を任意で設定 */
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ホバー時のスタイル（任意） */
+.circle-button:hover {
+    background-color: #0056b3;
+}
+
+.seat-selection {
+    background-color: #888888;
+    padding: 15px;
+    border-radius: 4px;
+    width: 100%; /* コンテナ幅に合わせる */
+    margin-top: 20px; /* 上にスペースを追加 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #fff;
+}
+
+/* ラベルとチェックボックスのスタイル */
+.seat-selection label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* チェックボックスとテキストの間に余白を追加 */
+}
+
+/* チェックボックスのスタイル（必要に応じてカスタマイズ） */
+.seat-selection input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.reservation-number-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 auto 20px;
+}
+
+.reservation-number-circle .number {
+    font-size: 36px;
+}
+
+.footer-text {
+    font-size: 14px;
+    margin-top: 10px;
 }
