@@ -10,5 +10,5 @@ urlpatterns = [
     path('reception/', views.reception, name='reception'),
     path('language/', views.language, name='language'),
     path('complate/', views.complate, name='reception_complate'),
-    path('kari/', views.kari, name='kari'),
+    path('Number/', views.Number, name='Number'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
