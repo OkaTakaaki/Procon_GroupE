@@ -6,7 +6,7 @@ from .forms import ReceptionCountForm
 def index(request):
     return render(request,'reception_system/index.html')
 
-def reception(request):
+def receptionNumber(request):
     if request.method == 'POST':
         reception_count = request.POST.get('reception_count')
         print(reception_count)
