@@ -4,6 +4,7 @@
 {% block title %}
 <head>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規座席登録</title>
     <style>
         /* 全体的なスタイル */
@@ -22,44 +23,48 @@
             text-align: center;
         }
 
-        /* 新規登録のタイトル */
+        .form-container {
+            max-height: 80%;
+            max-width: 80%;
+        }
+
         .new_title {
             font-size: 36px;
             font-weight: bold;
-            margin-bottom: 20px; /* 上部マージンを小さくして上寄せ */
             text-align: center;
+            margin-bottom: 10px; /* タイトルとフォームの間隔を縮める */
         }
 
+        .form-container {
+            max-height: 80%;
+            max-width: 80%;
+            padding-top: 0; /* 上部の余白を完全になくす */
+            margin-top: 0; /* 上部の余白を完全になくす */
+        }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 4px;  /* ラベルとフォーム要素の間隔を小さくする */
             font-size: 16px;
-            color: #333; /* ラベルの色 */
+            color: #333;
         }
 
         select, input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* フォーム要素間の間隔を縮める */
             border: 1px solid #ccc;
             border-radius: 4px;
-            background-color: #f9f9f9; /* 背景を少し明るく */
+            background-color: #f9f9f9;
             color: #333;
         }
 
-        /* チェックボックスグループ */
         .checkbox-group {
             text-align: left;
             font-size: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* チェックボックスと他の要素の間隔を縮める */
         }
 
-        .checkbox-group input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        /* ボタンコンテナ */
         .button-container {
             display: flex;
             justify-content: space-between;
@@ -78,34 +83,38 @@
             transition: background-color 0.3s ease;
         }
 
-        /* 戻るボタン（左） */
         .back-button {
-            background-color: #f0f0f0; /* 薄い灰色 */
+            background-color: #f0f0f0;
             color: #333;
         }
 
         .back-button:hover {
-            background-color: #e0e0e0; /* ホバー時の色 */
+            background-color: #e0e0e0;
         }
 
-        /* 次へボタン（右） */
         .next-button {
-            background-color: #007bff; /* 青色 */
+            background-color: #007bff;
             color: white;
-        }
+        }   
 
         .next-button:hover {
-            background-color: #0056b3; /* ホバー時の色 */
+            background-color: #0056b3;
         }
 
         /* レスポンシブ対応 */
-        @media (max-width: 768px) {
+            @media screen and (max-width: 768px) {
+            .container {
+                max-width: 90%;
+                padding: 15px;
+            }
+
             .new_title {
                 font-size: 28px; /* 小さめに調整 */
             }
 
             .form-container {
                 padding: 20px;
+                margin-top: 10px;  /* 小さな画面では少し余白を縮める */
             }
 
             select, input[type="text"] {
