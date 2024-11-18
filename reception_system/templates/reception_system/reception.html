@@ -1,8 +1,24 @@
-{% extends 'base_app/base.html' %}
+{% extends 'base_app/base.html'%}
 {% load static %}
 
 {% block title %}
 <head>
+    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+</head>
+{% endblock %}
+
+{% block contents%}
+<body>
+    <div class="header">
+        <h1>ヘッダー</h1>
+    </div>
+    <div class="content">
+        <div class="table-card">
+            <div class="table-info">
+                <div class="table-status">空席</div>
+                <div class="table-number">テーブル1</div>
+                <div class="table-checkbox">
+                    <input type="checkbox" id="table1-checkbox">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>インターフェース</title>
 <style>
@@ -105,22 +121,68 @@
                     <button class="button" type="button" onclick="addToDisplay('9')">9</button>
                     <button class="button" type="button" onclick="addToDisplay('0')">0</button>
                 </div>
-                <div style="display: flex; margin-top: 10px;">
-                    <button class="action-button submit-button" type="submit" onclick="submitForm()">決定</button>
-                    <button class="action-button cancel-button" type="button" style="margin-left: 10px;" onclick="clearDisplay()">取消</button>
-                </div>
-            </form>
+            </div>
+            <div class="table-details">
+                <div class="detail-item">窓側</div>
+                <div class="detail-item">4人席</div>
+                <div class="detail-item">座席連結</div>
+            </div>
         </div>
-    
-    <script>
-        // 表示エリアの要素を取得
-        const display = document.getElementById('display');
-        const hiddenInput = document.getElementById('hidden-input');
-    
-        // 数字を表示エリアに追加する関数
-        function addToDisplay(value) {
-            display.innerText += value;
+        <div class="table-card">
+            <div class="table-info">
+                <div class="table-status">空席</div>
+                <div class="table-number">テーブル2</div>
+                <div class="table-checkbox">
+                    <input type="checkbox" id="table2-checkbox">
+                </div>
+            </div>
+            <div class="table-details">
+                <div class="detail-item">窓側</div>
+                <div class="detail-item">4人席</div>
+                <div class="detail-item">座席連結</div>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-info">
+                <div class="table-status">空席</div>
+                <div class="table-number">テーブル3</div>
+                <div class="table-checkbox">
+                    <input type="checkbox" id="table3-checkbox">
+                </div>
+            </div>
+            <div class="table-details">
+                <div class="detail-item">窓側</div>
+                <div class="detail-item">4人席</div>
+                <div class="detail-item">座席連結</div>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-info">
+                <div class="table-status">空席</div>
+                <div class="table-number">テーブル4</div>
+                <div class="table-checkbox">
+                    <input type="checkbox" id="table4-checkbox">
+                </div>
+            </div>
+            <div class="table-details">
+                <div class="detail-item">窓側</div>
+                <div class="detail-item">4人席</div>
+                <div class="detail-item">座席連結</div>
+            </div>
+        </div>
+    </div>
+    <!-- <style>
+        body{
+            width:450px;
+            margin: 0 auto;
         }
+    </style> -->
+    <div class="footer">
+        <a href="/">戻る</a>
+        <a href="/complate">次へ</a>
+    </div>
+</body>
+{% endblock %}
 
         // フォーム送信時に表示エリアの値を隠しフィールドにコピー
         function submitForm() {
