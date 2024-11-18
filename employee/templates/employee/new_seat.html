@@ -4,6 +4,7 @@
 {% block title %}
 <head>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <title>新規座席登録</title>
     <style>
         /* 全体的なスタイル */
         body {
@@ -162,8 +163,8 @@
             <!-- 座席連結 -->
             <div class="checkbox-group">
                 <label>座席連結:</label>
-                <input type="radio" id="connection_あり" name="connection" value="あり">座席連結する
-                <input type="radio" id="connection_なし" name="connection" value="なし">座席連結しない
+                <input type="radio" id="connection_Yes" name="connection" value="True">座席連結する
+                <input type="radio" id="connection_No" name="connection" value="False">座席連結しない
             </div>
 
             <!-- 登録ボタン -->
