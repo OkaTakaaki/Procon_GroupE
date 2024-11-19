@@ -87,4 +87,14 @@ def language(request):
     return render(request, 'reception_system/reception_system/language.html')
 
 def complate(request):
-    return render(request, 'reception_system/reception_system/complate.html')
+    return render(request, 'reception_system/complate.html')
+
+def Number(request):
+    return render(request, 'reception_system/Number.html')
+def reserve(request):
+    return render(request, 'reception_system/condition.html')
+
+def reserveSuccess(request):
+    return render(request, 'reception_system/reserve_success.html')
+def kari(request):
+    return render(request, 'reception_system/kari.html')
