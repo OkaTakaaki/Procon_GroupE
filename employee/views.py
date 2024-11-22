@@ -42,13 +42,13 @@ def confirm(request):
 #     return render(request, 'employee/new_seat.html')
 
 def new_seat(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         form = SeatForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('employee_new_seat')
-    
-    else:
-        form = SeatForm()
+            form.save()  # フォームのデータを保存
+            return redirect('employee_new_seat')  # 成功したらリダイレクト
 
-    return render(request, 'employee/new_seat.html',{'form': form})
+    else:
+        form = SeatForm()  # GETリクエストの場合、空のフォームを表示
+
+    return render(request, 'employee/new_seat.html', {'form': form})

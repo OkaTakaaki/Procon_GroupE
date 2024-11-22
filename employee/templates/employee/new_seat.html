@@ -2,47 +2,186 @@
 {% load static %}
 
 {% block title %}
-    <title>新規座席登録</title>
+<head>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規座席登録</title>
+    <style>
+        /* 全体的なスタイル */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 白背景に合わせて少し薄いグレー */
+        }
+
+        /* コンテナ */
+        .container {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box; /* 余白を含めたサイズ指定 */
+            text-align: center;
+        }
+
+        .form-container {
+            max-height: 80%;
+            max-width: 80%;
+        }
+
+        .new_title {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px; /* タイトルとフォームの間隔を縮める */
+        }
+
+        .form-container {
+            max-height: 80%;
+            max-width: 80%;
+            padding-top: 0; /* 上部の余白を完全になくす */
+            margin-top: 0; /* 上部の余白を完全になくす */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;  /* ラベルとフォーム要素の間隔を小さくする */
+            font-size: 16px;
+            color: #333;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px; /* フォーム要素間の間隔を縮める */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .checkbox-group {
+            text-align: left;
+            font-size: 16px;
+            margin-bottom: 10px; /* チェックボックスと他の要素の間隔を縮める */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .back-button, .next-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 45%;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .back-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .next-button {
+            background-color: #007bff;
+            color: white;
+        }   
+
+        .next-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* レスポンシブ対応 */
+            @media screen and (max-width: 768px) {
+            .container {
+                max-width: 90%;
+                padding: 15px;
+            }
+
+            .new_title {
+                font-size: 28px; /* 小さめに調整 */
+            }
+
+            .form-container {
+                padding: 20px;
+                margin-top: 10px;  /* 小さな画面では少し余白を縮める */
+            }
+
+            select, input[type="text"] {
+                padding: 12px; /* 入力フィールドのパディングを調整 */
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .back-button, .next-button {
+                width: 100%; /* ボタンを縦に並べて画面幅に合わせる */
+                margin-bottom: 10px;
+            }
+
+            .next-button {
+                margin-bottom: 0; /* 最後のボタンの余白を削除 */
+            }
+        }
+    </style>
+</head>
 {% endblock %}
 
 {% block contents %}
+<body>
 <div class="container">
     <div class="new_title">
-        <h1>新規座席登録</h1>
+        新規座席登録
     </div>
 
     <div class="form-container">
-        <form method="POST" class="seat-registration-form">
+        <form action="{% url 'employee:employee_item' %}" method="POST">
             {% csrf_token %}
-            <!-- 座席種類の入力フィールドを上部に配置 -->
-            <div class="form-group">
-                <label for="id_table_type">座席種類</label>
-                {{ form.table_type }}
-            </div>
+
+            <!-- 座席種類 -->
+            <label for="table_typ">座席種類:</label>
+            <select id="table_typ" name="table_type">
+                <option value="1">テーブル席</option>
+                <option value="2">カウンター席</option>
+            </select>
 
             <!-- テーブル番号 -->
-            <div class="form-group">
-                <label for="id_table_number">テーブル番号</label>
-                {{ form.table_number }}
-            </div>
+            <label for="table_number">テーブル番号:</label>
+            <input type="text" id="table_number" name="table_number">
 
-            <!-- 席数 -->
-            <div class="form-group">
-                <label for="id_seats">席数</label>
-                {{ form.seats }}
-            </div>
+            <!-- 座席数 -->
+            <label for="seats">座席数:</label>
+            <select id="seats" name="seats">
+                <option value="1">1人席</option>
+                <option value="2">2人席</option>
+                <option value="4">4人席</option>
+            </select>
 
             <!-- 座席連結 -->
-            <div class="form-group">
-                <label for="id_connection">座席連結</label>
-                {{ form.connection }}
+            <div class="checkbox-group">
+                <label>座席連結:</label>
+                <input type="radio" id="connection_Yes" name="connection" value="True">座席連結する
+                <input type="radio" id="connection_No" name="connection" value="False">座席連結しない
             </div>
 
             <!-- 登録ボタン -->
-            <button type="submit" class="btn btn-primary">登録</button>
+            <div class="button-container">
+                <button type="submit" class="next-button">登録</button>
+            </div>
         </form>
     </div>
 </div>
+</body>
 {% endblock %}
