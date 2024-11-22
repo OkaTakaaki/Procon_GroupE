@@ -52,3 +52,6 @@ def new_seat(request):
         form = SeatForm()  # GETリクエストの場合、空のフォームを表示
 
     return render(request, 'employee/new_seat.html', {'form': form})
+
+def complate(request):
+    return render(request, 'employee/complate.html')
