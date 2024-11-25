@@ -4,13 +4,12 @@ from django.db import models
 from django.db import models
 
 class Seat(models.Model):
-    seat_id = models.AutoField(primary_key=True)
     table_number = models.IntegerField(verbose_name="テーブル番号")
     table_resevation = models.BooleanField(verbose_name="使用されているか", default=False)  # 使用されているか
     recommended_capacity = models.IntegerField(verbose_name="座席人数", null=False)
     table_type = models.IntegerField(verbose_name="座席種別", null=False)
     electrical_outlet = models.BooleanField(verbose_name="コンセント有、無", default=False)  # コンセント有無
-    clean = models.BooleanField(verbose_name="清掃済、未", default=False)  # 清掃済か未か
+    clean_status = models.BooleanField(verbose_name="清掃済、未", default=False)  # 清掃済か未か
     table_connect = models.BooleanField(verbose_name="連結有、無", default=False)  # 連結有無
 
     def __str__(self):

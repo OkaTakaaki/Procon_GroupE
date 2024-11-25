@@ -1,34 +1,47 @@
-{% extends 'base_app/base.html'%}
 {% load static %}
-
-{% block title %}
 <title>座席状況確認</title>
 <head>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
 </head>
-{% endblock %}
 
-{% block contents%}
+
 <body>
     <div class="header">
         <h1>座席状況確認</h1>
     </div>
     <div class="content">
-        {% for table in seats %}
+        {% for seat in seats %}
             <div class="table-card">
-                <div class="table-status">{{ table.status }}</div>
-                <div class="table-number">{{ table.table_number }}</div>
+                <div class="table-status">座席番号：{{ seat.table_number }}</div>
+                <div class="table_resevation">
+                    {% if seat.table_resevation == False %}
+                        空席
+                    {% else %}
+                        満席
+                    {% endif %}
+                </div>
+                <div class="table-number">{{ seat.recommended_capacity }}人席</div>
                 <div class="table-details">
-                    <div class="detail-item">{{ table.position }}</div>
-                    <div class="detail-item">{{ table.seats }}</div>
-                    <div class="detail-item">{{ table.connection }}</div>
+                    <div class="table_type">
+                        {% if seat.table_type == 1 %}カウンター{% endif %}
+                        {% if seat.table_type == 2 %}テーブル{% endif %}
+                        {% if seat.table_type == 3 %}ソファー{% endif %}
+                    </div>
+                    <div class="electrical_outlet">
+                        {% if not seat.electrical_outlet %}コンセント無し{% endif %}
+                        {% if seat.electrical_outlet %}コンセント有り{% endif %}
+                    </div>
+                    <div class="table_connect">
+                        {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
+                        {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
+                    </div>
+                    
                 </div>
             </div>
         {% endfor %}
 
     </div>
     <div class="footer">
-        <a href="{% url 'employee:employee_item' %}">戻る</a>
+        <a href="{% url 'reception_system:receptionNum' %}">戻る</a>
     </div>
 </body>
-{% endblock %}
