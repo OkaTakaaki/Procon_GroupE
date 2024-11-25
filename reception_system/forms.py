@@ -2,12 +2,17 @@ from .models import Reception
 from django import forms
 
 # 人数を指定するフォーム
-class ReceptionCountForm(forms.ModelForm):
+class NumPeopleForm(forms.ModelForm):
     class Meta:
         model = Reception
         fields = ['reception_count']
 
-class AdditionalReceptionInfoForm(forms.ModelForm):
+class SeatingTypeForm(forms.ModelForm):
     class Meta:
         model = Reception
-        fields = ['seat', 'payment_status', 'conditions', 'reception_time']
+        fields = ['conditions']
+
+class SeatSpecificationForm(forms.ModelForm):
+    class Meta:
+        model = Reception
+        fields = ['seat']

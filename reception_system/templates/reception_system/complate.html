@@ -2,9 +2,18 @@
 {% load static %}
 
 {% block title %}
+<link rel="stylesheet" href="{% static 'css/complate_styles.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>感謝感謝</title>
 {% endblock %}
 
 {% block contents %}
-<h2>座席番号</h2>
+<div class="container">
+    <p>ご利用いただきありがとうございます</p>
+    <div class="circle">
+        座席番号<br>1
+    </div>
+    <p>発券した券を持って<br>上記の座席にお越しください</p>
+    <p class="note">受付が完了しました</p>
+</div>
 {% endblock %}

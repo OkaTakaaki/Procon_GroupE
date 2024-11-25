@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+}
+
+.container {
+    width: 360px;
+    text-align: center;
+    background-color: #777;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	height: 530px;
+    background-clip: content-box;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.circle {
+    width: 200px;
+    height: 200px;
+    margin: 50px auto;
+    background-color: white;
+    color: black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.note {
+    font-size: 20px;
+    margin-top: 10px;
+}

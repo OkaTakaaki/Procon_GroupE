@@ -1,8 +1,7 @@
-{% extends 'base_app/base.html' %}
-{% load static %}
-
-{% block title %}
+<!DOCTYPE html>
+<html lang="ja">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>インターフェース</title>
 <style>
@@ -77,9 +76,6 @@
     }
 </style>
 </head>
-{% endblock %}
-
-{% block contents %}
 <body>
 
     <div class="container">
@@ -88,7 +84,7 @@
             <div class="person-label">人</div>
         </div>
         <div>
-            <form method="post" id="reception_count">
+            <form method="post">
                 {% csrf_token %}
                 <!-- 隠しフィールドを追加 -->
                 <input type="hidden" name="reception_count" id="hidden-input">
@@ -125,26 +121,6 @@
         // フォーム送信時に表示エリアの値を隠しフィールドにコピー
         function submitForm() {
             hiddenInput.value = display.innerText;
-            let form = document.createElement('form');
-            form.method = "POST";
-            form.action = "{% url 'reception_system:reserve' %}";
-            form.id = "reception_count";
-            let input_container = document.createElement('input');
-            input_container.type = 'hidden'; //入力フォームの非表示
-            input_container.name = 'hidden-input';
-            let csrf_element = document.createElement('input');
-            csrf_element.type = 'hidden';
-            csrf_element.name = 'csrfmiddlewaretoken';
-            csrf_element.value = '{{ csrf_token }}';
-                //csrf_tokenと送信したい情報の追加
-            form.appendChild(csrf_element);
-            form.appendChild(hiddenInput.value);
-
-            //文書への追加
-            document.body.appendChild(form);
-            
-            //送信
-            form.submit();
         }
 
         // 「取消」ボタンを押した時の処理（表示をクリア）
@@ -156,4 +132,4 @@
     
 
 </body>
-{% endblock %}
+</html>
