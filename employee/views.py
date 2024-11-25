@@ -41,17 +41,28 @@ def confirm(request):
 
 #     return render(request, 'employee/new_seat.html')
 
+# views.py
 def new_seat(request):
     if request.method == 'POST':
         form = SeatForm(request.POST)
         if form.is_valid():
-            form.save()  # フォームのデータを保存
-            return redirect('employee_new_seat')  # 成功したらリダイレクト
+            print('a')
+            seat = form.save(commit=False)
 
+            seat.table_resevation = False  # 使用されていない（デフォルト値）
+            seat.electrical_outlet = False  # コンセントなし（デフォルト値）
+            seat.clean = True  # 清掃未（デフォルト値）
+
+            seat.save()
+            print('c')
+
+            return redirect('employee_new_seat')  # 成功したらリダイレクト
     else:
         form = SeatForm()  # GETリクエストの場合、空のフォームを表示
+        print("b")
 
     return render(request, 'employee/new_seat.html', {'form': form})
+
 
 def complate(request):
     return render(request, 'employee/complate.html')

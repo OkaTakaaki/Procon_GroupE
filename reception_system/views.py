@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Reception,Seat
-from .forms import ReceptionCountForm
 from django.shortcuts import redirect
 from .models import Reception
 from django.shortcuts import render, redirect, get_object_or_404
@@ -78,7 +77,7 @@ def select_seating_type(request):
 
 # 座席指定画面
 def select_seat_specification(request):
-    reservation = get_object_or_404(Reception, id=num)
+    reservation = get_object_or_404(Reception, id=id)
     if request.method == 'POST':
         form = SeatSpecificationForm(request.POST)
         if form.is_valid():
@@ -91,7 +90,7 @@ def select_seat_specification(request):
 
 # 受付完了画面
 def complete_reservation(request):
-    reservation = get_object_or_404(Reception, id=num)
+    reservation = get_object_or_404(Reception, id=id)
     reservation.is_completed = True
     reservation.save()
     # セッションの予約IDを削除して状態をクリア

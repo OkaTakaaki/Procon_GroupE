@@ -10,7 +10,7 @@ class Seat(models.Model):
     recommended_capacity = models.IntegerField(verbose_name="座席人数", null=False)
     table_type = models.IntegerField(verbose_name="座席種別", null=False)
     electrical_outlet = models.BooleanField(verbose_name="コンセント有、無", default=False)  # コンセント有無
-    clean = models.BooleanField(verbose_name="清掃済、未", default=False)  # 清掃済か未か
+    clean_status = models.BooleanField(verbose_name="清掃済、未", default=False)  # 清掃済か未か
     table_connect = models.BooleanField(verbose_name="連結有、無", default=False)  # 連結有無
 
     def __str__(self):
