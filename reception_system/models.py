@@ -4,7 +4,6 @@ from django.db import models
 from django.db import models
 
 class Seat(models.Model):
-    seat_id = models.AutoField(primary_key=True)
     table_number = models.IntegerField(verbose_name="テーブル番号")
     table_resevation = models.BooleanField(verbose_name="使用されているか", default=False)  # 使用されているか
     recommended_capacity = models.IntegerField(verbose_name="座席人数", null=False)
