@@ -1,24 +1,7 @@
-{% extends 'base_app/base.html'%}
-{% load static %}
-
-{% block title %}
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
-</head>
-{% endblock %}
-
-{% block contents%}
-<body>
-    <div class="header">
-        <h1>ヘッダー</h1>
-    </div>
-    <div class="content">
-        <div class="table-card">
-            <div class="table-info">
-                <div class="table-status">空席</div>
-                <div class="table-number">テーブル1</div>
-                <div class="table-checkbox">
-                    <input type="checkbox" id="table1-checkbox">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>インターフェース</title>
 <style>
@@ -93,18 +76,14 @@
     }
 </style>
 </head>
-{% endblock %}
-
-{% block contents %}
 <body>
-
     <div class="container">
         <div class="image-box">
             <div id="display" class="display-numbers"></div>
             <div class="person-label">人</div>
         </div>
         <div>
-            <form method="post" id="reception_count">
+            <form method="post">
                 {% csrf_token %}
                 <!-- 隠しフィールドを追加 -->
                 <input type="hidden" name="reception_count" id="hidden-input">
@@ -121,101 +100,34 @@
                     <button class="button" type="button" onclick="addToDisplay('9')">9</button>
                     <button class="button" type="button" onclick="addToDisplay('0')">0</button>
                 </div>
-            </div>
-            <div class="table-details">
-                <div class="detail-item">窓側</div>
-                <div class="detail-item">4人席</div>
-                <div class="detail-item">座席連結</div>
-            </div>
-        </div>
-        <div class="table-card">
-            <div class="table-info">
-                <div class="table-status">空席</div>
-                <div class="table-number">テーブル2</div>
-                <div class="table-checkbox">
-                    <input type="checkbox" id="table2-checkbox">
+                <div style="display: flex; margin-top: 10px;">
+                    <button class="action-button submit-button" type="submit" onclick="submitForm()">決定</button>
+                    <button class="action-button cancel-button" type="button" style="margin-left: 10px;" onclick="clearDisplay()">取消</button>
                 </div>
-            </div>
-            <div class="table-details">
-                <div class="detail-item">窓側</div>
-                <div class="detail-item">4人席</div>
-                <div class="detail-item">座席連結</div>
-            </div>
+            </form>
         </div>
-        <div class="table-card">
-            <div class="table-info">
-                <div class="table-status">空席</div>
-                <div class="table-number">テーブル3</div>
-                <div class="table-checkbox">
-                    <input type="checkbox" id="table3-checkbox">
-                </div>
-            </div>
-            <div class="table-details">
-                <div class="detail-item">窓側</div>
-                <div class="detail-item">4人席</div>
-                <div class="detail-item">座席連結</div>
-            </div>
-        </div>
-        <div class="table-card">
-            <div class="table-info">
-                <div class="table-status">空席</div>
-                <div class="table-number">テーブル4</div>
-                <div class="table-checkbox">
-                    <input type="checkbox" id="table4-checkbox">
-                </div>
-            </div>
-            <div class="table-details">
-                <div class="detail-item">窓側</div>
-                <div class="detail-item">4人席</div>
-                <div class="detail-item">座席連結</div>
-            </div>
-        </div>
-    </div>
-    <!-- <style>
-        body{
-            width:450px;
-            margin: 0 auto;
-        }
-    </style> -->
-    <div class="footer">
-        <a href="/">戻る</a>
-        <a href="/complate">次へ</a>
-    </div>
-</body>
-{% endblock %}
 
-        // フォーム送信時に表示エリアの値を隠しフィールドにコピー
-        function submitForm() {
-            hiddenInput.value = display.innerText;
-            let form = document.createElement('form');
-            form.method = "POST";
-            form.action = "{% url 'reception_system:reserve' %}";
-            form.id = "reception_count";
-            let input_container = document.createElement('input');
-            input_container.type = 'hidden'; //入力フォームの非表示
-            input_container.name = 'hidden-input';
-            let csrf_element = document.createElement('input');
-            csrf_element.type = 'hidden';
-            csrf_element.name = 'csrfmiddlewaretoken';
-            csrf_element.value = '{{ csrf_token }}';
-                //csrf_tokenと送信したい情報の追加
-            form.appendChild(csrf_element);
-            form.appendChild(hiddenInput.value);
-
-            //文書への追加
-            document.body.appendChild(form);
-            
-            //送信
-            form.submit();
-        }
-
-        // 「取消」ボタンを押した時の処理（表示をクリア）
-        function clearDisplay() {
-            display.innerText = '';
-            hiddenInput.value = '';
-        }
-    </script>
+        <script>
+            // 表示エリアの要素を取得
+            const display = document.getElementById('display');
+            const hiddenInput = document.getElementById('hidden-input');
+        
+            // 数字を表示エリアに追加する関数
+            function addToDisplay(value) {
+                display.innerText += value;
+            }
     
-
+            // フォーム送信時に表示エリアの値を隠しフィールドにコピー
+            function submitForm() {
+                hiddenInput.value = display.innerText;
+            }
+    
+            // 「取消」ボタンを押した時の処理（表示をクリア）
+            function clearDisplay() {
+                display.innerText = '';
+                hiddenInput.value = '';
+            }
+        </script>
 </body>
-{% endblock %}
+</html>
+    

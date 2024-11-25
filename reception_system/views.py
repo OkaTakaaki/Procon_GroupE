@@ -1,26 +1,25 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Reception
+from .models import Reception,Seat
 from .forms import ReceptionCountForm
+from django.shortcuts import redirect
 
 def index(request):
     return render(request,'reception_system/index.html')
+
 
 def receptionNumber(request):
     if request.method == 'POST':
         reception_count = request.POST.get('reception_count')
         print(reception_count)
-        # データベースには保存せずに、インスタンスのみを生成
-        reception = reception_count.save(commit=False)
-        print(reception)
-        # 最終的にデータベースに保存
-        reception.save()
-        print("データが保存されました")
-        return render(request, 'reception_system/reception.html', {'message': 'データが正常に保存されました'})
-    # else:
-    #     # バリデーションエラーが発生した場合はエラーメッセージとともにフォームを再表示
-    #     return render(request, 'reception_system/reception.html', {'form': receptionform})        # GETリクエストの場合は空のフォームを渡す
-    return render(request, 'reception_system/reception.html',)
+        vacant_seat = Seat.objects.filter(table_resevation=False)
+        if not vacant_seat.exists():
+            return redirect('reception_system:reserve')
+        else:
+            print("No")
+            return redirect('reception_system:seatsview')
+    return render(request, 'reception_system/reception.html')
+        # GETリクエストの場合は空のフォームを渡す
 
 def language(request):
     return render(request, 'reception_system/language.html')
@@ -28,12 +27,17 @@ def language(request):
 def complate(request):
     return render(request, 'reception_system/complate.html')
 
-def Number(request):
-    return render(request, 'reception_system/Number.html')
 def reserve(request):
-    return render(request, 'reception_system/condition.html')
+    return render(request,'reception_system/condition.html')
+
+def seatsview(request):
+    seats = Seat.objects.all()
+    if request.method == 'POST':
+        pass
+    return render(request,'reception_system/seatsview.html', {'seats':seats})
+
+
 
 def reserveSuccess(request):
     return render(request, 'reception_system/reserve_success.html')
-def kari(request):
-    return render(request, 'reception_system/kari.html')
+

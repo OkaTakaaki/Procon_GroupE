@@ -5,11 +5,11 @@ from django.db import models
 
 class Seat(models.Model):
     table_number = models.IntegerField(verbose_name="テーブル番号")
-    table_resevation = models.BooleanField(verbose_name="使用されているか")  # 使用されているか
+    table_resevation = models.BooleanField(verbose_name="使用されているか",default=False)  # 使用されているか
     recommended_capacity = models.IntegerField(verbose_name="座席人数", null=False)
     table_type = models.IntegerField(verbose_name="座席種別", null=False)
-    electrical_outlet = models.BooleanField(verbose_name="コンセント有、無")  # コンセント有無
-    clean = models.BooleanField(verbose_name="清掃済、未")  # 清掃済か未か
+    electrical_outlet = models.BooleanField(verbose_name="コンセント有、無",)  # コンセント有無
+    clean_status = models.BooleanField(verbose_name="清掃済、未")  # 清掃済か未か
     table_connect = models.BooleanField(verbose_name="連結有、無")  # 連結有無
 
     def __str__(self):
