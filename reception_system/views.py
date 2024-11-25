@@ -77,29 +77,6 @@ def receptionNumber(request):
 #         form = SeatingTypeForm()
 #     return render(request, 'reception_system/select_seating_type.html', {'form': form})
 
-<<<<<<< HEAD
-# 座席指定画面
-def select_seat_specification(request):
-    reservation = get_object_or_404(Reception, id=id)
-    if request.method == 'POST':
-        form = SeatSpecificationForm(request.POST)
-        if form.is_valid():
-            reservation.seat_specification = form.cleaned_data['seat_specification']
-            reservation.save()
-            return redirect('reception_system/complete_reservation')  # 受付完了画面へリダイレクト
-    else:
-        form = SeatSpecificationForm()
-    return render(request, 'reception_system/select_seat_specification.html', {'form': form})
-
-# 受付完了画面
-def complete_reservation(request):
-    reservation = get_object_or_404(Reception, id=id)
-    reservation.is_completed = True
-    reservation.save()
-    # セッションの予約IDを削除して状態をクリア
-    del request.session['reservation_id']
-    return render(request, 'reception_system/complete_reservation.html', {'reservation': reservation})
-=======
 # # 座席指定画面
 # def select_seat_specification(request):
 #     reservation = get_object_or_404(Reception, id=num)
@@ -121,7 +98,7 @@ def complete_reservation(request):
 #     # セッションの予約IDを削除して状態をクリア
 #     del request.session['reservation_id']
 #     return render(request, 'reception_system/complete_reservation.html', {'reservation': reservation})
->>>>>>> faa38cd63c42523632bfc6f03cf9eecb19425a35
+
 
 
 def language(request):
