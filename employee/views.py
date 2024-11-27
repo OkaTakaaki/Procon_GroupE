@@ -46,17 +46,16 @@ def new_seat(request):
     if request.method == 'POST':
         form = SeatForm(request.POST)
         if form.is_valid():
-            print('a')
             seat = form.save(commit=False)
-
-            seat.table_resevation = False  # 使用されていない（デフォルト値）
-            seat.electrical_outlet = False  # コンセントなし（デフォルト値）
-            seat.clean = True  # 清掃未（デフォルト値）
-
             seat.save()
-            print('c')
+            print(seat)
 
-            return redirect('employee_new_seat')  # 成功したらリダイレクト
+            return redirect('employee:employee_complate')  # 保存が成功した場合リダイレクト
+        
+        else:
+            print('error')
+            print(form.errors)  # バリデーションエラーを表示
+
     else:
         form = SeatForm()  # GETリクエストの場合、空のフォームを表示
         print("b")

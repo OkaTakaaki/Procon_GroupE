@@ -149,38 +149,39 @@
     <div class="form-container">
         <form action="{% url 'employee:employee_new_seat' %}" method="POST">
             {% csrf_token %}
-
+            
             <!-- 座席種類 -->
-            <label for="table_typ">座席種類:</label>
-            <select id="table_typ" name="table_type">
+            <label for="table_type">座席種類:</label>
+            <select id="table_type" name="table_type">
                 <option value="1">テーブル席</option>
                 <option value="2">カウンター席</option>
             </select>
-
+        
             <!-- テーブル番号 -->
             <label for="table_number">テーブル番号:</label>
             <input type="text" id="table_number" name="table_number">
-
+        
             <!-- 座席数 -->
-            <label for="seats">座席数:</label>
-            <select id="seats" name="seats">
+            <label for="recommended_capacity">座席数:</label>
+            <select id="recommended_capacity" name="recommended_capacity">
                 <option value="1">1人席</option>
                 <option value="2">2人席</option>
                 <option value="4">4人席</option>
             </select>
-
+        
             <!-- 座席連結 -->
             <div class="checkbox-group">
                 <label>座席連結:</label>
-                <input type="radio" id="connection_Yes" name="connection" value="True">座席連結する
-                <input type="radio" id="connection_No" name="connection" value="False">座席連結しない
+                <input type="radio" id="table_connect_yes" name="table_connect" value="True">座席連結する
+                <input type="radio" id="table_connect_no" name="table_connect" value="False">座席連結しない
             </div>
-
+        
             <!-- 登録ボタン -->
             <div class="button-container">
                 <button type="submit" class="next-button">登録</button>
             </div>
         </form>
+        
     </div>
 </div>
 </body>
