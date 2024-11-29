@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_http_methods
 from reception_system.models import Seat
 from .forms import SeatForm
 
@@ -15,31 +16,6 @@ def confirm(request):
     tables = Seat.objects.all()
     return render(request, 'employee/confirm.html', {'tables': tables})
 
-# # 新しい座席の登録ページ
-# def new_seat(request):
-#     if request.method == 'POST':
-#         # フォームから送信されたデータを取得
-#         table_type = request.POST.get('table_type')
-#         table_number = request.POST.get('table_number')
-#         recommended_capacity = request.POST.get('recommended_capacity')
-#         table_connect = request.POST.get('connection')
-
-#         # 入力されたデータを保存
-#         new_seat = Seat.objects.create(
-#             table_type=table_type,
-#             table_number=table_number,
-#             recommended_capacity=recommended_capacity,
-#             table_connect=(table_connect == 'True'),  # 'True' の場合は連結する
-#             table_resevation=False,  # 最初は使用されていないとしてデフォルトでFalse
-#             electrical_outlet=False,  # コンセント有無はデフォルトでFalse
-#             clean=False,  # 清掃済みはデフォルトでFalse
-#         )
-#         new_seat.save()
-
-#         # データ保存後に確認ページへリダイレクト
-#         return redirect('confirm')
-
-#     return render(request, 'employee/new_seat.html')
 
 # views.py
 def new_seat(request):
@@ -53,15 +29,32 @@ def new_seat(request):
             return redirect('employee:employee_complate')  # 保存が成功した場合リダイレクト
         
         else:
-            print('error')
             print(form.errors)  # バリデーションエラーを表示
 
     else:
         form = SeatForm()  # GETリクエストの場合、空のフォームを表示
-        print("b")
 
     return render(request, 'employee/new_seat.html', {'form': form})
 
 
 def complate(request):
     return render(request, 'employee/complate.html')
+
+def table_detail(request, table_id):
+    # テーブルの詳細情報を取得
+    table = get_object_or_404(Seat, id=table_id)
+    if request.method == 'POST':
+        # POST データから値を取得して、BooleanField を適切に処理する
+        table.table_number = request.POST.get('table_number', table.table_number)
+        table.recommended_capacity = request.POST.get('recommended_capacity', table.recommended_capacity)
+        table.table_type = request.POST.get('table_type', table.table_type)
+        table.table_resevation = 'table_reservation' in request.POST
+        table.electrical_outlet = 'electrical_outlet' in request.POST
+        table.clean_status = 'clean_status' in request.POST 
+        table.table_connect = 'table_connect' in request.POST 
+
+        # モデルを保存
+        table.save()
+        return redirect('employee:employee_confirm')  # 編集後にリダイレクトするURLに変更してください
+    return render(request, 'employee/table_detail.html', {'table': table})
+
