@@ -107,6 +107,8 @@ def complate(request):
     return render(request, 'reception_system/complate.html')
 
 def reserve(request):
+    if request.method == 'POST':
+        pass
     return render(request,'reception_system/condition.html')
 
 def seatsview(request):
