@@ -1,24 +1,136 @@
-{% load static %}
-<title>座席状況確認</title>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>座席状況確認</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            margin: 20px;
+        }
+
+        .table-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-status {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .table_resevation {
+            font-size: 18px;
+            color: red;
+            margin-top: 5px;
+        }
+
+        .table_resevation[style="color: red;"] {
+            color: red;
+        }
+
+        .table_resevation[style="color: #2d9e2d;"] {
+            color: #2d9e2d;
+        }
+
+        .table-number {
+            font-size: 14px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .table-details {
+            margin-top: 15px;
+        }
+
+        .table_type, .electrical_outlet, .table_connect {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            background-color: #4CAF50;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #388e3c;
+        }
+
+        .footer a:hover {
+            background-color: #2d7d2d;
+        }
+
+        .table-card .table_resevation[data-status="空席"] {
+            color: green;
+        }
+
+        .table-card .table_resevation[data-status="満席"] {
+            color: red;
+        }
+
+        .table-card .table-number {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .btn-next {
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-next:hover {
+            background-color: #2d7d2d;
+        }
+
+        .checkbox-container {
+            margin-left: 10px;
+        }
+    </style>
 </head>
-
-
 <body>
     <div class="header">
         <h1>座席状況確認</h1>
     </div>
-    <div class="content">
-        {% for seat in seats %}
+
+    <form method="post">
+        <div class="content">
+            {% for seat in seats %}
             <div class="table-card">
                 <div class="table-status">座席番号：{{ seat.table_number }}</div>
-                <div class="table_resevation">
-                    {% if seat.table_resevation == False %}
-                        空席
-                    {% else %}
-                        満席
-                    {% endif %}
+                <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
+                    {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
                 </div>
                 <div class="table-number">{{ seat.recommended_capacity }}人席</div>
                 <div class="table-details">
@@ -35,13 +147,18 @@
                         {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
                         {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
                     </div>
-                    
                 </div>
+            <div class="checkbox-container ">
+                <input type="checkbox" name="seat" id="seat">
             </div>
-        {% endfor %}
+            </div>
+            {% endfor %}
+            <div class="footer">
+                <a href="{% url 'reception_system:receptionNum' %}">戻る</a>
+                <button type="submit" class="btn-next" >次へ</button>
+            </div>
+        </div> 
+    </form>
 
-    </div>
-    <div class="footer">
-        <a href="{% url 'reception_system:receptionNum' %}">戻る</a>
-    </div>
 </body>
+</html>

@@ -114,7 +114,8 @@ def reserve(request):
 def seatsview(request):
     seats = Seat.objects.all()
     if request.method == 'POST':
-        pass
+        seat = request.POST.get('seat')
+        print(seat)
     return render(request,'reception_system/seatsview.html', {'seats':seats})
 
 
