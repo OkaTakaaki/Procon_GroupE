@@ -108,6 +108,7 @@ def complate(request):
 
 def reserve(request):
     if request.method == 'POST':
+        form.is_valid
         pass
     return render(request,'reception_system/condition.html')
 
