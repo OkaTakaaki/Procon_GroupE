@@ -18,21 +18,21 @@
                 <form method="post">
                     {% csrf_token %}
                     <br><label>希望の座席を選択してください</label>
-                    <div class="choices">
+                    <div class="seats">
                         <input type="radio" name="seat_type" value="カウンター"> カウンター席
                         <br><input type="radio"name="seat_type" value="テーブル"> テーブル席
                         
                         <br><input type="radio"name="seat_type" value="ソファー"> ソファー席
                     </div>
                     <br><label>コンセントは必要ですか</label>
-                    <div class="choices">
-                        <input type="radio" name="seat_type" value="electrical_outlet_true">必須
-                        <br><input type="radio"name="seat_type" value="electrical_outlet_false">無くてもよい
+                    <div class="outlet">
+                        <input type="radio" name="outlet" value="electrical_outlet_true">必須
+                        <br><input type="radio"name="outlet" value="electrical_outlet_false">無くてもよい
                     </div>
                     <br><label>隣の座席と席を繋げますか</label>
-                    <div class="choices">
-                        <input type="radio" name="seat_type" value="table_connect_true">繋げる
-                        <br><input type="radio"name="seat_type" value="table_connect_false">繋げない
+                    <div class="connect">
+                        <input type="radio" name="seat_connect" value="table_connect_true">繋げる
+                        <br><input type="radio"name="seat_connect" value="table_connect_false">繋げない
                     </div>
                 </form>
             </div>
