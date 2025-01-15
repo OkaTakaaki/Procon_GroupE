@@ -19,24 +19,24 @@
                     {% csrf_token %}
                     <br><label>希望の座席を選択してください</label>
                     <div class="seats">
-                        <input type="radio" name="seat_type" value="カウンター"> カウンター席
-                        <br><input type="radio"name="seat_type" value="テーブル"> テーブル席
-                        <br><input type="radio"name="seat_type" value="ソファー"> ソファー席
+                        <label><input type="radio" name="seat_type" value="カウンター"> カウンター席</label>
+                        <br><label><input type="radio"name="seat_type" value="テーブル"> テーブル席</label>
+                        <br><label><input type="radio"name="seat_type" value="ソファー"> ソファー席</label>
                     </div>
                     <br><label>コンセントは必要ですか</label>
                     <div class="outlet">
-                        <input type="radio" name="outlet" value="True">必須
-                        <br><input type="radio"name="outlet" value="False">無くてもよい
+                        <label><input type="radio" name="outlet" value="True">必須</label>
+                        <br><label><input type="radio"name="outlet" value="False">無くてもよい</label>
                     </div>
                     <br><label>隣の座席と席を繋げますか</label>
                     <div class="connect">
-                        <input type="radio" name="seat_connect" value="True">繋げる
-                        <br><input type="radio"name="seat_connect" value="False">繋げない
+                        <label><input type="radio" name="seat_connect" value="True">繋げる</label>
+                        <br><label><input type="radio"name="seat_connect" value="False">繋げない</label>
                     </div>
                 </div>
                 <div class="button-container">
                     <button class="circle-button">戻る</button>
-                    <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button">手動で座席選択</button></a>
+                    <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a>
                     <a href="{% url 'reception_system:reserve_success' %}"><button class="submit">次へ</button></a>
                 </div>
             </form>
