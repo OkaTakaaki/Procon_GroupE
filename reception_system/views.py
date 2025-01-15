@@ -138,7 +138,7 @@ def reserve(request):
         # モデルにデータを保存
         Reception.objects.create(
             reception_number=max_reception_number+1,
-            reception_count=1,
+            reception_count=,
             table_type=seat_type,
             electrical_outlet=outlet,
             table_connect=seat_connect
@@ -159,5 +159,7 @@ def seatsview(request):
 
 
 def reserveSuccess(request):
-    return render(request, 'reception_system/reserve_success.html')
+    receptionnumber = Reception.objects.all().last().reception_number
+    
+    return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
