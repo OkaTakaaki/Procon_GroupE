@@ -138,7 +138,7 @@ def reserve(request):
         # モデルにデータを保存
         Reception.objects.create(
             reception_number=max_reception_number+1,
-            reception_count=,
+            reception_count=4,
             table_type=seat_type,
             electrical_outlet=outlet,
             table_connect=seat_connect
