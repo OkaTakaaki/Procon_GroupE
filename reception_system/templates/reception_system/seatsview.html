@@ -123,12 +123,13 @@
     <div class="header">
         <h1>座席状況確認</h1>
     </div>
-
     <form method="post">
+        {% csrf_token %}
         <div class="content">
             {% for seat in seats %}
-            <div class="table-card">
-                <div class="table-status">座席番号：{{ seat.table_number }}</div>
+            <label>
+                <div class="table-card">
+                    <div class="table-status">座席番号：{{ seat.table_number }}</div>
                 <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
                     {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
                 </div>
@@ -147,14 +148,15 @@
                         {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
                         {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
                     </div>
-                </div>
+                </label>
+            </div>
             <div class="checkbox-container ">
                 <input type="checkbox" name="seat" id="seat">
             </div>
             </div>
             {% endfor %}
             <div class="footer">
-                <a href="{% url 'reception_system:receptionNum' %}">戻る</a>
+                <A HREF="javascript:history.back()">前のページに戻る</A>
                 <button type="submit" class="btn-next" >次へ</button>
             </div>
         </div> 
