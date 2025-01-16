@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Reception,Seat
+from django.db.models import Max
 from django.shortcuts import redirect
 from .models import Reception
 from django.shortcuts import render, redirect, get_object_or_404
@@ -108,16 +109,58 @@ def complate(request):
     return render(request, 'reception_system/complate.html')
 
 def reserve(request):
+    if request.method == 'POST':
+        # フォームからデータを取得
+        # reception_number=request.POST.get('reception_number')
+        seat_type = request.POST.get('seat_type')
+        reception_count = request.POST.get('reception_count')
+        outlet = request.POST.get('outlet')
+        seat_connect = request.POST.get('seat_connect')
+
+        if seat_type == "カウンター":
+            seat_type = 0
+        elif seat_type == "テーブル":
+            seat_type = 1
+        elif seat_type == "ソファー":
+            seat_type = 2
+
+
+        # reception_numberの最大値を取得
+        max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
+        if max_reception_number is not None:
+            print(2)
+            max_reception_number = int(max_reception_number)
+        else:
+            max_reception_number = 0
+        print("最大のreception_number:", max_reception_number)
+
+        print(seat_type, reception_count, outlet, seat_connect)
+
+        # モデルにデータを保存
+        Reception.objects.create(
+            reception_number=max_reception_number+1,
+            reception_count=4,
+            table_type=seat_type,
+            electrical_outlet=outlet,
+            table_connect=seat_connect
+        )
+        return redirect('reception_system:reserve_success')
+    
     return render(request,'reception_system/condition.html')
 
+
+     
 def seatsview(request):
     seats = Seat.objects.all()
     if request.method == 'POST':
-        pass
+        seat = request.POST.get('seat')
+        print(seat)
     return render(request,'reception_system/seatsview.html', {'seats':seats})
 
 
 
 def reserveSuccess(request):
-    return render(request, 'reception_system/reserve_success.html')
+    receptionnumber = Reception.objects.all().last().reception_number
+    
+    return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 

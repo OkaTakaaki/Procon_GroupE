@@ -164,6 +164,6 @@ body {
     }
 
     .item_new_seat, .item_confirm {
-        padding: 8px 12px; /* ボタンの余白をさらに小さく */
+        padding: 8px 12px; /* ボタンの余白をさらに小    さく */
     }
 }

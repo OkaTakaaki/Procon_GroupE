@@ -1,39 +1,47 @@
-{% extends 'base_app/base.html' %}
 {% load static %}
 
-{% block title %}
+
 <head>
     <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>座席条件</title>
 </head>
-{% endblock %}
 
-{% block contents %}
+
 <body>
     <div class="container">
-        <div class="condition_message">ご希望の座席の条件を入力してください</div>
+        <div class="condition_message">
+            ただいま満席です
+        </div>
             <div class="seat-selection">
-                <br><label>希望の座席を選択してください</label>
-                <span><label><input type="checkbox"> カウンター席</label></span>
-                <label><input type="checkbox"> テーブル席</label>
-    
-                <br><label>コンセントは必要ですか</label>
-                <span><label><input type="checkbox"> はい</label></span>
-                <label><input type="checkbox"> 無くてもよい</label>
-    
-                <br><label>隣の座席と席を繋げますか</label>
-                <label><input type="checkbox"> <span>はい</span></label>
-                <label><input type="checkbox"> いいえ</label>
-            </div>
-            <div class="button-container">
-                <button class="circle-button">戻る</button>
-                <button class="circle-button">手動選択</button>
-                <button class="circle-button"><a href="{% url 'reception_system:reserve_success' %}">次へ</a></button>
-            </div>
+                <h4>ご希望の座席の条件を入力してください</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <br><label>希望の座席を選択してください</label>
+                    <div class="seats">
+                        <label><input type="radio" name="seat_type" value="カウンター"> カウンター席</label>
+                        <br><label><input type="radio"name="seat_type" value="テーブル"> テーブル席</label>
+                        <br><label><input type="radio"name="seat_type" value="ソファー"> ソファー席</label>
+                    </div>
+                    <br><label>コンセントは必要ですか</label>
+                    <div class="outlet">
+                        <label><input type="radio" name="outlet" value="True">必須</label>
+                        <br><label><input type="radio"name="outlet" value="False">無くてもよい</label>
+                    </div>
+                    <br><label>隣の座席と席を繋げますか</label>
+                    <div class="connect">
+                        <label><input type="radio" name="seat_connect" value="True">繋げる</label>
+                        <br><label><input type="radio"name="seat_connect" value="False">繋げない</label>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button class="circle-button">戻る</button>
+                    <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a>
+                    <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
+                </div>
+            </form>
     </div>
     
 
 </body>
 </html>
-{% endblock %}
