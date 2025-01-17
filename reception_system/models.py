@@ -29,6 +29,7 @@ class Reception(models.Model):
     electrical_outlet = models.BooleanField(verbose_name="コンセント有、無", default=False)  # コンセント有無
     table_connect = models.BooleanField(verbose_name="連結有、無", default=False)  # 連結有無
     reception_time = models.DateTimeField(verbose_name="利用開始時間", null=True, blank=True)
+    end_time = models.DateTimeField(verbose_name="利用終了時間", null=True, blank=True)
 
 #結合テーブル
 class Join(models.Model):

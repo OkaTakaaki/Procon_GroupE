@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
 from reception_system.models import Seat
 from .forms import SeatForm
+from reception_system.views import castomerCall
 
 # 従業員用ページ
 def employee(request):
@@ -52,6 +53,10 @@ def table_detail(request, table_id):
         table.electrical_outlet = 'electrical_outlet' in request.POST
         table.clean_status = 'clean_status' in request.POST 
         table.table_connect = 'table_connect' in request.POST 
+        
+        if table.table_resevation == False:
+            return castomerCall(request)
+
 
         # モデルを保存
         table.save()
