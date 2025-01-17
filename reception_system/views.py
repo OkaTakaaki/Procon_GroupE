@@ -16,6 +16,7 @@ def index(request):
 def receptionNumber(request):
     if request.method == 'POST':
         reception_count = request.POST.get('reception_count')
+        request.session['reception_count'] = reception_count  # セッションに保存
         print(reception_count)
         vacant_seat = Seat.objects.filter(table_resevation=False)
         if not vacant_seat.exists():
@@ -116,6 +117,9 @@ def reserve(request):
         outlet = request.POST.get('outlet')
         seat_connect = request.POST.get('seat_connect')
 
+        # セッションからreception_countを取得
+        reception_count = request.session.get('reception_count')
+
         if seat_type == "カウンター":
             seat_type = 0
         elif seat_type == "テーブル":
@@ -126,10 +130,12 @@ def reserve(request):
 
         # reception_numberの最大値を取得
         max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
+        print(max_reception_number)
         if max_reception_number is not None:
-            print(2)
+            print("aaaaaaaaaaaaa")
             max_reception_number = int(max_reception_number)
         else:
+            print("bbbbbbbbbbbbb")
             max_reception_number = 0
         print("最大のreception_number:", max_reception_number)
 
@@ -138,7 +144,7 @@ def reserve(request):
         # モデルにデータを保存
         Reception.objects.create(
             reception_number=max_reception_number+1,
-            reception_count=,
+            reception_count=reception_count,
             table_type=seat_type,
             electrical_outlet=outlet,
             table_connect=seat_connect

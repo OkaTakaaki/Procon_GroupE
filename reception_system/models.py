@@ -21,7 +21,7 @@ class Seat(models.Model):
 
 #受付テーブル
 class Reception(models.Model):
-    reception_number = models.CharField(max_length=10, verbose_name="受付番号",primary_key=True)
+    reception_number = models.IntegerField(verbose_name="受付番号",primary_key=True,unique=True)
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE, null=True, blank=True)
     payment_status = models.BooleanField(verbose_name="会計状況", null=False, default=False)
     reception_count = models.IntegerField(verbose_name="利用人数", null=False, blank=True)

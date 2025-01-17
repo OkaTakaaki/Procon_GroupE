@@ -33,9 +33,14 @@
         </body>
 
 <script>
+    // 画面クリックでリダイレクト
     document.body.addEventListener('click', function() {
         window.location.href = "{% url 'reception_system:index' %}"; 
     });
+    // 5秒後に自動的にリダイレクト
+    setTimeout(function(){
+    window.location.href = "{% url 'reception_system:index' %}";
+    }, 5*1000);
 </script>
 
 </body>
