@@ -102,6 +102,7 @@ def receptionNumber(request):
 #     return render(request, 'reception_system/complete_reservation.html', {'reservation': reservation})
 
 
+
 def language(request):
     return render(request, 'reception_system/reception_system/language.html')
 
@@ -153,8 +154,6 @@ def reserve(request):
     
     return render(request,'reception_system/condition.html')
 
-
-     
 def seatsview(request):
     seats = Seat.objects.all()
     if request.method == 'POST':
