@@ -8,11 +8,16 @@
     body {
         font-family: Arial, sans-serif;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
         background-color: #f5f5f5;
+    }
+    h3 {
+        text-align: center;
+        margin-bottom: 20px; /* container と間隔を作る */
     }
     .container {
         display: flex;
@@ -61,6 +66,22 @@
     .button:hover, .action-button:hover {
         background-color: #bbb;
     }
+    .over_button, .over_action-button {
+        width: 120px;
+        height: 60px;
+        font-size: 24px;
+        background-color: #ddd;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .over_button:hover, .over_action-button:hover {
+        background-color: #bbb;
+    }
+    .over_button:active{
+        background-color: rgba(0,0,0,0.6);
+
+    }
     .action-button {
         width: 80px;
         height: 40px;
@@ -77,6 +98,8 @@
 </style>
 </head>
 <body>
+    <!-- container の上に配置 -->
+    <h1>人数を入力してください</h1>
     <div class="container">
         <div class="image-box">
             <div id="display" class="display-numbers"></div>
@@ -85,9 +108,7 @@
         <div>
             <form method="post">
                 {% csrf_token %}
-                <!-- 隠しフィールドを追加 -->
                 <input type="hidden" name="reception_count" id="hidden-input">
-                
                 <div class="keypad">
                     <button class="button" type="button" onclick="addToDisplay('1')">1</button>
                     <button class="button" type="button" onclick="addToDisplay('2')">2</button>
@@ -98,7 +119,7 @@
                     <button class="button" type="button" onclick="addToDisplay('7')">7</button>
                     <button class="button" type="button" onclick="addToDisplay('8')">8</button>
                     <button class="button" type="button" onclick="addToDisplay('9')">9</button>
-                    <button class="button" type="button" onclick="addToDisplay('0')">0</button>
+                    <button class="over_button" type="button">10人以上</button>
                 </div>
                 <div style="display: flex; margin-top: 10px;">
                     <button class="action-button submit-button" type="submit" onclick="submitForm()">決定</button>
@@ -106,23 +127,60 @@
                 </div>
             </form>
         </div>
-
+        <div id="message" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:2em;">
+            1桁以上の数字は選べません
+            <button onclick="reloadPage()" style="margin-top: 20px; padding: 10px 20px; font-size: 1em;">OK</button>
+        </div>
+        <div id="message_2" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:2em;">
+            人数を指定してください
+            <button onclick="reloadPage()" style="margin-top: 20px; padding: 10px 20px; font-size: 1em;">OK</button>
+        </div>
+        <div id="message_3" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:2em;">
+            店員をお呼びします。少々お待ちください。
+            <button onclick="reloadPage()" style="margin-top: 20px; padding: 10px 20px; font-size: 1em;">OK</button>
+        </div>
         <script>
-            // 表示エリアの要素を取得
+            function reloadPage() {
+                location.reload();
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("message").style.display = "none";
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("message_2").style.display = "none";
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("message_3").style.display = "none";
+            });
+            document.querySelector('.over_button').addEventListener('mousedown', function() {
+                document.getElementById("message_3").style.display = "flex";
+            });
+
+            document.querySelector('.over_button').addEventListener('mouseup', function() {
+                document.body.style.backgroundColor = ''; // 元に戻す（必要に応じて色を指定）
+            });
+
             const display = document.getElementById('display');
             const hiddenInput = document.getElementById('hidden-input');
         
-            // 数字を表示エリアに追加する関数
             function addToDisplay(value) {
-                display.innerText += value;
+                if (display.innerText.length >= 1) {
+                    document.getElementById("message").style.display = "flex";
+                } else {
+                    display.innerText += value;
+                }
             }
     
-            // フォーム送信時に表示エリアの値を隠しフィールドにコピー
             function submitForm() {
                 hiddenInput.value = display.innerText;
+                if(display.innerText === ''){
+                    document.getElementById("message_2").style.display = "flex";
+                    event.preventDefault();
+                    return false;
+                }
             }
     
-            // 「取消」ボタンを押した時の処理（表示をクリア）
             function clearDisplay() {
                 display.innerText = '';
                 hiddenInput.value = '';
@@ -130,4 +188,3 @@
         </script>
 </body>
 </html>
-    

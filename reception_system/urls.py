@@ -7,7 +7,7 @@ app_name = 'reception_system'
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('receptionNumber/', views.receptionNumber, name='receptionNum'),
+    path('receptionNumber/', views.receptionNumber, name='receptionNumber'),
     path('language/', views.language, name='language'),
     path('complate/', views.complate, name='reception_complate'),
     path('seatsview/',views.seatsview,name='seatsview'),

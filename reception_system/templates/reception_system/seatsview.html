@@ -115,7 +115,9 @@
         }
 
         .checkbox-container {
-            margin-left: 10px;
+            display: flex;
+            justify-content: flex-end; /* 右寄せ */
+            margin-right: 10px; 
         }
     </style>
 </head>
@@ -124,7 +126,9 @@
         <h1>座席状況確認</h1>
     </div>
 
-    <form method="post">
+
+    <form method="post" id="select_seat">
+        {% csrf_token %}
         <div class="content">
             {% for seat in seats %}
             <div class="table-card">
@@ -149,16 +153,27 @@
                     </div>
                 </div>
             <div class="checkbox-container ">
-                <input type="checkbox" name="seat" id="seat">
+                <input type="checkbox" name="select_seat" id="select_seat" value={{seat.table_number}}>
             </div>
-            </div>
-            {% endfor %}
-            <div class="footer">
-                <a href="{% url 'reception_system:receptionNum' %}">戻る</a>
-                <button type="submit" class="btn-next" >次へ</button>
-            </div>
-        </div> 
+        </div>
+        {% endfor %}
+        <div class="footer">
+            <input type="hidden" name="reception_count" id="reception_count" value={{reception_count}}>
+            <a href="{% url 'reception_system:receptionNumber' %}">戻る</a>
+            <button type="submit" class="btn-next" onclick="return validateForm()">次へ</button>
+        </div>
     </form>
+
+    <script>
+        function validateForm() {
+            var checkboxes = document.querySelectorAll('input[name="select_seat"]:checked');
+            if (checkboxes.length === 0) {
+                alert("席を選んでください");
+                return false;
+            }
+            return true;
+        }
+        </script>
 
 </body>
 </html>
