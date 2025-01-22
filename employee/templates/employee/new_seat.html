@@ -4,61 +4,59 @@
 {% block title %}
 <head>
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規座席登録</title>
     <style>
         /* 全体的なスタイル */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4; /* 白背景に合わせて少し薄いグレー */
+            background-color: #f4f4f4;
         }
 
         /* コンテナ */
         .container {
             width: 100%;
             padding: 20px;
-            box-sizing: border-box; /* 余白を含めたサイズ指定 */
+            box-sizing: border-box;
             text-align: center;
         }
 
-        /* 新規登録のタイトル */
+        .form-container {
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
         .new_title {
             font-size: 36px;
             font-weight: bold;
-            margin-bottom: 20px; /* 上部マージンを小さくして上寄せ */
-            text-align: center;
+            margin-bottom: 20px;
         }
-
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-            color: #333; /* ラベルの色 */
-        }
-
-        select, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9; /* 背景を少し明るく */
+            margin-bottom: 10px;
+            font-size: 18px;
             color: #333;
         }
 
-        /* チェックボックスグループ */
+        select, input[type="text"], .checkbox-group {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 18px;
+        }
+
+        /* ラジオボタングループ */
         .checkbox-group {
             text-align: left;
-            font-size: 16px;
-            margin-bottom: 20px;
         }
 
-        .checkbox-group input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        /* ボタンコンテナ */
         .button-container {
             display: flex;
             justify-content: space-between;
@@ -68,8 +66,8 @@
         }
 
         .back-button, .next-button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
             border-radius: 5px;
             cursor: pointer;
             width: 45%;
@@ -77,54 +75,82 @@
             transition: background-color 0.3s ease;
         }
 
-        /* 戻るボタン（左） */
         .back-button {
-            background-color: #f0f0f0; /* 薄い灰色 */
+            background-color: #f0f0f0;
             color: #333;
         }
 
         .back-button:hover {
-            background-color: #e0e0e0; /* ホバー時の色 */
+            background-color: #e0e0e0;
         }
 
-        /* 次へボタン（右） */
         .next-button {
-            background-color: #007bff; /* 青色 */
+            background-color: #007bff;
             color: white;
         }
 
         .next-button:hover {
-            background-color: #0056b3; /* ホバー時の色 */
+            background-color: #0056b3;
         }
 
         /* レスポンシブ対応 */
-        @media (max-width: 768px) {
+        @media screen and (max-width: 1024px) {
             .new_title {
-                font-size: 28px; /* 小さめに調整 */
+                font-size: 40px;
             }
 
             .form-container {
-                padding: 20px;
+                padding: 30px;
             }
 
-            select, input[type="text"] {
-                padding: 12px; /* 入力フィールドのパディングを調整 */
+            select, input[type="text"], .checkbox-group {
+                font-size: 20px; /* フォーム要素を大きく調整 */
             }
 
             .button-container {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
+                justify-content: space-between;
             }
 
             .back-button, .next-button {
-                width: 100%; /* ボタンを縦に並べて画面幅に合わせる */
-                margin-bottom: 10px;
-            }
-
-            .next-button {
-                margin-bottom: 0; /* 最後のボタンの余白を削除 */
+                font-size: 20px; /* ボタンも大きく */
+                width: 48%; /* ボタンの幅調整 */
             }
         }
+
+        /* iPad横画面 */
+        @media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            .container {
+                max-width: 90%;
+                padding: 30px;
+            }
+
+            .new_title {
+                font-size: 48px;
+            }
+
+            .form-container {
+                max-width: 80%;
+                padding: 40px;
+            }
+
+            select, input[type="text"], .checkbox-group {
+                font-size: 24px;
+                padding: 20px;
+            }
+
+            .button-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .back-button, .next-button {
+                font-size: 24px;
+                padding: 20px 40px;
+                width: 48%;
+            }
+        }
+
     </style>
 </head>
 {% endblock %}
@@ -137,40 +163,41 @@
     </div>
 
     <div class="form-container">
-        <form action="" method="POST">
+        <form action="{% url 'employee:employee_new_seat' %}" method="POST">
             {% csrf_token %}
-
+            
             <!-- 座席種類 -->
-            <label for="table_typ">座席種類:</label>
-            <select id="table_typ" name="table_type">
+            <label for="table_type">座席種類:</label>
+            <select id="table_type" name="table_type">
                 <option value="1">テーブル席</option>
                 <option value="2">カウンター席</option>
             </select>
-
+        
             <!-- テーブル番号 -->
             <label for="table_number">テーブル番号:</label>
             <input type="text" id="table_number" name="table_number">
-
+        
             <!-- 座席数 -->
-            <label for="seats">座席数:</label>
-            <select id="seats" name="seats">
+            <label for="recommended_capacity">座席数:</label>
+            <select id="recommended_capacity" name="recommended_capacity">
                 <option value="1">1人席</option>
                 <option value="2">2人席</option>
                 <option value="4">4人席</option>
             </select>
-
+        
             <!-- 座席連結 -->
             <div class="checkbox-group">
                 <label>座席連結:</label>
-                <input type="radio" id="connection_あり" name="connection" value="あり">座席連結する
-                <input type="radio" id="connection_なし" name="connection" value="なし">座席連結しない
+                <input type="radio" id="table_connect_yes" name="table_connect" value="True">座席連結する
+                <input type="radio" id="table_connect_no" name="table_connect" value="False">座席連結しない
             </div>
-
+        
             <!-- 登録ボタン -->
             <div class="button-container">
                 <button type="submit" class="next-button">登録</button>
             </div>
         </form>
+        
     </div>
 </div>
 </body>

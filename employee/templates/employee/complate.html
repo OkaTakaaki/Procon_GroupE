@@ -1,0 +1,15 @@
+{% extends 'base_app/base.html' %}
+{% load static %}
+
+{% block title %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完了</title>
+</head>
+{% endblock %}
+
+{% block contents %}
+    <h1>完了しました</h1>
+    <a href="{% url 'employee:employee_item' %}" class="btn">戻る</a>
+{% endblock %}

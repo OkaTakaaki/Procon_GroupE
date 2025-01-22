@@ -4,7 +4,10 @@ from django.db import models
 from django.db import models
 
 class Seat(models.Model):
-    table_number = models.IntegerField(verbose_name="テーブル番号")
+    table_number = models.IntegerField(
+        verbose_name="テーブル番号", 
+        unique=True  # テーブル番号を一意にする
+    )
     table_resevation = models.BooleanField(verbose_name="使用されているか", default=False)  # 使用されているか
     recommended_capacity = models.IntegerField(verbose_name="座席人数", null=False)
     table_type = models.IntegerField(verbose_name="座席種別", null=False)
@@ -18,12 +21,15 @@ class Seat(models.Model):
 
 #受付テーブル
 class Reception(models.Model):
-    reception_number = models.CharField(max_length=10, verbose_name="受付番号")
+    reception_number = models.IntegerField(verbose_name="受付番号",primary_key=True,unique=True)
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE, null=True, blank=True)
     payment_status = models.BooleanField(verbose_name="会計状況", null=False, default=False)
     reception_count = models.IntegerField(verbose_name="利用人数", null=False, blank=True)
-    conditions = models.CharField(verbose_name="条件", null=True, max_length=100, blank=True)
+    table_type = models.IntegerField(verbose_name="座席種別", null=False, default=0)
+    electrical_outlet = models.BooleanField(verbose_name="コンセント有、無", default=False)  # コンセント有無
+    table_connect = models.BooleanField(verbose_name="連結有、無", default=False)  # 連結有無
     reception_time = models.DateTimeField(verbose_name="利用開始時間", null=True, blank=True)
+    end_time = models.DateTimeField(verbose_name="利用終了時間", null=True, blank=True)
 
 #結合テーブル
 class Join(models.Model):

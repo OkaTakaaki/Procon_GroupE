@@ -126,13 +126,13 @@
         <h1>座席状況確認</h1>
     </div>
 
-
     <form method="post" id="select_seat">
         {% csrf_token %}
         <div class="content">
             {% for seat in seats %}
-            <div class="table-card">
-                <div class="table-status">座席番号：{{ seat.table_number }}</div>
+            <label>
+                <div class="table-card">
+                    <div class="table-status">座席番号：{{ seat.table_number }}</div>
                 <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
                     {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
                 </div>
@@ -151,7 +151,8 @@
                         {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
                         {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
                     </div>
-                </div>
+                </label>
+            </div>
             <div class="checkbox-container ">
                 <input type="checkbox" name="select_seat" id="select_seat" value={{seat.table_number}}>
             </div>

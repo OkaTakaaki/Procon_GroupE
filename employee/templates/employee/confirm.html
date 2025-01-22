@@ -1,4 +1,4 @@
-{% extends 'base_app/base.html'%}
+{% extends 'base_app/base.html' %}
 {% load static %}
 
 {% block title %}
@@ -8,24 +8,22 @@
 </head>
 {% endblock %}
 
-{% block contents%}
+{% block contents %}
 <body>
     <div class="header">
         <h1>座席状況確認</h1>
     </div>
     <div class="content">
         {% for table in tables %}
-            <div class="table-card">
-                <div class="table-status">{{ table.status }}</div>
-                <div class="table-number">{{ table.table_number }}</div>
-                <div class="table-details">
-                    <div class="detail-item">{{ table.position }}</div>
-                    <div class="detail-item">{{ table.seats }}</div>
-                    <div class="detail-item">{{ table.connection }}</div>
-                </div>
+            <div class="table-item">
+                <p>テーブル{{ forloop.counter }}</p>
+                <p>使用状況: {{ table.table_resevation }}</p>
+                <!-- 情報詳細ボタン -->
+                <a href="{% url 'employee:employee_table_detail' table.id %}">
+                    <button>情報詳細</button>
+                </a>
             </div>
         {% endfor %}
-
     </div>
     <div class="footer">
         <a href="{% url 'employee:employee_item' %}">戻る</a>

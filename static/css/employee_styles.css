@@ -1,9 +1,11 @@
+/* 全体のリセット */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* 基本のボディスタイル */
 body {
     display: flex;
     flex-direction: column;
@@ -15,12 +17,14 @@ body {
     margin: 0;
 }
 
+/* ヘッダーとフッター */
 .header, .footer {
     background-color: #f1f1f1; /* ヘッダーとフッターの背景色 */
     padding: 10px;
     text-align: center;
 }
 
+/* コンテンツ部分 */
 .content {
     flex: 1; /* 残りのスペースを埋める */
     overflow-y: auto; /* 縦方向のスクロールを許可 */
@@ -28,6 +32,7 @@ body {
     background-color: #fff; /* コンテンツエリアの背景色 */
 }
 
+/* アイテムのスタイル */
 .item_new_seat{
     padding: 10px 20px;
     border-radius: 12px;
@@ -42,12 +47,12 @@ body {
     background-color: #F06062;
 }
 
-/*employee.html*/
+/* employee.html: メインコンテナ */
 .container {
     text-align: center;
     width: 100%;
-    max-width: 400px; /* 必要に応じて調整 */
-    height: 600px; /* 必要に応じて調整 */
+    max-width: 400px; /* 幅調整 */
+    height: 600px; /* 高さ調整 */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -57,10 +62,10 @@ body {
     flex-direction: column;  /* 上下に要素を配置 */
     justify-content: center; /* 上下方向に中央揃え */
     align-items: center;     /* 横方向に中央揃え */
-    gap: 80px;               /* アイテム間の間隔を狭くする */
+    gap: 80px;               /* アイテム間の間隔 */
 }
 
-
+/* タイトル */
 .title {
     font-size: 56px;
     font-weight: bold;
@@ -68,6 +73,7 @@ body {
     height: 300px;
 }
 
+/* タッチテキスト */
 .touch-text {
     color: #aaa;
     font-size: 18px;
@@ -75,13 +81,9 @@ body {
     height: 50px;
 }
 
+/* new_seat.htmlのスタイル */
 
-
-/*new_seat.html*/
-
-
-
-  /* iPad (768px 幅) 以上のタブレット向け */
+/* iPad (768px 幅) 以上のタブレット向け */
 @media screen and (max-width: 1024px) {
     .container {
         max-width: 90%;  /* 最大幅を広げる */
@@ -143,5 +145,25 @@ body {
 
     .item_new_seat, .item_confirm {
         padding: 10px 15px; /* ボタンの余白を小さく */
+    }
+}
+
+/* iPhoneの横向きや特に狭いデバイス向け */
+@media screen and (max-width: 400px) {
+    .container {
+        padding: 8px;  /* パディングをさらに調整 */
+        gap: 20px;     /* アイテム間隔をさらに縮小 */
+    }
+
+    .title {
+        font-size: 26px;  /* タイトルフォントサイズをさらに縮小 */
+    }
+
+    .touch-text {
+        font-size: 10px;   /* 小さい画面に合わせて文字サイズを縮小 */
+    }
+
+    .item_new_seat, .item_confirm {
+        padding: 8px 12px; /* ボタンの余白をさらに小    さく */
     }
 }
