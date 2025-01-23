@@ -6,20 +6,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>竹村食堂</title>
-    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reception_styles.scss' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&family=Yuji+Syuku&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
 <body>
     <div class="header-title">竹村食堂</div>
     <!-- 他のコンテンツ -->
-    <div class="language-selector">
-        <select>
-            <option value="ja">日本語</option>
-            <option value="en">English</option>
-        </select>
+     
+    <div class="wrap">
+        <div class="js-g01">画</div>
+        <div class="js-g01">面</div>
+        <div class="js-g01">を</div>
+        <div class="js-g01">タ</div>
+        <div class="js-g01">ッ</div>
+        <div class="js-g01">チ</div>
+        <div class="js-g01">し</div>
+        <div class="js-g01">て</div>
+        <div class="js-g01">ね</div>
+        <div class="js-g01">!</div>
     </div>
     <script>
         document.body.addEventListener('click', function() {
         window.location.href = "{% url 'reception_system:receptionNumber' %}";
+    });
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    document.querySelectorAll(".js-g01").forEach((item, i) => {
+    gsap.from(item, {
+        opacity: 0,
+        scale: 0,
+        yPercent: 150,
+        ease: "back",
+        duration: 0.5,
+        delay: i * 0.05,
+        repeat: -1, // 無限に繰り返す
+        repeatDelay: 2.5 // 繰り返しの間に1秒の遅延を追加
+    });
     });
     </script>
 </body>
