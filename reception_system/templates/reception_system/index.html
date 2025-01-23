@@ -1,25 +1,26 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
-
+ 
 {% block contents %}
 <head>
-    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>竹村食堂</title>
+    <link rel="stylesheet" href="{% static 'css/reception_styles.css' %}">
 </head>
 <body>
-
-<div class="container">
-    <div class="title">竹村食堂</div>
-    <div class="touch-text">画面をタッチしてください</div></a>
-    <a href="/language" class="language-button">Language</a>
-</div>
-
-<script>
-    document.body.addEventListener('click', function() {
-        window.location.href = "{% url 'reception_system:receptionNumber' %}"; 
+    <div class="header-title">竹村食堂</div>
+    <!-- 他のコンテンツ -->
+    <div class="language-selector">
+        <select>
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+    <script>
+        document.body.addEventListener('click', function() {
+        window.location.href = "{% url 'reception_system:receptionNumber' %}";
     });
-</script>
-
+    </script>
 </body>
-{% endblock %}
+</html>{% endblock %}

@@ -120,7 +120,7 @@ def reserveSuccess(request):
     
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
-def customerCall(request):
+def castomerCall(request):
     waiting_call = Reception.objects.filter(seat=None,end_time=None)
     vacasent_seat = Seat.objects.filter(table_resevation=False)
     count = 0
