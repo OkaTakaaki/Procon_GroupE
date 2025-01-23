@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+h1 {
+    font-family: "Noto Serif JP", serif;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 20px; /* container と間隔を作る */
+}
+.container {
+    display: flex;
+    border: 2px solid #333;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+.image-box {
+    width: 100px;
+    height: 150px;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    margin-right: 20px;
+    position: relative;
+}
+.person-label {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 20px;
+}
+.display-numbers {
+    font-size: 36px;
+    margin-top: 10px;
+}
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    gap: 10px;
+}
+.button, .action-button {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover, .action-button:hover {
+    background-color: #bbb;
+}
+.message{
+    font-family: "Zen Antique Soft", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.message_2{
+    font-family: "Zen Antique Soft", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.message_3{
+    font-family: "Zen Antique Soft", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.over_button, .over_action-button {
+    width: 120px;
+    height: 60px;
+    font-size: 24px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.over_button:hover, .over_action-button:hover {
+    background-color: #bbb;
+}
+.over_button:active{
+    background-color: rgba(0,0,0,0.6);
+
+}
+.action-button {
+    width: 80px;
+    height: 40px;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 5px;
+}
+.submit-button {
+    background-color: red;
+}
+.cancel-button {
+    background-color: #ccc;
+}
