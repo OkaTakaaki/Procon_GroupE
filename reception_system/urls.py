@@ -12,5 +12,6 @@ urlpatterns = [
     path('complate/', views.complate, name='reception_complate'),
     path('seatsview/',views.seatsview,name='seatsview'),
     path('reserve/', views.reserve, name='reserve'),
+    path('castomerCall/',views.customerCall,name='castomerCall'),
     path('reserve_success',views.reserveSuccess,name='reserve_success')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
