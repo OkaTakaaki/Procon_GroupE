@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
 from reception_system.models import Seat
 from .forms import SeatForm
-from reception_system.views import castomerCall
+from reception_system.views import customerCall
 
 # 従業員用ページ
 def employee(request):
