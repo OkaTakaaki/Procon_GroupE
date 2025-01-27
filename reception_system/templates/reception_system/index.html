@@ -11,8 +11,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&family=Yuji+Syuku&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    
 </head>
+<div id="mukou">
+    <label for="language-select">langage:</label>
+    <select id="language-select" name="language-select">
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="chi">中国人</option>
+        <option value="en">English</option>
+    </select>
+</div>
 <body>
+    
+    
     <div class="header-title">竹村食堂</div>
     <!-- 他のコンテンツ -->
      
@@ -32,12 +44,13 @@
         document.body.addEventListener('click', function() {
         window.location.href = "{% url 'reception_system:receptionNumber' %}";
     });
+    
+        document.getElementById('mukou').addEventListener('click', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+        });
 
-    function reloadPage() {
-        location.reload();
-    }
-
-    document.querySelectorAll(".js-g01").forEach((item, i) => {
+        document.querySelectorAll(".js-g01").forEach((item, i) => {
     gsap.from(item, {
         opacity: 0,
         scale: 0,
@@ -47,8 +60,17 @@
         delay: i * 0.05,
         repeat: -1, // 無限に繰り返す
         repeatDelay: 2.5 // 繰り返しの間に1秒の遅延を追加
+
+
     });
     });
+
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    
     </script>
 </body>
 </html>{% endblock %}
