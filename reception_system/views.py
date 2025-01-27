@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from .models import Reception,Seat
 from django.db.models import Max
 from django.shortcuts import redirect
@@ -7,11 +7,12 @@ from .models import Reception
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.urls import reverse
-from urllib.parse import urlencode
-import urllib.parse
 # from .forms import NumPeopleForm, SeatingTypeForm, SeatSpecificationForm
 # from .forms import ReceptionCountForm
+from urllib.parse import urlencode
 # import re
+
+
 
 def index(request):
     return render(request,'reception_system/index.html')
@@ -19,21 +20,13 @@ def index(request):
 
 def receptionNumber(request):
     if request.method == 'POST':
-        seats = Seat.objects.all()
-        seat = request.POST.getlist('select_seat')
+        seats=Seat.objects.all()
         reception_count = request.POST.get('reception_count')
         request.session['reception_count'] = reception_count  # セッションに保存
-        print(seat)
         print(reception_count)
         vacant_seat = Seat.objects.filter(table_resevation=False)
-        if not vacant_seat.exists(): #空席がない場合
-            print("満席")
-            context = {
-                'seats': seats,
-                'reception_count': reception_count
-            }
-            return render(request," reception_system/reserve.html", context)
-        
+        if not vacant_seat.exists():
+            return redirect('reception_system:reserve')
         else:#空席がある場合
             print("空席")
             context = {
@@ -99,35 +92,28 @@ def reserve(request):
 
 def seatsview(request):
     seats = Seat.objects.all()
-    recommended_capacity_list = []
     if request.method == 'POST':
-        print("a")
-        seat = request.POST.getlist('select_seat')
-        reception_count = request.POST.get('reception_count')
-        print("seat = {}".format(seat))
-        print("reception_count = {}".format(reception_count))
-        # for i in seat:
-        #     recommended_capacity_list.append(Seat.objects.get(seat[i]).recommended_capacity)
-        print("recommended_capacity_list = {}".format(recommended_capacity_list))
-        print("-------------")
-    context = {
-        "seats" : seats
-    }
-    return render(request,'reception_system/seatsview.html', context)
+        seat = request.POST.get('seat')
+        print(seat)
+    return render(request,'reception_system/seatsview.html', {'seats':seats})
+
+
 
 def reserveSuccess(request):
     receptionnumber = Reception.objects.all().last().reception_number
     
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
-def castomerCall(request):
+def customerCall(request):
     waiting_call = Reception.objects.filter(seat=None,end_time=None)
     vacasent_seat = Seat.objects.filter(table_resevation=False)
     count = 0
     for reception in waiting_call:
         for seat in vacasent_seat:
             # ここで比較処理を行う
-            if reception.reception_number == seat.table_number:  # 例としてreception_numberとtable_numberを比較
-                print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}")
-                count += 1
-    return render(request, 'reception_system/customer_call.html')
+            if (reception.table_type == seat.table_type and
+                reception.electrical_outlet == seat.electrical_outlet and
+                reception.table_connect == seat.table_connect):
+                print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}",count)
+                return render(request, 'reception_system/customer_call.html',{'reception':reception,'seat':seat})
+    # return render(request, 'reception_system/customer_call.html')

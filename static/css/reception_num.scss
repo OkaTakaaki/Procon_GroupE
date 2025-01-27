@@ -59,6 +59,7 @@ h3 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-family: "Noto Serif JP", serif;
 }
 .button:hover, .action-button:hover {
     background-color: #bbb;
@@ -86,6 +87,7 @@ h3 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-family: "Noto Serif JP", serif;
 }
 .over_button:hover, .over_action-button:hover {
     background-color: #bbb;
@@ -103,7 +105,9 @@ h3 {
 }
 .submit-button {
     background-color: red;
+    font-family: "Noto Serif JP", serif;
 }
 .cancel-button {
     background-color: #ccc;
+    font-family: "Noto Serif JP", serif;
 }
