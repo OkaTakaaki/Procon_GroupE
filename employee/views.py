@@ -55,7 +55,7 @@ def table_detail(request, table_id):
         table.table_connect = 'table_connect' in request.POST 
         
         if table.table_resevation == False:
-            return castomerCall(request)
+            return customerCall(request)
 
 
         # モデルを保存

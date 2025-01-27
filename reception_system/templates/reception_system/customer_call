@@ -14,6 +14,8 @@
         <section>
             <h2>Welcome to the Customer Call System</h2>
             <p>Please wait for your turn to be called.</p>
+                <p>Now calling: {{ reception.reception_number }} / {{seat.table_number}}</p>
+                <p></p>
         </section>
     </main>
     <footer>

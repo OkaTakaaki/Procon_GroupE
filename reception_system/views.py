@@ -114,7 +114,6 @@ def customerCall(request):
             if (reception.table_type == seat.table_type and
                 reception.electrical_outlet == seat.electrical_outlet and
                 reception.table_connect == seat.table_connect):
-                print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}")
-                count += 1
-
-    return render(request, 'reception_system/customer_call.html')
+                print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}",count)
+                return render(request, 'reception_system/customer_call.html',{'reception':reception,'seat':seat})
+    # return render(request, 'reception_system/customer_call.html')
