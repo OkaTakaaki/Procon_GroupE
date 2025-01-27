@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Reception,Seat
 from django.db.models import Max
 from django.shortcuts import redirect
@@ -68,10 +68,8 @@ def reserve(request):
         max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
         print(max_reception_number)
         if max_reception_number is not None:
-            print("aaaaaaaaaaaaa")
             max_reception_number = int(max_reception_number)
         else:
-            print("bbbbbbbbbbbbb")
             max_reception_number = 0
         print("最大のreception_number:", max_reception_number)
 
@@ -87,8 +85,44 @@ def reserve(request):
             reception_time=timezone.now()
         )
         return redirect('reception_system:reserve_success')
-    
-    return render(request,'reception_system/condition.html')
+        # 各seat_typeの座席数を取得
+    counter_seats = Seat.objects.filter(table_type=0).count()
+    table_seats = Seat.objects.filter(table_type=1).count()
+    sofa_seats = Seat.objects.filter(table_type=2).count()
+
+    context = {
+        'counter_seats': counter_seats,
+        'table_seats': table_seats,
+        'sofa_seats': sofa_seats,
+    }
+
+    return render(request,'reception_system/condition.html',context)
+
+def calculate_wait_time(request):
+    if request.method == 'POST':
+        seat_type = request.POST.get('seat_type')
+        outlet = request.POST.get('outlet') == 'True'
+        seat_connect = request.POST.get('seat_connect') == 'True'
+
+        # seat_typeの値を数値に変換
+        if seat_type == "カウンター":
+            seat_type = 0
+        elif seat_type == "テーブル":
+            seat_type = 1
+        elif seat_type == "ソファー":
+            seat_type = 2
+
+        # 条件に一致するReceptionの数を取得
+        reception_count = Reception.objects.filter(
+            table_type=seat_type,
+            electrical_outlet=outlet,
+            table_connect=seat_connect
+        ).count()
+
+        # 待ち時間を計算（例として1つのReceptionあたり5分とする）
+        wait_time = reception_count * 5
+
+        return JsonResponse({'wait_time': wait_time})
 
 def seatsview(request):
     seats = Seat.objects.all()
