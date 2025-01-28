@@ -6,152 +6,6 @@
     <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規座席登録</title>
-    <style>
-        /* 全体的なスタイル */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        /* コンテナ */
-        .container {
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .form-container {
-            max-width: 90%;
-            margin: 0 auto;
-        }
-
-        .new_title {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 18px;
-            color: #333;
-        }
-
-        select, input[type="text"], .checkbox-group {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-            color: #333;
-            font-size: 18px;
-        }
-
-        /* ラジオボタングループ */
-        .checkbox-group {
-            text-align: left;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .back-button, .next-button {
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 45%;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-button {
-            background-color: #f0f0f0;
-            color: #333;
-        }
-
-        .back-button:hover {
-            background-color: #e0e0e0;
-        }
-
-        .next-button {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .next-button:hover {
-            background-color: #0056b3;
-        }
-
-        /* レスポンシブ対応 */
-        @media screen and (max-width: 1024px) {
-            .new_title {
-                font-size: 40px;
-            }
-
-            .form-container {
-                padding: 30px;
-            }
-
-            select, input[type="text"], .checkbox-group {
-                font-size: 20px; /* フォーム要素を大きく調整 */
-            }
-
-            .button-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            .back-button, .next-button {
-                font-size: 20px; /* ボタンも大きく */
-                width: 48%; /* ボタンの幅調整 */
-            }
-        }
-
-        /* iPad横画面 */
-        @media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-            .container {
-                max-width: 90%;
-                padding: 30px;
-            }
-
-            .new_title {
-                font-size: 48px;
-            }
-
-            .form-container {
-                max-width: 80%;
-                padding: 40px;
-            }
-
-            select, input[type="text"], .checkbox-group {
-                font-size: 24px;
-                padding: 20px;
-            }
-
-            .button-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            .back-button, .next-button {
-                font-size: 24px;
-                padding: 20px 40px;
-                width: 48%;
-            }
-        }
-
-    </style>
 </head>
 {% endblock %}
 
@@ -192,12 +46,13 @@
                 <input type="radio" id="table_connect_no" name="table_connect" value="False">座席連結しない
             </div>
         
-            <!-- 登録ボタン -->
+            <!-- 登録と戻るボタン -->
             <div class="button-container">
+                <button type="button" class="back-button" onclick="history.back()">戻る</button>
                 <button type="submit" class="next-button">登録</button>
             </div>
-        </form>
-        
+
+        </form>     
     </div>
 </div>
 </body>
