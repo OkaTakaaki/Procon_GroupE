@@ -53,13 +53,13 @@ def table_detail(request, table_id):
         table.electrical_outlet = 'electrical_outlet' in request.POST
         table.clean_status = 'clean_status' in request.POST 
         table.table_connect = 'table_connect' in request.POST 
+        table.save()
         
         if table.table_resevation == False:
-            return castomerCall(request)
+            return customerCall(request)
 
 
         # モデルを保存
-        table.save()
         return redirect('employee:employee_confirm')  # 編集後にリダイレクトするURLに変更してください
     return render(request, 'employee/table_detail.html', {'table': table})
 

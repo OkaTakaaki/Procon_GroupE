@@ -1,6 +1,6 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
- 
+
 {% block contents %}
 <head>
     <meta charset="UTF-8">
@@ -12,43 +12,95 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&family=Yuji+Syuku&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
+<div id="mukou" class="languageselector" onclick="event.stopPropagation();">
+    <label for="languageselect">言語:</label>
+    <select id="languageselect" name="languageselect" onchange="changeLanguage()">
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+    </select>
+</div>
 <body>
-    <div class="header-title">竹村食堂</div>
-    <!-- 他のコンテンツ -->
-     
+    <div class="header-title" id="header-title">竹村食堂</div>
     <div class="wrap">
-        <div class="js-g01">画</div>
-        <div class="js-g01">面</div>
-        <div class="js-g01">を</div>
-        <div class="js-g01">タ</div>
-        <div class="js-g01">ッ</div>
-        <div class="js-g01">チ</div>
-        <div class="js-g01">し</div>
-        <div class="js-g01">て</div>
-        <div class="js-g01">ね</div>
-        <div class="js-g01">!</div>
+        <div class="js-g01" data-key="touch">画</div>
+        <div class="js-g01" data-key="touch">面</div>
+        <div class="js-g01" data-key="touch">を</div>
+        <div class="js-g01" data-key="touch">タ</div>
+        <div class="js-g01" data-key="touch">ッ</div>
+        <div class="js-g01" data-key="touch">チ</div>
+        <div class="js-g01" data-key="touch">し</div>
+        <div class="js-g01" data-key="touch">て</div>
+        <div class="js-g01" data-key="touch">ね</div>
+        <div class="js-g01" data-key="touch">!</div>
     </div>
     <script>
-        document.body.addEventListener('click', function() {
-        window.location.href = "{% url 'reception_system:receptionNumber' %}";
-    });
+        // 言語データ
+        const translations = {
+            ja: {
+                title: "竹村食堂",
+                touch: "画面をタッチしてね!",
+            },
+            ko: {
+                title: "타케무라 식당",
+                touch: "화면을 터치하세요!",
+            },
+            zh: {
+                title: "竹村食堂",
+                touch: "请触摸屏幕!",
+            },
+            en: {
+                title: "Takemura Diner",
+                touch: "Touch the screen!",
+            },
+        };
 
-    function reloadPage() {
-        location.reload();
-    }
+        // 言語切り替え関数
+        function changeLanguage() {
+            const selectedLanguage = document.getElementById("languageselect").value;
 
-    document.querySelectorAll(".js-g01").forEach((item, i) => {
-    gsap.from(item, {
-        opacity: 0,
-        scale: 0,
-        yPercent: 150,
-        ease: "back",
-        duration: 0.5,
-        delay: i * 0.05,
-        repeat: -1, // 無限に繰り返す
-        repeatDelay: 2.5 // 繰り返しの間に1秒の遅延を追加
-    });
-    });
+            // タイトルを変更
+            document.getElementById("header-title").textContent = translations[selectedLanguage].title;
+
+            // タッチメッセージを変更
+            const elements = document.querySelectorAll(".js-g01");
+            const touchText = translations[selectedLanguage].touch.split("");
+
+            elements.forEach((item, index) => {
+                item.textContent = touchText[index] || ""; // 配列が足りない場合は空文字
+            });
+        }
+
+        // ページ全体クリック時の挙動
+        document.body.addEventListener('click', function () {
+            window.location.href = "{% url 'reception_system:receptionNumber' %}";
+        });
+
+        // 言語セレクターのクリック時の挙動
+        document.getElementById('mukou').addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+
+        // GSAPアニメーション
+        document.querySelectorAll(".js-g01").forEach((item, i) => {
+            gsap.from(item, {
+                opacity: 0,
+                scale: 0,
+                yPercent: 150,
+                ease: "back",
+                duration: 0.5,
+                delay: i * 0.05,
+                repeat: -1, // 無限に繰り返す
+                repeatDelay: 2.5, // 繰り返しの間に遅延を追加
+            });
+        });
+
+        // ページのリロード関数
+        function reloadPage() {
+            location.reload();
+        }
     </script>
 </body>
-</html>{% endblock %}
+{% endblock %}
