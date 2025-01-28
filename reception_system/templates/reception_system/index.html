@@ -5,13 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>竹村食堂</title>
+    <title id="title">竹村食堂</title>
     <link rel="stylesheet" href="{% static 'css/reception_styles.scss' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&family=Yuji+Syuku&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
+
 <div id="mukou" class="languageselector" onclick="event.stopPropagation();">
     <label for="languageselect">言語:</label>
     <select id="languageselect" name="languageselect" onchange="changeLanguage()">
@@ -21,6 +22,7 @@
         <option value="en">English</option>
     </select>
 </div>
+
 <body>
     <div class="header-title" id="header-title">竹村食堂</div>
     <div class="wrap">
@@ -35,30 +37,34 @@
         <div class="js-g01" data-key="touch">ね</div>
         <div class="js-g01" data-key="touch">!</div>
     </div>
+
     <script>
         // 言語データ
         const translations = {
             ja: {
                 title: "竹村食堂",
-                touch: "画面をタッチしてね!",
+                touch: "画面をタッチしてね!"
             },
             ko: {
                 title: "타케무라 식당",
-                touch: "화면을 터치하세요!",
+                touch: "화면을 터치하세요!"
             },
             zh: {
                 title: "竹村食堂",
-                touch: "请触摸屏幕!",
+                touch: "请触摸屏幕!"
             },
             en: {
                 title: "Takemura Diner",
-                touch: "Touch the screen!",
-            },
+                touch: "Touch the screen!"
+            }
         };
 
         // 言語切り替え関数
         function changeLanguage() {
             const selectedLanguage = document.getElementById("languageselect").value;
+
+            // 言語をlocalStorageに保存
+            localStorage.setItem("language", selectedLanguage);
 
             // タイトルを変更
             document.getElementById("header-title").textContent = translations[selectedLanguage].title;
@@ -71,6 +77,13 @@
                 item.textContent = touchText[index] || ""; // 配列が足りない場合は空文字
             });
         }
+
+        // ページ読み込み時に保存された言語を適用
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLanguage = localStorage.getItem("language") || "ja";
+            document.getElementById("languageselect").value = savedLanguage;
+            changeLanguage(); // 言語を変更
+        });
 
         // ページ全体クリック時の挙動
         document.body.addEventListener('click', function () {
@@ -96,11 +109,6 @@
                 repeatDelay: 2.5, // 繰り返しの間に遅延を追加
             });
         });
-
-        // ページのリロード関数
-        function reloadPage() {
-            location.reload();
-        }
     </script>
 </body>
 {% endblock %}
