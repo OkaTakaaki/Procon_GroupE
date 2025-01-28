@@ -150,4 +150,4 @@ def customerCall(request):
                 reception.table_connect == seat.table_connect):
                 print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}",count)
                 return render(request, 'reception_system/customer_call.html',{'reception':reception,'seat':seat})
-    # return render(request, 'reception_system/customer_call.html')
+    return render(request, 'employee/table_detail.html')
