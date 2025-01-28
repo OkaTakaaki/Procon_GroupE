@@ -139,15 +139,32 @@ def reserveSuccess(request):
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
 def customerCall(request):
+    print("aaaaa")
     waiting_call = Reception.objects.filter(seat=None,end_time=None)
     vacasent_seat = Seat.objects.filter(table_resevation=False)
-    count = 0
     for reception in waiting_call:
         for seat in vacasent_seat:
             # ここで比較処理を行う
             if (reception.table_type == seat.table_type and
                 reception.electrical_outlet == seat.electrical_outlet and
                 reception.table_connect == seat.table_connect):
-                print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}",count)
-                return render(request, 'reception_system/customer_call.html',{'reception':reception,'seat':seat})
-    return render(request, 'employee/table_detail.html')
+                print("bbbbb")
+                                # 同じ条件を満たすReceptionオブジェクトをreception_timeが若い順に取得
+                matching_receptions = Reception.objects.filter(
+                    table_type=seat.table_type,
+                    electrical_outlet=seat.electrical_outlet,
+                    table_connect=seat.table_connect,
+                    seat=None,
+                    end_time=None
+                ).order_by('reception_time')
+
+                if matching_receptions.exists():
+                    # 最初のReceptionオブジェクトを取得
+                    matching_reception = matching_receptions.first()
+                    # seatを追加
+                    matching_reception.seat = seat
+                    matching_reception.save()
+                    print(matching_reception)
+                    print(f"一致: Reception {matching_reception.reception_number} に Seat {seat.table_number} を追加") # 一致する座席が見つかった場合はループを抜ける
+                    return render(request, 'reception_system/customer_call.html',{'reception':matching_reception,'seat':seat})
+    return redirect('employee:employee_confirm')

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Call</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
 <body>
     <header>
@@ -21,5 +22,11 @@
     <footer>
         <p>&copy; 2023 Procon Group E</p>
     </footer>
+    <script>
+                // ページ全体クリック時の挙動
+            document.body.addEventListener('click', function () {
+            window.location.href = "{% url 'reception_system:index' %}";
+        });
+    </script>
 </body>
 </html>

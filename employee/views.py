@@ -53,8 +53,7 @@ def table_detail(request, table_id):
         table.electrical_outlet = 'electrical_outlet' in request.POST
         table.clean_status = 'clean_status' in request.POST 
         table.table_connect = 'table_connect' in request.POST 
-        table.save()
-        
+        table.save()    
         if table.table_resevation == False:
             return customerCall(request)
 
