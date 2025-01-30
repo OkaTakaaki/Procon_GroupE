@@ -19,11 +19,12 @@ def index(request):
 
 
 def receptionNumber(request):
+    print("receptionNumber")
     if request.method == 'POST':
-        seats=Seat.objects.all()
         reception_count = request.POST.get('reception_count')
+        seats=Seat.objects.all()
         request.session['reception_count'] = reception_count  # セッションに保存
-        print(reception_count)
+        print("reception_count = {}".format(reception_count))
         vacant_seat = Seat.objects.filter(table_resevation=False)
         if not vacant_seat.exists():
             return redirect('reception_system:reserve')
@@ -33,7 +34,7 @@ def receptionNumber(request):
                 'seats': seats,
                 'reception_count': reception_count
             }
-            query_string = urlencode({'reception_count': reception_count})
+            query_string = urlencode({'context': context})
             url = reverse('reception_system:seatsview') + '?' + query_string
             return redirect(url)
     return render(request, 'reception_system/reception.html')
@@ -125,17 +126,26 @@ def calculate_wait_time(request):
         return JsonResponse({'wait_time': wait_time})
 
 def seatsview(request):
+    print("---------seatsview---------")
     seats = Seat.objects.all()
+    reception_count = request.POST.get('reception_count')
+    if not reception_count:
+        reception_count = request.session.get('reception_count')
     if request.method == 'POST':
-        seat = request.POST.get('seat')
-        print(seat)
-    return render(request,'reception_system/seatsview.html', {'seats':seats})
+        select_seat = request.POST.getlist('select_seat')
+        print("select_seat = {}".format(select_seat))
+        print("reception_count = {}".format(reception_count))
+        recommended_capacity = Seat.objects.filter(table_number__in=select_seat).values_list('recommended_capacity', flat=True)
+        print("recommended_capacity = {}".format(recommended_capacity))
 
-
+    context = {
+        "reception_count": reception_count,
+        "seats": seats,
+    }
+    return render(request,'reception_system/seatsview.html', context)
 
 def reserveSuccess(request):
     receptionnumber = Reception.objects.all().last().reception_number
-    
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
 def customerCall(request):
