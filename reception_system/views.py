@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Reception,Seat
 from django.db.models import Max
 from django.shortcuts import redirect
@@ -69,10 +69,8 @@ def reserve(request):
         max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
         print(max_reception_number)
         if max_reception_number is not None:
-            print("aaaaaaaaaaaaa")
             max_reception_number = int(max_reception_number)
         else:
-            print("bbbbbbbbbbbbb")
             max_reception_number = 0
         print("最大のreception_number:", max_reception_number)
 
@@ -88,8 +86,44 @@ def reserve(request):
             reception_time=timezone.now()
         )
         return redirect('reception_system:reserve_success')
-    
-    return render(request,'reception_system/condition.html')
+        # 各seat_typeの座席数を取得
+    counter_seats = Seat.objects.filter(table_type=0).count()
+    table_seats = Seat.objects.filter(table_type=1).count()
+    sofa_seats = Seat.objects.filter(table_type=2).count()
+
+    context = {
+        'counter_seats': counter_seats,
+        'table_seats': table_seats,
+        'sofa_seats': sofa_seats,
+    }
+
+    return render(request,'reception_system/condition.html',context)
+
+def calculate_wait_time(request):
+    if request.method == 'POST':
+        seat_type = request.POST.get('seat_type')
+        outlet = request.POST.get('outlet') == 'True'
+        seat_connect = request.POST.get('seat_connect') == 'True'
+
+        # seat_typeの値を数値に変換
+        if seat_type == "カウンター":
+            seat_type = 0
+        elif seat_type == "テーブル":
+            seat_type = 1
+        elif seat_type == "ソファー":
+            seat_type = 2
+
+        # 条件に一致するReceptionの数を取得
+        reception_count = Reception.objects.filter(
+            table_type=seat_type,
+            electrical_outlet=outlet,
+            table_connect=seat_connect
+        ).count()
+
+        # 待ち時間を計算（例として1つのReceptionあたり5分とする）
+        wait_time = reception_count * 5
+
+        return JsonResponse({'wait_time': wait_time})
 
 def seatsview(request):
     print("---------seatsview---------")
@@ -115,16 +149,32 @@ def reserveSuccess(request):
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
 def customerCall(request):
+    print("aaaaa")
     waiting_call = Reception.objects.filter(seat=None,end_time=None)
     vacasent_seat = Seat.objects.filter(table_resevation=False)
-    count = 0
     for reception in waiting_call:
         for seat in vacasent_seat:
             # ここで比較処理を行う
             if (reception.table_type == seat.table_type and
                 reception.electrical_outlet == seat.electrical_outlet and
                 reception.table_connect == seat.table_connect):
-                print(f"一致: Reception {reception.reception_number} と Seat {seat.table_number}")
-                count += 1
+                print("bbbbb")
+                                # 同じ条件を満たすReceptionオブジェクトをreception_timeが若い順に取得
+                matching_receptions = Reception.objects.filter(
+                    table_type=seat.table_type,
+                    electrical_outlet=seat.electrical_outlet,
+                    table_connect=seat.table_connect,
+                    seat=None,
+                    end_time=None
+                ).order_by('reception_time')
 
-    return render(request, 'reception_system/customer_call.html')
+                if matching_receptions.exists():
+                    # 最初のReceptionオブジェクトを取得
+                    matching_reception = matching_receptions.first()
+                    # seatを追加
+                    matching_reception.seat = seat
+                    matching_reception.save()
+                    print(matching_reception)
+                    print(f"一致: Reception {matching_reception.reception_number} に Seat {seat.table_number} を追加") # 一致する座席が見つかった場合はループを抜ける
+                    return render(request, 'reception_system/customer_call.html',{'reception':matching_reception,'seat':seat})
+    return redirect('employee:employee_confirm')

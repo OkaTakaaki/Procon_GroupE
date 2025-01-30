@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/reserve_styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>座席条件</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 
@@ -15,13 +16,13 @@
         </div>
             <div class="seat-selection">
                 <h4>ご希望の座席の条件を入力してください</h4>
-                <form method="post">
+                <form id="seatForm" method="post">
                     {% csrf_token %}
                     <br><label>希望の座席を選択してください</label>
                     <div class="seats">
-                        <label><input type="radio" name="seat_type" value="カウンター"> カウンター席</label>
-                        <br><label><input type="radio"name="seat_type" value="テーブル"> テーブル席</label>
-                        <br><label><input type="radio"name="seat_type" value="ソファー"> ソファー席</label>
+                        <label><input type="radio" name="seat_type" value="カウンター"> カウンター席 ({{ counter_seats }}席)</label>
+                        <br><label><input type="radio"name="seat_type" value="テーブル"> テーブル席 ({{ table_seats }}席)</label>
+                        <br><label><input type="radio"name="seat_type" value="ソファー"> ソファー席 ({{ sofa_seats }}席)</label>
                     </div>
                     <br><label>コンセントは必要ですか</label>
                     <div class="outlet">
@@ -36,12 +37,68 @@
                 </div>
                 <div class="button-container">
                     <button class="circle-button">戻る</button>
-                    <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a>
+                    <!-- <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a> -->
                     <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
                 </div>
+                <div id="error-message" style="color: red; display: none;">すべての項目を選択してください。</div>
+                <div id="wait-time" style="color: blue; display: none;">待ち時間: <span id="wait-time-value"></span> 分</div>
             </form>
     </div>
-    
+
+    <script>
+        function updateWaitTime() {
+            var seatType = document.querySelector('input[name="seat_type"]:checked');
+            var outlet = document.querySelector('input[name="outlet"]:checked');
+            var seatConnect = document.querySelector('input[name="seat_connect"]:checked');
+
+            if (seatType && outlet && seatConnect) {
+                var seatTypeValue;
+                if (seatType.value === "カウンター") {
+                    seatTypeValue = 0;
+                } else if (seatType.value === "テーブル") {
+                    seatTypeValue = 1;
+                } else if (seatType.value === "ソファー") {
+                    seatTypeValue = 2;
+                }
+                
+                $.ajax({
+                    url: "{% url 'reception_system:calculate_wait_time' %}",
+                    method: "POST",
+                    data: {
+                        'seat_type': seatType.value,
+                        'outlet': outlet.value,
+                        'seat_connect': seatConnect.value,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        document.getElementById('wait-time').style.display = 'block';
+                        document.getElementById('wait-time-value').innerText = response.wait_time;
+                    }
+                });
+            }
+        }
+
+        document.querySelectorAll('input[name="seat_type"]').forEach(function(element) {
+            element.addEventListener('change', updateWaitTime);
+        });
+        document.querySelectorAll('input[name="outlet"]').forEach(function(element) {
+            element.addEventListener('change', updateWaitTime);
+        });
+        document.querySelectorAll('input[name="seat_connect"]').forEach(function(element) {
+            element.addEventListener('change', updateWaitTime);
+        });
+
+        document.getElementById('seatForm').addEventListener('submit', function(event) {
+            var seatTypeSelected = document.querySelector('input[name="seat_type"]:checked');
+            var outletSelected = document.querySelector('input[name="outlet"]:checked');
+            var seatConnectSelected = document.querySelector('input[name="seat_connect"]:checked');
+
+            if (!seatTypeSelected || !outletSelected || !seatConnectSelected) {
+                event.preventDefault(); // フォームの送信を停止
+                document.getElementById('error-message').style.display = 'block'; // エラーメッセージを表示
+            }
+        });
+    </script>
 
 </body>
 </html>

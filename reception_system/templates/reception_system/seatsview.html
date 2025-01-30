@@ -144,9 +144,9 @@
                 <div class="table-number">{{ seat.recommended_capacity }}人席</div>
                 <div class="table-details">
                     <div class="table_type">
-                        {% if seat.table_type == 1 %}カウンター{% endif %}
-                        {% if seat.table_type == 2 %}テーブル{% endif %}
-                        {% if seat.table_type == 3 %}ソファー{% endif %}
+                        {% if seat.table_type == 0 %}カウンター{% endif %}
+                        {% if seat.table_type == 1 %}テーブル{% endif %}
+                        {% if seat.table_type == 2 %}ソファー{% endif %}
                     </div>
                     <div class="electrical_outlet">
                         {% if not seat.electrical_outlet %}コンセント無し{% endif %}
