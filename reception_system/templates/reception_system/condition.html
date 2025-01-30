@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="button-container">
-                    <button class="circle-button">戻る</button>
+                    <button type="button" class="circle-button" onclick="window.location.href='{% url 'reception_system:index' %}'">戻る</button>
                     <!-- <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a> -->
                     <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
                 </div>
@@ -60,7 +60,7 @@
                 } else if (seatType.value === "ソファー") {
                     seatTypeValue = 2;
                 }
-                
+
                 $.ajax({
                     url: "{% url 'reception_system:calculate_wait_time' %}",
                     method: "POST",
