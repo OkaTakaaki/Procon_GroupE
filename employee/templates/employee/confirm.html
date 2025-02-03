@@ -1,13 +1,18 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
-
+ 
 {% block title %}
 <title>座席状況確認</title>
 <head>
-    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/employee_styles.scss' %}">
+    <style>
+        .header h1 {
+            text-align: center; /* タイトルを中央揃え */
+        }
+    </style>
 </head>
 {% endblock %}
-
+ 
 {% block contents %}
 <body>
     <div class="header">

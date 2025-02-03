@@ -1,0 +1,254 @@
+body{
+    justify-content: center;
+ 
+}
+ 
+ 
+/* コンテンツ部分 */
+.content {
+    flex: 1; /* 残りのスペースを埋める */
+    overflow-y: auto; /* 縦方向のスクロールを許可 */
+    justify-content: center;
+    padding: 10px; /* コンテンツエリアの背景色 */
+    display: flex; /* フレックスボックスを使用 */
+    flex-direction: column; /* 縦並びにする */
+    align-items: center; /* 中央揃え */
+}
+ 
+/* アイテムのスタイル */
+.item_new_seat{
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    background-color: #87BFE1;
+    margin-bottom: 20px; /* 下に空白を追加 */
+}
+ 
+.item_confirm {
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    background-color: #F06062;
+    margin-bottom: 20px; /* 下に空白を追加 */
+}
+ 
+/* コンテナのスタイル */
+.container {
+    display: flex;
+    flex-direction: column; /* 縦並びにする */
+    align-items: center; /* 中央揃え */
+    justify-content: center; /* 縦方向の中央揃え */
+    height: 100vh; /* 画面全体の高さを使用 */
+}
+ 
+/* employee.html: メインコンテナ */
+/* タイトル */
+.title {
+    display: flex;
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center; /* 縦方向の中央揃え */
+    font-size: 56px;
+    font-weight: bold;
+    margin: auto;
+    height: 300px;
+}
+ 
+/* タッチテキスト */
+.touch-text {
+    color: #aaa;
+    font-size: 18px;
+    margin-bottom: auto;
+    height: 50px;
+}
+ 
+/* new_seat.htmlのスタイル */
+.wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin-top: 40px; /* 上に余白を追加 */
+}
+ 
+.js-g01 {
+    font-size: 2em;
+    font-family: "Noto Serif JP", serif;
+}
+ 
+ 
+/* employee_styles.scss */
+// body {
+//     font-family: Arial, sans-serif;
+//     background-color: #f8f9fa;
+//     margin: 0;
+//     padding: 0;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     min-height: 100vh;
+// }
+ 
+// .container {
+//     background-color: #ffffff;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//     border-radius: 8px;
+//     width: 90%;
+//     max-width: 600px;
+//     padding: 20px;
+// }
+ 
+.new_title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+ 
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+ 
+label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+ 
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fefefe;
+}
+ 
+input[type="radio"] {
+    margin-right: 5px;
+}
+ 
+.checkbox-group {
+    margin-bottom: 20px;
+}
+ 
+.checkbox-group label {
+    margin-right: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+}
+ 
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+ 
+.next-button, .back-button {
+    padding: 10px 20px;
+    border: none;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+ 
+.next-button {
+    background-color: blue;
+    color: white;
+}
+ 
+.next-button:hover {
+    background-color: blue;
+}
+ 
+.back-button {
+    background-color: #f44336;
+    color: white;
+}
+ 
+.back-button:hover {
+    background-color: #d32f2f;
+}
+ 
+/* Small screens adjustments */
+@media (max-width: 480px) {
+    .button-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+ 
+    .next-button, .back-button {
+        width: 100%;
+    }
+}
+ 
+ 
+ 
+.table-item {
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 95%;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1rem;
+}
+ 
+/* ボタンのスタイル */
+button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+ 
+button:hover {
+    background-color: blue;
+}
+ 
+/* フッター */
+.footer {
+    margin-top: 20px;
+    padding: 10px;
+}
+ 
+.footer a {
+    text-decoration: none;
+    color: white;
+    background-color: #dc3545;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+ 
+.footer a:hover {
+    background-color: #c82333;
+}
+ 
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+    .content {
+        width: 100%;
+        padding: 0 15px;
+    }
+ 
+    .table-item {
+        width: 100%;
+    }
+ 
+    button {
+        width: 100%;
+    }
+}
+ 
