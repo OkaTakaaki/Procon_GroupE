@@ -1,13 +1,18 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
-
+ 
 {% block title %}
 <title>座席状況確認</title>
 <head>
-    <link rel="stylesheet" href="{% static 'css/employee_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/employee_styles.scss' %}">
+    <style>
+        .header h1 {
+            text-align: center; /* タイトルを中央揃え */
+        }
+    </style>
 </head>
 {% endblock %}
-
+ 
 {% block contents %}
 <body>
     <div class="header">
@@ -17,7 +22,13 @@
         {% for table in tables %}
             <div class="table-item">
                 <p>テーブル{{ forloop.counter }}</p>
-                <p>使用状況: {{ table.table_resevation }}</p>
+                <p>使用状況:
+                    {% if table.is_reserved %}
+                        <span class="table-status">空席</span>
+                    {% else %}
+                        <span class="table-status">使用中</span>
+                    {% endif %}
+                </p>
                 <!-- 情報詳細ボタン -->
                 <a href="{% url 'employee:employee_table_detail' table.id %}">
                     <button>情報詳細</button>

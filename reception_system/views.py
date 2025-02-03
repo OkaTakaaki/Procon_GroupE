@@ -194,7 +194,6 @@ def reserveSuccess(request):
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
 def customerCall(request):
-    print("aaaaa")
     waiting_call = Reception.objects.filter(seat=None,end_time=None)
     vacasent_seat = Seat.objects.filter(table_resevation=False)
     for reception in waiting_call:
@@ -204,7 +203,7 @@ def customerCall(request):
                 reception.electrical_outlet == seat.electrical_outlet and
                 reception.table_connect == seat.table_connect):
                 print("bbbbb")
-                                # 同じ条件を満たすReceptionオブジェクトをreception_timeが若い順に取得
+                # 同じ条件を満たすReceptionオブジェクトをreception_timeが若い順に取得
                 matching_receptions = Reception.objects.filter(
                     table_type=seat.table_type,
                     electrical_outlet=seat.electrical_outlet,
