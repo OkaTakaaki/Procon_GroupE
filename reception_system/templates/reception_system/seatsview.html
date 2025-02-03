@@ -15,6 +15,7 @@
         }
 
         .header {
+            font-family: "Yuji Syuku", serif;
             background-color: #4CAF50;
             color: white;
             padding: 20px;
@@ -122,6 +123,33 @@
             margin-right: 10px; 
             size: 10;
         }
+
+        .selected {
+        background-color: #b3e5fc !important; /* 選択時の背景色（青系） */
+        border: 2px solid #0288d1; /* 枠線を追加 */
+    }
+
+    .recommended-section {
+        background-color: #e3f2fd; /* おすすめの座席の背景色（薄い青） */
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .all-seats-section {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .section-title {
+        font-family: "Yuji Syuku", serif;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #4CAF50;
+        padding-bottom: 5px;
+    }
     </style>
 </head>
 <body>
@@ -133,44 +161,69 @@
     <form method="post" id="select_seat">
         {% csrf_token %}
         <div class="content">
-            
-            <h1>-------------うまも---------------</h1>
-            {% for recommended in recommended_seats %}
-                {% for a in recommended %}
-                        <li>テーブル番号: {{ a.table_number }} </li>
+    
+            <!-- おすすめの座席 -->
+            <div class="recommended-section">
+                <div class="section-title">おすすめの座席</div>
+                {% for recommended in recommended_seats %}
+                    {% for a in recommended %}
+                        <div class="table-card" data-table-number="{{ a.table_number }}">
+                            <div class="table-status">座席番号：{{ a.table_number }}</div>
+                            <div class="table_resevation" data-status="{% if a.table_resevation == False %}空席{% else %}満席{% endif %}">
+                                {% if a.table_resevation == False %}空席{% else %}満席{% endif %}
+                            </div>
+                            <div class="table-number">{{ a.recommended_capacity }}人席</div>
+                            <div class="table-details">
+                                <div class="table_type">
+                                    {% if a.table_type == 0 %}カウンター{% endif %}
+                                    {% if a.table_type == 1 %}テーブル{% endif %}
+                                    {% if a.table_type == 2 %}ソファー{% endif %}
+                                </div>
+                                <div class="electrical_outlet">
+                                    {% if not a.electrical_outlet %}コンセント無し{% endif %}
+                                    {% if a.electrical_outlet %}コンセント有り{% endif %}
+                                </div>
+                                <div class="table_connect">
+                                    {% if not a.table_connect %}隣の座席とつなげることはできません{% endif %}
+                                    {% if a.table_connect %}隣の座席とつなげることが可能です{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            <h1>----------------------------</h1>
-
-            {% for seat in seats %}
-            <label>
-                <div class="table-card">
-                    <div class="table-status">座席番号：{{ seat.table_number }}</div>
-                <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
-                    {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
-                </div>
-                <div class="table-number">{{ seat.recommended_capacity }}人席</div>
-                <div class="table-details">
-                    <div class="table_type">
-                        {% if seat.table_type == 0 %}カウンター{% endif %}
-                        {% if seat.table_type == 1 %}テーブル{% endif %}
-                        {% if seat.table_type == 2 %}ソファー{% endif %}
-                    </div>
-                    <div class="electrical_outlet">
-                        {% if not seat.electrical_outlet %}コンセント無し{% endif %}
-                        {% if seat.electrical_outlet %}コンセント有り{% endif %}
-                    </div>
-                    <div class="table_connect">
-                        {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
-                        {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
-                    </div>
-                </label>
             </div>
-            <div class="checkbox-container">
-                <input type="checkbox" name="select_seat" id="select_seat" value={{seat.table_number}}>
+        
+            <!-- その他の座席 -->
+            <div class="all-seats-section">
+                <div class="section-title">その他の座席</div>
+                {% for seat in seats %}
+                    <div class="table-card" data-table-number="{{ seat.table_number }}">
+                        <div class="table-status">座席番号：{{ seat.table_number }}</div>
+                        <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
+                            {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
+                        </div>
+                        <div class="table-number">{{ seat.recommended_capacity }}人席</div>
+                        <div class="table-details">
+                            <div class="table_type">
+                                {% if seat.table_type == 0 %}カウンター{% endif %}
+                                {% if seat.table_type == 1 %}テーブル{% endif %}
+                                {% if seat.table_type == 2 %}ソファー{% endif %}
+                            </div>
+                            <div class="electrical_outlet">
+                                {% if not seat.electrical_outlet %}コンセント無し{% endif %}
+                                {% if seat.electrical_outlet %}コンセント有り{% endif %}
+                            </div>
+                            <div class="table_connect">
+                                {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
+                                {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
+        
         </div>
-        {% endfor %}
+
         <div class="footer">
             <input type="hidden" name="reception_count" id="reception_count" value={{reception_count}}>
             <a href="{% url 'reception_system:receptionNumber' %}">戻る</a>
@@ -179,15 +232,41 @@
     </form>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tableCards = document.querySelectorAll(".table-card");
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "selected_seats";
+            hiddenInput.id = "selected_seats";
+            document.getElementById("select_seat").appendChild(hiddenInput);
+    
+            let selectedSeats = [];
+    
+            tableCards.forEach(card => {
+                card.addEventListener("click", function () {
+                    const tableNumber = this.dataset.tableNumber; 
+    
+                    if (this.classList.contains("selected")) {
+                        this.classList.remove("selected");
+                        selectedSeats = selectedSeats.filter(num => num !== tableNumber);
+                    } else {
+                        this.classList.add("selected");
+                        selectedSeats.push(tableNumber);
+                    }
+    
+                    hiddenInput.value = selectedSeats.join(",");
+                });
+            });
+        });
+    
         function validateForm() {
-            var checkboxes = document.querySelectorAll('input[name="select_seat"]:checked');
-            if (checkboxes.length === 0) {
+            if (document.getElementById("selected_seats").value === "") {
                 alert("席を選んでください");
                 return false;
             }
             return true;
         }
-        </script>
+    </script>
 
 </body>
 </html>
