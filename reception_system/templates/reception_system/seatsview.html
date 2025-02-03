@@ -132,8 +132,16 @@
     
     <form method="post" id="select_seat">
         {% csrf_token %}
-        <h1>{{ reception_count }} aaa</h1>
         <div class="content">
+            
+            <h1>-------------うまも---------------</h1>
+            {% for recommended in recommended_seats %}
+                {% for a in recommended %}
+                        <li>テーブル番号: {{ a.table_number }} </li>
+                {% endfor %}
+            {% endfor %}
+            <h1>----------------------------</h1>
+
             {% for seat in seats %}
             <label>
                 <div class="table-card">

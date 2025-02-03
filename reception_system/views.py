@@ -30,7 +30,29 @@ def receptionNumber(request):
             return redirect('reception_system:reserve')
         else:#空席がある場合
             print("空席")
+            reception_count = int(reception_count)
+            recommended_seats = []
+
+            # 条件を満たす座席の組み合わせを見つける
+            for i in range(len(seats)):
+                for j in range(i, len(seats)):
+                    selected_seats = seats[i:j+1]
+                    seat_numbers = [seat.table_number for seat in selected_seats]
+                    seat_numbers.sort()
+                    are_adjacent = all(seat_numbers[k] + 1 == seat_numbers[k + 1] for k in range(len(seat_numbers) - 1))
+                    total_capacity = sum(seat.recommended_capacity for seat in selected_seats)
+                    if are_adjacent and reception_count <= total_capacity:
+                        recommended_seats.append(selected_seats)
+
+            # 最小の席数で条件を満たす座席を選択
+            recommended_seats.sort(key=lambda x: len(x))
+            min_seats = recommended_seats[:3]  # 上位3つの組み合わせを選択
+            print("min_seats = {}".format(min_seats))
+            for i in range(len(min_seats[0])):
+                print("bbbbbbb = {}".format(min_seats[0][i]))
+                i += 1
             context = {
+                'recommended_seats': min_seats,
                 'seats': seats,
                 'reception_count': reception_count
             }
@@ -38,9 +60,6 @@ def receptionNumber(request):
             url = reverse('reception_system:seatsview') + '?' + query_string
             return redirect(url)
     return render(request, 'reception_system/reception.html')
-
-def language(request):
-    return render(request, 'reception_system/reception_system/language.html')
 
 def complate(request):
     return render(request, 'reception_system/complate.html')
@@ -131,16 +150,42 @@ def seatsview(request):
     reception_count = request.POST.get('reception_count')
     if not reception_count:
         reception_count = request.session.get('reception_count')
+        reception_count = int(reception_count)
+
+        recommended_seats = []
+
+        # 条件を満たす座席の組み合わせを見つける
+        for i in range(len(seats)):
+            for j in range(i, len(seats)):
+                selected_seats = seats[i:j+1]
+                seat_numbers = [seat.table_number for seat in selected_seats]
+                seat_numbers.sort()
+                are_adjacent = all(seat_numbers[k] + 1 == seat_numbers[k + 1] for k in range(len(seat_numbers) - 1))
+                total_capacity = sum(seat.recommended_capacity for seat in selected_seats)
+                if are_adjacent and reception_count <= total_capacity:
+                    recommended_seats.append(selected_seats)
+
+        # 最小の席数で条件を満たす座席を選択
+        recommended_seats.sort(key=lambda x: len(x))
+        recommended_seats = recommended_seats[:3]  # 上位3つの組み合わせを選択
+        print("recommended_seats = {}".format(recommended_seats))
+
     if request.method == 'POST':
         select_seat = request.POST.getlist('select_seat')
+        recommended_capacity = Seat.objects.filter(table_number__in=select_seat).values_list('recommended_capacity', flat=True)
         print("select_seat = {}".format(select_seat))
         print("reception_count = {}".format(reception_count))
-        recommended_capacity = Seat.objects.filter(table_number__in=select_seat).values_list('recommended_capacity', flat=True)
         print("recommended_capacity = {}".format(recommended_capacity))
-
-    context = {
+        context = {  
         "reception_count": reception_count,
         "seats": seats,
+        "recommended_seats": recommended_seats
+        }
+
+    context = {  
+        "reception_count": reception_count,
+        "seats": seats,
+        "recommended_seats":recommended_seats
     }
     return render(request,'reception_system/seatsview.html', context)
 
