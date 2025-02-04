@@ -38,15 +38,15 @@
             </form>
         </div>
         <div class="message" id="message" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:2em;">
-            1桁以上の数字は選べません
+            <span>1桁以上の数字は選べません</span>
             <button onclick="reloadPage()" style="margin-top: 20px; padding: 10px 20px; font-size: 1em;">OK</button>
         </div>
         <div class="message_2" id="message_2" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:2em;">
-            人数を指定してください
+            <span>人数を指定してください</span>
             <button onclick="reloadPage()" style="margin-top: 20px; padding: 10px 20px; font-size: 1em;">OK</button>
         </div>
         <div class="message_3" id="message_3" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:2em;">
-            店員をお呼びします。少々お待ちください。
+            <span>店員をお呼びします。少々お待ちください。</span>
             <button onclick="reloadPage()" style="margin-top: 20px; padding: 10px 20px; font-size: 1em;">OK</button>
         </div>
 
@@ -68,7 +68,7 @@
                     specifyNumberMessage: "Please specify the number of people",
                     callWaiterMessage: "We will call the waiter. Please wait a moment.",
                     okButton: "OK",
-                    overButton: "More than 10 people", 
+                    overButton: "More than 7 people", 
                     submitButton: "Submit",
                     cancelButton: "Cancel"
                     
@@ -79,7 +79,7 @@
                     specifyNumberMessage: "请输入人数",
                     callWaiterMessage: "我们会呼叫服务员，请稍等。",
                     okButton: "确定",
-                    overButton: "超过10人",
+                    overButton: "超过7人",
                     submitButton: "确认",
                     cancelButton: "取消"
                 },
@@ -89,7 +89,7 @@
                     specifyNumberMessage: "인원수를 지정해주세요",
                     callWaiterMessage: "직원을 호출하겠습니다. 잠시 기다려주세요.",
                     okButton: "확인",
-                    overButton: "10명 이상",
+                    overButton: "7명 이상",
                     submitButton: "확인",
                     cancelButton: "취소"
                 }
@@ -103,12 +103,12 @@
             function applyTranslations(language) {
                 const t = translations[language] || translations['ja'];
                 document.getElementById('header-title').textContent = t.header;
-                document.getElementById('message').textContent = t.oneDigitMessage;
-                document.getElementById('message_2').textContent = t.specifyNumberMessage;
-                document.getElementById('message_3').textContent = t.callWaiterMessage;
-                document.querySelector('.over_button').textContent = t.overButton;
+                document.getElementById('message').querySelector('span').textContent = t.oneDigitMessage;
+                document.getElementById('message_2').querySelector('span').textContent = t.specifyNumberMessage;
+                document.getElementById('message_3').querySelector('span').textContent = t.callWaiterMessage;
                 document.querySelector('.submit-button').textContent = t.submitButton;
                 document.querySelector('.cancel-button').textContent = t.cancelButton;
+                document.querySelector('.over_button').textContent = t.overButton;
                 if (language === 'en') {
                     document.querySelector('.over_button').style.fontSize = '12px';
             }};
@@ -116,7 +116,6 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const savedLanguage = localStorage.getItem("language") || "ja";
                 applyTranslations(savedLanguage);
-
                 document.getElementById("message").style.display = "none";
                 document.getElementById("message_2").style.display = "none";
                 document.getElementById("message_3").style.display = "none";
