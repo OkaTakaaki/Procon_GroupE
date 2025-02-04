@@ -40,7 +40,8 @@ class Reception(models.Model):
         (SOFA, 'ソファー'),
     ]
     reception_number = models.IntegerField(verbose_name="受付番号",primary_key=True,unique=True)
-    seat = models.ForeignKey(Seat, on_delete=models.CASCADE, null=True, blank=True)
+    seat1 = models.ForeignKey(Seat, related_name='reception_seat1', on_delete=models.SET_NULL, null=True, blank=True)
+    seat2 = models.ForeignKey(Seat, related_name='reception_seat2', on_delete=models.SET_NULL, null=True, blank=True)
     payment_status = models.BooleanField(verbose_name="会計状況", null=False, default=False)
     reception_count = models.IntegerField(verbose_name="利用人数", null=False, blank=True)
     table_type = models.IntegerField(choices=TABLE_TYPE_CHOICES,verbose_name="座席種別", null=False, default=0)

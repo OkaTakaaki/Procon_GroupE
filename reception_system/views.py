@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .models import Reception,Seat
-from django.db.models import Max
+from django.db.models import Max, Count
 from django.shortcuts import redirect
 from .models import Reception
 from django.shortcuts import render, redirect, get_object_or_404
@@ -82,30 +82,69 @@ def reserve(request):
             seat_type = 1
         elif seat_type == "ソファー":
             seat_type = 2
+        print("JJJJ")
+# seat_connectがFalseの場合、条件に一致するSeatを検索
+        if seat_connect == "False":
+            seats = Seat.objects.filter(
+                table_type=seat_type,
+                electrical_outlet=(outlet == "True"),
+                table_connect=False,
+                table_resevation=True,
+                recommended_capacity__gte=reception_count  # 追加条件
+            ).annotate(reception_count=Count('reception_seat1') + Count('reception_seat2')).order_by('reception_count')
+            print(seats)
+            if seats.exists():
+                seat = seats.first()
 
+                # reception_numberの最大値を取得
+                max_reception_number_dict = Reception.objects.all().aggregate(Max('reception_number'))
+                max_reception_number = max_reception_number_dict['reception_number__max']
+                if max_reception_number is not None:
+                    max_reception_number = int(max_reception_number)
+                else:
+                    max_reception_number = 0
 
-        # reception_numberの最大値を取得
-        max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
-        print(max_reception_number)
-        if max_reception_number is not None:
-            max_reception_number = int(max_reception_number)
+                # Receptionモデルにデータを保存
+                Reception.objects.create(
+                    reception_number=max_reception_number + 1,
+                    reception_count=reception_count,
+                    table_type=seat_type,
+                    electrical_outlet=(outlet == "True"),
+                    table_connect=False,
+                    reception_time=timezone.now(),
+                    seat1=seat
+                )
+                print("aaa")
+                seat.save()
+
+                return redirect('reception_system:reserve_success')
         else:
-            max_reception_number = 0
-        print("最大のreception_number:", max_reception_number)
+                
+                return redirect('reception_system:reserve_success')
+        # # reception_numberの最大値を取得
+        # max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
+        # print(max_reception_number)
+        # if max_reception_number is not None:
+        #     max_reception_number = int(max_reception_number)
+        # else:
+        #     max_reception_number = 0
+        # print("最大のreception_number:", max_reception_number)
 
-        print(seat_type, reception_count, outlet, seat_connect)
+        # print(seat_type, reception_count, outlet, seat_connect)
 
-        # モデルにデータを保存
-        Reception.objects.create(
-            reception_number=max_reception_number+1,
-            reception_count=reception_count,
-            table_type=seat_type,
-            electrical_outlet=outlet,
-            table_connect=seat_connect,
-            reception_time=timezone.now()
-        )
-        return redirect('reception_system:reserve_success')
-        # 各seat_typeの座席数を取得
+        # # モデルにデータを保存
+        # Reception.objects.create(
+        #     reception_number=max_reception_number+1,
+        #     reception_count=reception_count,
+        #     table_type=seat_type,
+        #     electrical_outlet=outlet,
+        #     table_connect=seat_connect,
+        #     reception_time=timezone.now()
+        # )
+        # return redirect('reception_system:reserve_success')
+
+
+    # 各seat_typeの座席数を取得
     counter_seats = Seat.objects.filter(table_type=0).count()
     table_seats = Seat.objects.filter(table_type=1).count()
     sofa_seats = Seat.objects.filter(table_type=2).count()
