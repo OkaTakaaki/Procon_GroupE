@@ -108,6 +108,7 @@
                 document.getElementById('message_3').querySelector('span').textContent = t.callWaiterMessage;
                 document.querySelector('.submit-button').textContent = t.submitButton;
                 document.querySelector('.cancel-button').textContent = t.cancelButton;
+                document.querySelector('.over_button').textContent = t.overButton;
                 if (language === 'en') {
                     document.querySelector('.over_button').style.fontSize = '12px';
             }};
@@ -115,7 +116,6 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const savedLanguage = localStorage.getItem("language") || "ja";
                 applyTranslations(savedLanguage);
-
                 document.getElementById("message").style.display = "none";
                 document.getElementById("message_2").style.display = "none";
                 document.getElementById("message_3").style.display = "none";
