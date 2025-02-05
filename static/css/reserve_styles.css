@@ -181,11 +181,10 @@ input[type="checkbox"] {
 .button-container {
     bottom: 20px; /* コンテナの下部に固定 */
     width: 100%;
-    display: flex;
-    justify-content: space-evenly;
     padding: 10px 0;
-    background-color: #f8f9fa;
-}
+    display: flex;
+    justify-content: space-between;
+} 
 
 
 
@@ -252,4 +251,13 @@ input[type="checkbox"] {
 .footer-text {
     font-size: 14px;
     margin-top: 10px;
+}
+
+.button-container button {
+    flex: 1;
+    margin: 5px;
+}
+.button-selected {
+    background-color: #4CAF50; /* 選択されたボタンの色 */
+    color: white;
 }

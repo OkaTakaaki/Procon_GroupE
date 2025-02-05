@@ -19,21 +19,17 @@
                 <form id="seatForm" method="post">
                     {% csrf_token %}
                     <br><label>希望の座席を選択してください</label>
-                    <div class="seats">
-                        <label><input type="radio" name="seat_type" value="カウンター"> カウンター席 ({{ counter_seats }}席)</label>
-                        <br><label><input type="radio"name="seat_type" value="テーブル"> テーブル席 ({{ table_seats }}席)</label>
-                        <br><label><input type="radio"name="seat_type" value="ソファー"> ソファー席 ({{ sofa_seats }}席)</label>
-                    </div>
-                    <br><label>コンセントは必要ですか</label>
-                    <div class="outlet">
-                        <label><input type="radio" name="outlet" value="True">必須</label>
-                        <br><label><input type="radio"name="outlet" value="False">無くてもよい</label>
-                    </div>
-                    <br><label>隣の座席と席を繋げますか</label>
-                    <div class="connect">
-                        <label><input type="radio" name="seat_connect" value="True">繋げる</label>
-                        <br><label><input type="radio"name="seat_connect" value="False">繋げる必要はない</label>
-                    </div>
+                <div class="seats button-container">
+                    <button type="button" class="seat-button" data-value="カウンター">カウンター席 ({{ counter_seats }}席)</button>
+                    <button type="button" class="seat-button" data-value="テーブル">テーブル席 ({{ table_seats }}席)</button>
+                    <button type="button" class="seat-button" data-value="ソファー">ソファー席 ({{ sofa_seats }}席)</button>
+                    <input type="hidden" name="seat_type" id="seat_type">
+                </div>
+                <br><label>コンセントは必要ですか</label>
+                <div class="outlet button-container">
+                    <button type="button" class="outlet-button" data-value="True">必須</button>
+                    <button type="button" class="outlet-button" data-value="False">無くてもよい</button>
+                    <input type="hidden" name="outlet" id="outlet">
                 </div>
                 <div class="button-container">
                     <button type="button" class="circle-button" onclick="window.location.href='{% url 'reception_system:index' %}'">戻る</button>
@@ -46,18 +42,39 @@
     </div>
 
     <script>
-        function updateWaitTime() {
-            var seatType = document.querySelector('input[name="seat_type"]:checked');
-            var outlet = document.querySelector('input[name="outlet"]:checked');
-            var seatConnect = document.querySelector('input[name="seat_connect"]:checked');
+        document.querySelectorAll('.seat-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.seat-button').forEach(function(btn) {
+                    btn.classList.remove('button-selected');
+                });
+                button.classList.add('button-selected');
+                document.getElementById('seat_type').value = button.getAttribute('data-value');
+                updateWaitTime();
+            });
+        });
 
-            if (seatType && outlet && seatConnect) {
+        document.querySelectorAll('.outlet-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.outlet-button').forEach(function(btn) {
+                    btn.classList.remove('button-selected');
+                });
+                button.classList.add('button-selected');
+                document.getElementById('outlet').value = button.getAttribute('data-value');
+                updateWaitTime();
+            });
+        });
+
+        function updateWaitTime() {
+            var seatType = document.getElementById('seat_type').value;
+            var outlet = document.getElementById('outlet').value;
+
+            if (seatType && outlet) {
                 var seatTypeValue;
-                if (seatType.value === "カウンター") {
+                if (seatType === "カウンター") {
                     seatTypeValue = 0;
-                } else if (seatType.value === "テーブル") {
+                } else if (seatType === "テーブル") {
                     seatTypeValue = 1;
-                } else if (seatType.value === "ソファー") {
+                } else if (seatType === "ソファー") {
                     seatTypeValue = 2;
                 }
 
@@ -65,9 +82,8 @@
                     url: "{% url 'reception_system:calculate_wait_time' %}",
                     method: "POST",
                     data: {
-                        'seat_type': seatType.value,
-                        'outlet': outlet.value,
-                        'seat_connect': seatConnect.value,
+                        'seat_type': seatTypeValue,
+                        'outlet': outlet,
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
@@ -78,22 +94,16 @@
             }
         }
 
-        document.querySelectorAll('input[name="seat_type"]').forEach(function(element) {
+        document.querySelectorAll('seat_type').forEach(function(element) {
             element.addEventListener('change', updateWaitTime);
         });
-        document.querySelectorAll('input[name="outlet"]').forEach(function(element) {
+        document.querySelectorAll('outlet').forEach(function(element) {
             element.addEventListener('change', updateWaitTime);
         });
-        document.querySelectorAll('input[name="seat_connect"]').forEach(function(element) {
-            element.addEventListener('change', updateWaitTime);
-        });
-
         document.getElementById('seatForm').addEventListener('submit', function(event) {
-            var seatTypeSelected = document.querySelector('input[name="seat_type"]:checked');
-            var outletSelected = document.querySelector('input[name="outlet"]:checked');
-            var seatConnectSelected = document.querySelector('input[name="seat_connect"]:checked');
-
-            if (!seatTypeSelected || !outletSelected || !seatConnectSelected) {
+            var seatType = document.getElementById('seat_type').value;
+            var outlet = document.getElementById('outlet').value;
+            if (!seatTypeSelected || !outletSelected ) {
                 event.preventDefault(); // フォームの送信を停止
                 document.getElementById('error-message').style.display = 'block'; // エラーメッセージを表示
             }

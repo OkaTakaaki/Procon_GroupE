@@ -71,7 +71,6 @@ def reserve(request):
         seat_type = request.POST.get('seat_type')
         reception_count = request.POST.get('reception_count')
         outlet = request.POST.get('outlet')
-        seat_connect = request.POST.get('seat_connect')
 
         # セッションからreception_countを取得
         reception_count = request.session.get('reception_count')
@@ -83,44 +82,39 @@ def reserve(request):
         elif seat_type == "ソファー":
             seat_type = 2
         print("JJJJ")
-# seat_connectがFalseの場合、条件に一致するSeatを検索
-        if seat_connect == "False":
-            seats = Seat.objects.filter(
+        seats = Seat.objects.filter(
+            table_type=seat_type,
+            electrical_outlet=(outlet == "True"),
+            table_connect=False,
+            table_resevation=True,
+            recommended_capacity__gte=reception_count  # 追加条件
+        ).annotate(reception_count=Count('reception_seat1') + Count('reception_seat2')).order_by('reception_count')
+        print(seats)
+        if seats.exists():
+            seat = seats.first()
+
+            # reception_numberの最大値を取得
+            max_reception_number_dict = Reception.objects.all().aggregate(Max('reception_number'))
+            max_reception_number = max_reception_number_dict['reception_number__max']
+            if max_reception_number is not None:
+                max_reception_number = int(max_reception_number)
+            else:
+                max_reception_number = 0
+
+            # Receptionモデルにデータを保存
+            Reception.objects.create(
+                reception_number=max_reception_number + 1,
+                reception_count=reception_count,
                 table_type=seat_type,
                 electrical_outlet=(outlet == "True"),
                 table_connect=False,
-                table_resevation=True,
-                recommended_capacity__gte=reception_count  # 追加条件
-            ).annotate(reception_count=Count('reception_seat1') + Count('reception_seat2')).order_by('reception_count')
-            print(seats)
-            if seats.exists():
-                seat = seats.first()
+                reception_time=timezone.now(),
+                seat1=seat
+            )
+            print("aaa")
+            seat.save()
 
-                # reception_numberの最大値を取得
-                max_reception_number_dict = Reception.objects.all().aggregate(Max('reception_number'))
-                max_reception_number = max_reception_number_dict['reception_number__max']
-                if max_reception_number is not None:
-                    max_reception_number = int(max_reception_number)
-                else:
-                    max_reception_number = 0
-
-                # Receptionモデルにデータを保存
-                Reception.objects.create(
-                    reception_number=max_reception_number + 1,
-                    reception_count=reception_count,
-                    table_type=seat_type,
-                    electrical_outlet=(outlet == "True"),
-                    table_connect=False,
-                    reception_time=timezone.now(),
-                    seat1=seat
-                )
-                print("aaa")
-                seat.save()
-
-                return redirect('reception_system:reserve_success')
-        else:
-                
-                return redirect('reception_system:reserve_success')
+            return redirect('reception_system:reserve_success')
         # # reception_numberの最大値を取得
         # max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
         # print(max_reception_number)
@@ -161,27 +155,31 @@ def calculate_wait_time(request):
     if request.method == 'POST':
         seat_type = request.POST.get('seat_type')
         outlet = request.POST.get('outlet') == 'True'
-        seat_connect = request.POST.get('seat_connect') == 'True'
 
-        # seat_typeの値を数値に変換
-        if seat_type == "カウンター":
-            seat_type = 0
-        elif seat_type == "テーブル":
-            seat_type = 1
-        elif seat_type == "ソファー":
-            seat_type = 2
-
+        if seat_type is not None:
+            seat_type = int(seat_type)
+        else:
+            print("seat_type = {}".format(seat_type))
+            return JsonResponse({'wait_time': 0, 'error': 'Invalid seat_type'})
+        # 待ち時間を計算するロジックを実装
+        # ここでは仮に待ち時間を計算する例を示します
+        # 実際のロジックは要件に応じて実装してください
+        wait_time = 0
+        print("seat_type = {}".format(seat_type))
         # 条件に一致するReceptionの数を取得
         reception_count = Reception.objects.filter(
             table_type=seat_type,
             electrical_outlet=outlet,
-            table_connect=seat_connect
+            end_time__isnull=True
         ).count()
 
-        # 待ち時間を計算（例として1つのReceptionあたり5分とする）
-        wait_time = reception_count * 5
+        # 仮の待ち時間計算ロジック
+        if reception_count > 0:
+            wait_time = reception_count * 5  # 例: 1つの受付につき5分の待ち時間
 
         return JsonResponse({'wait_time': wait_time})
+
+    return JsonResponse({'wait_time': 0})
 
 def seatsview(request):
     print("---------seatsview---------")
