@@ -1,6 +1,6 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
- 
+
 {% block contents %}
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,7 @@
         }
 
         .header {
+            font-family: "Yuji Syuku", serif;
             background-color: #4CAF50;
             color: white;
             padding: 20px;
@@ -122,47 +123,105 @@
             margin-right: 10px; 
             size: 10;
         }
+
+        .selected {
+        background-color: #b3e5fc !important; /* 選択時の背景色（青系） */
+        border: 2px solid #0288d1; /* 枠線を追加 */
+    }
+
+    .recommended-section {
+        background-color: #e3f2fd; /* おすすめの座席の背景色（薄い青） */
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .all-seats-section {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .section-title {
+        font-family: "Yuji Syuku", serif;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #4CAF50;
+        padding-bottom: 5px;
+    }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>座席状況確認</h1>
+        <h1 id="header-title">座席状況確認</h1>
     </div>
-
-    
     <form method="post" id="select_seat">
         {% csrf_token %}
-        <h1>{{ reception_count }} aaa</h1>
         <div class="content">
-            {% for seat in seats %}
-            <label>
-                <div class="table-card">
-                    <div class="table-status">座席番号：{{ seat.table_number }}</div>
-                <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
-                    {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
-                </div>
-                <div class="table-number">{{ seat.recommended_capacity }}人席</div>
-                <div class="table-details">
-                    <div class="table_type">
-                        {% if seat.table_type == 0 %}カウンター{% endif %}
-                        {% if seat.table_type == 1 %}テーブル{% endif %}
-                        {% if seat.table_type == 2 %}ソファー{% endif %}
-                    </div>
-                    <div class="electrical_outlet">
-                        {% if not seat.electrical_outlet %}コンセント無し{% endif %}
-                        {% if seat.electrical_outlet %}コンセント有り{% endif %}
-                    </div>
-                    <div class="table_connect">
-                        {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
-                        {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
-                    </div>
-                </label>
+    
+            <!-- おすすめの座席 -->
+            <div class="recommended-section">
+                <div class="section-title" id="section_title">おすすめの座席</div>
+                {% for recommended in recommended_seats %}
+                    {% for a in recommended %}
+                        <div class="table-card" data-table-number="{{ a.table_number }}">
+                            <div class="table-status" id="table_status">座席番号：{{ a.table_number }}</div>
+                            <div class="table_resevation" data-status="{% if a.table_resevation == False %}空席{% else %}満席{% endif %}">
+                                {% if a.table_resevation == False %}空席{% else %}満席{% endif %}
+                            </div>
+                            <div class="table-number" id="table_number">{{ a.recommended_capacity }}人席</div>
+                            <div class="table-details">
+                                <div class="table_type">
+                                    {% if a.table_type == 0 %}カウンター{% endif %}
+                                    {% if a.table_type == 1 %}テーブル{% endif %}
+                                    {% if a.table_type == 2 %}ソファー{% endif %}
+                                </div>
+                                <div class="electrical_outlet">
+                                    {% if not a.electrical_outlet %}コンセント無し{% endif %}
+                                    {% if a.electrical_outlet %}コンセント有り{% endif %}
+                                </div>
+                                <div class="table_connect">
+                                    {% if not a.table_connect %}隣の座席とつなげることはできません{% endif %}
+                                    {% if a.table_connect %}隣の座席とつなげることが可能です{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
             </div>
-            <div class="checkbox-container">
-                <input type="checkbox" name="select_seat" id="select_seat" value={{seat.table_number}}>
+        
+            <!-- その他の座席 -->
+            <div class="all-seats-section">
+                <div class="section-title" id="section_title_2">その他の座席</div>
+                {% for seat in seats %}
+                    <div class="table-card" data-table-number="{{ seat.table_number }}">
+                        <div class="table-status" id="table_status">座席番号：{{ seat.table_number }}</div>
+                        <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
+                            {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
+                        </div>
+                        <div class="table-number" id="table_number">{{ seat.recommended_capacity }}人席</div>
+                        <div class="table-details">
+                            <div class="table_type">
+                                {% if seat.table_type == 0 %}カウンター{% endif %}
+                                {% if seat.table_type == 1 %}テーブル{% endif %}
+                                {% if seat.table_type == 2 %}ソファー{% endif %}
+                            </div>
+                            <div class="electrical_outlet">
+                                {% if not seat.electrical_outlet %}コンセント無し{% endif %}
+                                {% if seat.electrical_outlet %}コンセント有り{% endif %}
+                            </div>
+                            <div class="table_connect">
+                                {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
+                                {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
+        
         </div>
-        {% endfor %}
+
         <div class="footer">
             <input type="hidden" name="reception_count" id="reception_count" value={{reception_count}}>
             <a href="{% url 'reception_system:receptionNumber' %}">戻る</a>
@@ -171,16 +230,121 @@
     </form>
 
     <script>
+        const translations = {
+            ja: {
+                header: "座席状況確認",
+                section_title: "おすすめの座席",
+                table_status: "座席番号",
+                table_resevation: ["空席", "満席"],
+                table_number: "人席",
+                table_type: ["カウンター", "テーブル", "ソファー"],
+                electrical_outlet: ["コンセント無し", "コンセント有り"],
+                table_connect: ["隣の座席とつなげることはできません", "隣の座席とつなげることが可能です"],
+                section_title_2: "その他の座席",
+                footer: "戻る",
+                btn_next: "次へ"
+            },
+            en: {
+                header: "Seat Information Confirmation",
+                section_title: "Recommended Seats",
+                table_status: "Table Number",
+                table_resevation: ["Vacant", "Full"],
+                table_number: "people",
+                table_type: ["Counter", "Table", "Sofa"],
+                electrical_outlet: ["No outlet", "Outlet available"],
+                table_connect: ["You cannot connect to the adjacent seat", "You can connect to the adjacent seat"],
+                section_title_2: "Other Seats",
+                footer: "Back",
+                btn_next: "Next"
+            },
+            zh: {
+                header: "座位信息确认",
+                section_title: "推荐座位",
+                table_status: "桌号",
+                table_resevation: ["空位", "满座"],
+                table_number: "人",
+                table_type: ["柜台", "桌子", "沙发"],
+                electrical_outlet: ["无插座", "有插座"],
+                table_connect: ["无法连接到相邻座位", "可以连接到相邻座位"],
+                section_title_2: "其他座位",
+                footer: "返回",
+                btn_next: "下一个"
+            },
+            ko: {
+                header: "좌석 정보 확인",
+                section_title: "추천 좌석",
+                table_status: "테이블 번호",
+                table_resevation: ["빈자리", "가득참"],
+                table_number: "명석",
+                table_type: ["카운터", "테이블", "소파"],
+                electrical_outlet: ["콘센트 없음", "콘센트 있음"],
+                table_connect: ["인접 좌석에 연결할 수 없습니다", "인접 좌석에 연결할 수 있습니다"],
+                section_title_2: "다른 좌석",
+                footer: "뒤로",
+                btn_next: "다음"
+            }
+        };
+
+        function applyTranslations(language) {
+            const t = translations[language] || translations['ja'];
+            document.getElementById('header-title').textContent = t.header;
+            document.getElementById('section_title').textContent = t.section_title;
+            document.querySelectorAll('.table-status').forEach(el => el.textContent = t.table_status);
+            document.querySelectorAll('.table_resevation').forEach((el, index) => el.textContent = t.table_resevation[index % 2]);
+            document.querySelectorAll('.table-number').forEach(el => el.textContent = t.table_number);
+            document.querySelectorAll('.table_type').forEach((el, index) => el.textContent = t.table_type[index % 3]);
+            document.querySelectorAll('.electrical_outlet').forEach((el, index) => el.textContent = t.electrical_outlet[index % 2]);
+            document.querySelectorAll('.table_connect').forEach((el, index) => el.textContent = t.table_connect[index % 2]);
+            document.getElementById('section_title_2').textContent = t.section_title_2;
+            document.querySelector('.footer a').textContent = t.footer;
+            document.querySelector('.btn-next').textContent = t.btn_next;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedLanguage = localStorage.getItem("language") || "ja";
+            applyTranslations(savedLanguage);
+            
+            const selectSeatContainer = document.getElementById("select_seat");
+            if (selectSeatContainer) {
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "selected_seats";
+                hiddenInput.id = "selected_seats";
+                selectSeatContainer.appendChild(hiddenInput);
+            }
+
+            let selectedSeats = [];
+            document.querySelectorAll(".table-card").forEach(card => {
+                card.addEventListener("click", function () {
+                    const tableNumber = this.dataset.tableNumber;
+                    if (this.classList.contains("selected")) {
+                        this.classList.remove("selected");
+                        selectedSeats = selectedSeats.filter(num => num !== tableNumber);
+                    } else {
+                        this.classList.add("selected");
+                        selectedSeats.push(tableNumber);
+                    }
+                    document.getElementById("selected_seats").value = selectedSeats.join(",");
+                });
+            });
+        });
+
         function validateForm() {
-            var checkboxes = document.querySelectorAll('input[name="select_seat"]:checked');
-            if (checkboxes.length === 0) {
-                alert("席を選んでください");
+            const lang = localStorage.getItem("language") || "ja";
+            const messages = {
+                ja: "席を選んでください",
+                en: "Please select a seat",
+                zh: "请选择座位",
+                ko: "좌석을 선택하세요"
+            };
+
+            if (document.getElementById("selected_seats").value === "") {
+                alert(messages[lang]);
                 return false;
             }
             return true;
         }
-        </script>
-
+    </script>
 </body>
 </html>
 {% endblock %}
