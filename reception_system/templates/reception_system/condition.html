@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <head>
     <link rel="stylesheet" href="{% static 'css/reserve_styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,44 +7,152 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-
 <body>
     <div class="container">
-        <div class="condition_message">
+        <div class="condition_message" id="condition_message">
             ただいま満席です
         </div>
-            <div class="seat-selection">
-                <h4>ご希望の座席の条件を入力してください</h4>
-                <form id="seatForm" method="post">
-                    {% csrf_token %}
-                    <br><label>希望の座席を選択してください</label>
-                    <div class="seats">
-                        <label><input type="radio" name="seat_type" value="カウンター"> カウンター席 ({{ counter_seats }}席)</label>
-                        <br><label><input type="radio"name="seat_type" value="テーブル"> テーブル席 ({{ table_seats }}席)</label>
-                        <br><label><input type="radio"name="seat_type" value="ソファー"> ソファー席 ({{ sofa_seats }}席)</label>
-                    </div>
-                    <br><label>コンセントは必要ですか</label>
-                    <div class="outlet">
-                        <label><input type="radio" name="outlet" value="True">必須</label>
-                        <br><label><input type="radio"name="outlet" value="False">無くてもよい</label>
-                    </div>
-                    <br><label>隣の座席と席を繋げますか</label>
-                    <div class="connect">
-                        <label><input type="radio" name="seat_connect" value="True">繋げる</label>
-                        <br><label><input type="radio"name="seat_connect" value="False">繋げない</label>
-                    </div>
+        <div class="seat-selection">
+            <h4 id="seat_selection_title">ご希望の座席の条件を入力してください</h4>
+            <form id="seatForm" method="post">
+                {% csrf_token %}
+                <br><label id="seat_type_label">希望の座席を選択してください</label>
+                <div class="seats">
+                    <label for="seat_type_counter"><input type="radio" name="seat_type" value="カウンター" id="seat_type_counter"> <span id="seat_type_counter_text">カウンター席 ({{ counter_seats }}席)</span></label>
+                    <br><label for="seat_type_table"><input type="radio" name="seat_type" value="テーブル" id="seat_type_table"> <span id="seat_type_table_text">テーブル席 ({{ table_seats }}席)</span></label>
+                    <br><label for="seat_type_sofa"><input type="radio" name="seat_type" value="ソファー" id="seat_type_sofa"> <span id="seat_type_sofa_text">ソファー席 ({{ sofa_seats }}席)</span></label>
                 </div>
-                <div class="button-container">
-                    <button type="button" class="circle-button" onclick="window.location.href='{% url 'reception_system:index' %}'">戻る</button>
-                    <!-- <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a> -->
-                    <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
+                <br><label id="outlet_label">コンセントは必要ですか</label>
+                <div class="outlet">
+                    <label for="outlet_required"><input type="radio" name="outlet" value="True" id="outlet_required"> <span id="outlet_required_text">必須</span></label>
+                    <br><label for="outlet_not_required"><input type="radio" name="outlet" value="False" id="outlet_not_required"> <span id="outlet_not_required_text">無くてもよい</span></label>
                 </div>
-                <div id="error-message" style="color: red; display: none;">すべての項目を選択してください。</div>
-                <div id="wait-time" style="color: blue; display: none;">待ち時間: <span id="wait-time-value"></span> 分</div>
-            </form>
+                <br><label id="seat_connect_label">隣の座席と席を繋げますか</label>
+                <div class="connect">
+                    <label for="seat_connect_yes"><input type="radio" name="seat_connect" value="True" id="seat_connect_yes"> <span id="seat_connect_yes_text">繋げる</span></label>
+                    <br><label for="seat_connect_no"><input type="radio" name="seat_connect" value="False" id="seat_connect_no"> <span id="seat_connect_no_text">繋げない</span></label>
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="button" class="circle-button" onclick="window.location.href='{% url 'reception_system:index' %}'" id="back_button">戻る</button>
+                <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button" id="next_button">次へ</button></a>
+            </div>
+            <div id="error-message" style="color: red; display: none;">すべての項目を選択してください。</div>
+            <div id="wait-time" style="color: blue; display: none;">待ち時間: <span id="wait-time-value"></span> 分</div>
+        </form>
     </div>
 
     <script>
+        const translations = {
+            ja: {
+                seat_type_counter: "カウンター席",
+                seat_type_table: "テーブル席",
+                seat_type_sofa: "ソファー席",
+                outlet_required: "必須",
+                outlet_not_required: "無くてもよい",
+                seat_connect_yes: "繋げる",
+                seat_connect_no: "繋げない",
+                condition_message: "ただいま満席です",
+                seat_selection_title: "ご希望の座席の条件を入力してください",
+                seat_type_label: "希望の座席を選択してください",
+                outlet_label: "コンセントは必要ですか",
+                seat_connect_label: "隣の座席と席を繋げますか",
+                back_button: "戻る",
+                next_button: "次へ",
+                error_message: "すべての項目を選択してください。",
+                wait_time: "待ち時間: ",
+                minutes: " 分"
+            },
+            en: {
+                seat_type_counter: "Counter Seat",
+                seat_type_table: "Table Seat",
+                seat_type_sofa: "Sofa Seat",
+                outlet_required: "Required",
+                outlet_not_required: "Not Required",
+                seat_connect_yes: "Connect",
+                seat_connect_no: "Not Connect",
+                condition_message: "Currently Full",
+                seat_selection_title: "Please enter your seat preferences",
+                seat_type_label: "Please select your preferred seat",
+                outlet_label: "Do you need an outlet?",
+                seat_connect_label: "Do you want to connect to the adjacent seat?",
+                back_button: "Back",
+                next_button: "Next",
+                error_message: "Please select all items.",
+                wait_time: "Wait time: ",
+                minutes: " minutes"
+            },
+            zh: {
+                seat_type_counter: "柜台座位",
+                seat_type_table: "桌子座位",
+                seat_type_sofa: "沙发座位",
+                outlet_required: "必需",
+                outlet_not_required: "不需要",
+                seat_connect_yes: "连接",
+                seat_connect_no: "不连接",
+                condition_message: "目前已满",
+                seat_selection_title: "请输入您的座位偏好",
+                seat_type_label: "请选择您喜欢的座位",
+                outlet_label: "您需要插座吗？",
+                seat_connect_label: "是否连接旁边的座位",
+                back_button: "返回",
+                next_button: "下一个",
+                error_message: "请选择所有项目。",
+                wait_time: "等待时间: ",
+                minutes: " 分"
+            },
+            ko: {
+                seat_type_counter: "카운터 좌석",
+                seat_type_table: "테이블 좌석",
+                seat_type_sofa: "소파 좌석",
+                outlet_required: "필수",
+                outlet_not_required: "필요 없음",
+                seat_connect_yes: "연결",
+                seat_connect_no: "연결 안 함",
+                condition_message: "현재 만석입니다",
+                seat_selection_title: "좌석 조건을 입력해주세요",
+                seat_type_label: "희망하는 좌석을 선택해주세요",
+                outlet_label: "콘센트가 필요하십니까?",
+                seat_connect_label: "옆 좌석과 연결하시겠습니까?",
+                back_button: "뒤로",
+                next_button: "다음",
+                error_message: "모든 항목을 선택해주세요.",
+                wait_time: "대기 시간: ",
+                minutes: " 분"
+            }
+        };
+
+        function applyTranslations(language) {
+            const t = translations[language] || translations['ja'];
+            document.getElementById('condition_message').textContent = t.condition_message;
+            document.getElementById('seat_selection_title').textContent = t.seat_selection_title;
+            document.getElementById('seat_type_label').textContent = t.seat_type_label;
+            document.getElementById('outlet_label').textContent = t.outlet_label;
+            document.getElementById('seat_connect_label').textContent = t.seat_connect_label;
+            document.getElementById('back_button').textContent = t.back_button;
+            document.getElementById('next_button').textContent = t.next_button;
+            document.getElementById('error-message').textContent = t.error_message;
+            document.getElementById('wait-time').textContent = t.wait_time;
+
+            // Update seat type labels
+            document.getElementById('seat_type_counter_text').textContent = t.seat_type_counter + " (" + document.getElementById('seat_type_counter_text').textContent.match(/\d+/)[0] + "席)";
+            document.getElementById('seat_type_table_text').textContent = t.seat_type_table + " (" + document.getElementById('seat_type_table_text').textContent.match(/\d+/)[0] + "席)";
+            document.getElementById('seat_type_sofa_text').textContent = t.seat_type_sofa + " (" + document.getElementById('seat_type_sofa_text').textContent.match(/\d+/)[0] + "席)";
+
+            // Update outlet labels
+            document.getElementById('outlet_required_text').textContent = t.outlet_required;
+            document.getElementById('outlet_not_required_text').textContent = t.outlet_not_required;
+
+            // Update seat connect labels
+            document.getElementById('seat_connect_yes_text').textContent = t.seat_connect_yes;
+            document.getElementById('seat_connect_no_text').textContent = t.seat_connect_no;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem("language") || "ja";
+            applyTranslations(savedLanguage);
+        });
+
         function updateWaitTime() {
             var seatType = document.querySelector('input[name="seat_type"]:checked');
             var outlet = document.querySelector('input[name="outlet"]:checked');
@@ -99,6 +206,5 @@
             }
         });
     </script>
-
 </body>
 </html>
