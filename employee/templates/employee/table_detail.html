@@ -18,7 +18,13 @@
             {% csrf_token %}
             <p>テーブル番号: <input type="text" name="table_number" value="{{ table.table_number }}"></p>
             <p>座席人数: <input type="text" name="recommended_capacity" value="{{ table.recommended_capacity }}"></p>
-            <p>座席種別: <input type="text" name="table_type" value="{{ table.table_type }}"></p>
+            <p>座席種別: 
+                <select name="table_type">
+                    <option value="0" {% if table.table_type == 0 %}selected{% endif %}>カウンター席</option>
+                    <option value="1" {% if table.table_type == 1 %}selected{% endif %}>テーブル席</option>                    
+                    <option value="2" {% if table.table_type == 2 %}selected{% endif %}>ソファ席</option>                    
+
+                </select>
             <p>使用状況: <input type="checkbox" name="table_reservation" {% if table.table_resevation %}checked{% endif %}></p>
             <p>コンセント有無: <input type="checkbox" name="electrical_outlet" {% if table.electrical_outlet %}checked{% endif %}></p>
             <p>清掃済: <input type="checkbox" name="clean_status" {% if table.clean_status %}checked{% endif %}></p>
