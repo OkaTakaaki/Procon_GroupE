@@ -12,15 +12,22 @@
         <div class="condition_message" id="condition_message">
             ただいま満席です
         </div>
-        <div class="seat-selection">
-            <h4 id="seat_selection_title">ご希望の座席の条件を入力してください</h4>
-            <form id="seatForm" method="post">
-                {% csrf_token %}
-                <br><label id="seat_type_label">希望の座席を選択してください</label>
-                <div class="seats">
-                    <label for="seat_type_counter"><input type="radio" name="seat_type" value="カウンター" id="seat_type_counter"> <span id="seat_type_counter_text">カウンター席 ({{ counter_seats }}席)</span></label>
-                    <br><label for="seat_type_table"><input type="radio" name="seat_type" value="テーブル" id="seat_type_table"> <span id="seat_type_table_text">テーブル席 ({{ table_seats }}席)</span></label>
-                    <br><label for="seat_type_sofa"><input type="radio" name="seat_type" value="ソファー" id="seat_type_sofa"> <span id="seat_type_sofa_text">ソファー席 ({{ sofa_seats }}席)</span></label>
+            <div class="seat-selection">
+                <h4>ご希望の座席の条件を入力してください</h4>
+                <form id="seatForm" method="post">
+                    {% csrf_token %}
+                    <br><label>希望の座席を選択してください</label>
+                <div class="seats button-container">
+                    <button type="button" class="seat-button" data-value="カウンター">カウンター席 ({{ counter_seats }}席)</button>
+                    <button type="button" class="seat-button" data-value="テーブル">テーブル席 ({{ table_seats }}席)</button>
+                    <button type="button" class="seat-button" data-value="ソファー">ソファー席 ({{ sofa_seats }}席)</button>
+                    <input type="hidden" name="seat_type" id="seat_type">
+                </div>
+                <br><label>コンセントは必要ですか</label>
+                <div class="outlet button-container">
+                    <button type="button" class="outlet-button" data-value="True">必須</button>
+                    <button type="button" class="outlet-button" data-value="False">無くてもよい</button>
+                    <input type="hidden" name="outlet" id="outlet">
                 </div>
                 <br><label id="outlet_label">コンセントは必要ですか</label>
                 <div class="outlet">
@@ -43,128 +50,39 @@
     </div>
 
     <script>
-        const translations = {
-            ja: {
-                seat_type_counter: "カウンター席",
-                seat_type_table: "テーブル席",
-                seat_type_sofa: "ソファー席",
-                outlet_required: "必須",
-                outlet_not_required: "無くてもよい",
-                seat_connect_yes: "繋げる",
-                seat_connect_no: "繋げない",
-                condition_message: "ただいま満席です",
-                seat_selection_title: "ご希望の座席の条件を入力してください",
-                seat_type_label: "希望の座席を選択してください",
-                outlet_label: "コンセントは必要ですか",
-                seat_connect_label: "隣の座席と席を繋げますか",
-                back_button: "戻る",
-                next_button: "次へ",
-                error_message: "すべての項目を選択してください。",
-                wait_time: "待ち時間: ",
-                minutes: " 分"
-            },
-            en: {
-                seat_type_counter: "Counter Seat",
-                seat_type_table: "Table Seat",
-                seat_type_sofa: "Sofa Seat",
-                outlet_required: "Required",
-                outlet_not_required: "Not Required",
-                seat_connect_yes: "Connect",
-                seat_connect_no: "Not Connect",
-                condition_message: "Currently Full",
-                seat_selection_title: "Please enter your seat preferences",
-                seat_type_label: "Please select your preferred seat",
-                outlet_label: "Do you need an outlet?",
-                seat_connect_label: "Do you want to connect to the adjacent seat?",
-                back_button: "Back",
-                next_button: "Next",
-                error_message: "Please select all items.",
-                wait_time: "Wait time: ",
-                minutes: " minutes"
-            },
-            zh: {
-                seat_type_counter: "柜台座位",
-                seat_type_table: "桌子座位",
-                seat_type_sofa: "沙发座位",
-                outlet_required: "必需",
-                outlet_not_required: "不需要",
-                seat_connect_yes: "连接",
-                seat_connect_no: "不连接",
-                condition_message: "目前已满",
-                seat_selection_title: "请输入您的座位偏好",
-                seat_type_label: "请选择您喜欢的座位",
-                outlet_label: "您需要插座吗？",
-                seat_connect_label: "是否连接旁边的座位",
-                back_button: "返回",
-                next_button: "下一个",
-                error_message: "请选择所有项目。",
-                wait_time: "等待时间: ",
-                minutes: " 分"
-            },
-            ko: {
-                seat_type_counter: "카운터 좌석",
-                seat_type_table: "테이블 좌석",
-                seat_type_sofa: "소파 좌석",
-                outlet_required: "필수",
-                outlet_not_required: "필요 없음",
-                seat_connect_yes: "연결",
-                seat_connect_no: "연결 안 함",
-                condition_message: "현재 만석입니다",
-                seat_selection_title: "좌석 조건을 입력해주세요",
-                seat_type_label: "희망하는 좌석을 선택해주세요",
-                outlet_label: "콘센트가 필요하십니까?",
-                seat_connect_label: "옆 좌석과 연결하시겠습니까?",
-                back_button: "뒤로",
-                next_button: "다음",
-                error_message: "모든 항목을 선택해주세요.",
-                wait_time: "대기 시간: ",
-                minutes: " 분"
-            }
-        };
+        document.querySelectorAll('.seat-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.seat-button').forEach(function(btn) {
+                    btn.classList.remove('button-selected');
+                });
+                button.classList.add('button-selected');
+                document.getElementById('seat_type').value = button.getAttribute('data-value');
+                updateWaitTime();
+            });
+        });
 
-        function applyTranslations(language) {
-            const t = translations[language] || translations['ja'];
-            document.getElementById('condition_message').textContent = t.condition_message;
-            document.getElementById('seat_selection_title').textContent = t.seat_selection_title;
-            document.getElementById('seat_type_label').textContent = t.seat_type_label;
-            document.getElementById('outlet_label').textContent = t.outlet_label;
-            document.getElementById('seat_connect_label').textContent = t.seat_connect_label;
-            document.getElementById('back_button').textContent = t.back_button;
-            document.getElementById('next_button').textContent = t.next_button;
-            document.getElementById('error-message').textContent = t.error_message;
-            document.getElementById('wait-time').textContent = t.wait_time;
-
-            // Update seat type labels
-            document.getElementById('seat_type_counter_text').textContent = t.seat_type_counter + " (" + document.getElementById('seat_type_counter_text').textContent.match(/\d+/)[0] + "席)";
-            document.getElementById('seat_type_table_text').textContent = t.seat_type_table + " (" + document.getElementById('seat_type_table_text').textContent.match(/\d+/)[0] + "席)";
-            document.getElementById('seat_type_sofa_text').textContent = t.seat_type_sofa + " (" + document.getElementById('seat_type_sofa_text').textContent.match(/\d+/)[0] + "席)";
-
-            // Update outlet labels
-            document.getElementById('outlet_required_text').textContent = t.outlet_required;
-            document.getElementById('outlet_not_required_text').textContent = t.outlet_not_required;
-
-            // Update seat connect labels
-            document.getElementById('seat_connect_yes_text').textContent = t.seat_connect_yes;
-            document.getElementById('seat_connect_no_text').textContent = t.seat_connect_no;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedLanguage = localStorage.getItem("language") || "ja";
-            applyTranslations(savedLanguage);
+        document.querySelectorAll('.outlet-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.outlet-button').forEach(function(btn) {
+                    btn.classList.remove('button-selected');
+                });
+                button.classList.add('button-selected');
+                document.getElementById('outlet').value = button.getAttribute('data-value');
+                updateWaitTime();
+            });
         });
 
         function updateWaitTime() {
-            var seatType = document.querySelector('input[name="seat_type"]:checked');
-            var outlet = document.querySelector('input[name="outlet"]:checked');
-            var seatConnect = document.querySelector('input[name="seat_connect"]:checked');
+            var seatType = document.getElementById('seat_type').value;
+            var outlet = document.getElementById('outlet').value;
 
-            if (seatType && outlet && seatConnect) {
+            if (seatType && outlet) {
                 var seatTypeValue;
-                if (seatType.value === "カウンター") {
+                if (seatType === "カウンター") {
                     seatTypeValue = 0;
-                } else if (seatType.value === "テーブル") {
+                } else if (seatType === "テーブル") {
                     seatTypeValue = 1;
-                } else if (seatType.value === "ソファー") {
+                } else if (seatType === "ソファー") {
                     seatTypeValue = 2;
                 }
 
@@ -172,9 +90,8 @@
                     url: "{% url 'reception_system:calculate_wait_time' %}",
                     method: "POST",
                     data: {
-                        'seat_type': seatType.value,
-                        'outlet': outlet.value,
-                        'seat_connect': seatConnect.value,
+                        'seat_type': seatTypeValue,
+                        'outlet': outlet,
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
@@ -185,22 +102,16 @@
             }
         }
 
-        document.querySelectorAll('input[name="seat_type"]').forEach(function(element) {
+        document.querySelectorAll('seat_type').forEach(function(element) {
             element.addEventListener('change', updateWaitTime);
         });
-        document.querySelectorAll('input[name="outlet"]').forEach(function(element) {
+        document.querySelectorAll('outlet').forEach(function(element) {
             element.addEventListener('change', updateWaitTime);
         });
-        document.querySelectorAll('input[name="seat_connect"]').forEach(function(element) {
-            element.addEventListener('change', updateWaitTime);
-        });
-
         document.getElementById('seatForm').addEventListener('submit', function(event) {
-            var seatTypeSelected = document.querySelector('input[name="seat_type"]:checked');
-            var outletSelected = document.querySelector('input[name="outlet"]:checked');
-            var seatConnectSelected = document.querySelector('input[name="seat_connect"]:checked');
-
-            if (!seatTypeSelected || !outletSelected || !seatConnectSelected) {
+            var seatType = document.getElementById('seat_type').value;
+            var outlet = document.getElementById('outlet').value;
+            if (!seatTypeSelected || !outletSelected ) {
                 event.preventDefault(); // フォームの送信を停止
                 document.getElementById('error-message').style.display = 'block'; // エラーメッセージを表示
             }
