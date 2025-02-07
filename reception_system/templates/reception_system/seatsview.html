@@ -47,12 +47,12 @@
             margin-top: 5px;
         }
 
-        .table_resevation[style="color: red;"] {
-            color: red;
+        .table_resevation[data-status="空席"] {
+            color: green;
         }
 
-        .table_resevation[style="color: #2d9e2d;"] {
-            color: #2d9e2d;
+        .table_resevation[data-status="満席"] {
+            color: red;
         }
 
         .table-number {
@@ -72,35 +72,29 @@
         }
 
         .footer {
+            position: fixed; /* 画面下に固定 */
+            bottom: 0; /* 下端に配置 */
+            left: 0;
+            width: 100%; /* 横幅いっぱいにする */
             background-color: #4CAF50;
             padding: 15px;
             text-align: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 上側に影をつけて浮いているように見せる */
         }
-
-        .footer a {
+ 
+        .footer a, .footer .btn-next {
             color: white;
             text-decoration: none;
             font-size: 16px;
             padding: 10px 20px;
             border-radius: 5px;
             background-color: #388e3c;
+            display: inline-block;
+            margin: 0 10px;
         }
 
         .footer a:hover {
             background-color: #2d7d2d;
-        }
-
-        .table-card .table_resevation[data-status="空席"] {
-            color: green;
-        }
-
-        .table-card .table_resevation[data-status="満席"] {
-            color: red;
-        }
-
-        .table-card .table-number {
-            font-size: 12px;
-            color: #777;
         }
 
         .btn-next {
@@ -125,31 +119,31 @@
         }
 
         .selected {
-        background-color: #b3e5fc !important; /* 選択時の背景色（青系） */
-        border: 2px solid #0288d1; /* 枠線を追加 */
-    }
+            background-color: #b3e5fc !important; /* 選択時の背景色（青系） */
+            border: 2px solid #0288d1; /* 枠線を追加 */
+        }
 
-    .recommended-section {
-        background-color: #e3f2fd; /* おすすめの座席の背景色（薄い青） */
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
+        .recommended-section {
+            background-color: #e3f2fd; /* おすすめの座席の背景色（薄い青） */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
 
-    .all-seats-section {
-        background-color: #fff;
-        padding: 15px;
-        border-radius: 8px;
-    }
+        .all-seats-section {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+        }
 
-    .section-title {
-        font-family: "Yuji Syuku", serif;
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        border-bottom: 2px solid #4CAF50;
-        padding-bottom: 5px;
-    }
+        .section-title {
+            font-family: "Yuji Syuku", serif;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -166,22 +160,22 @@
                 {% for recommended in recommended_seats %}
                     {% for a in recommended %}
                         <div class="table-card" data-table-number="{{ a.table_number }}">
-                            <div class="table-status" id="table_status">座席番号：{{ a.table_number }}</div>
-                            <div class="table_resevation" data-status="{% if a.table_resevation == False %}空席{% else %}満席{% endif %}">
+                            <div class="table-status" id="table_status_{{ a.table_number }}" data-table-number="{{ a.table_number }}">座席番号：{{ a.table_number }}</div>
+                            <div class="table_resevation" data-status="{% if a.table_resevation == 0 %}空席{% else %}満席{% endif %}">
                                 {% if a.table_resevation == False %}空席{% else %}満席{% endif %}
                             </div>
-                            <div class="table-number" id="table_number">{{ a.recommended_capacity }}人席</div>
+                            <div class="recommended_capacity" id="recommended_capacity">{{ a.recommended_capacity }}人席</div>
                             <div class="table-details">
-                                <div class="table_type">
+                                <div class="table_type" id="table_type_{{ a.table_number }}" data-type="{{ a.table_type }}">
                                     {% if a.table_type == 0 %}カウンター{% endif %}
                                     {% if a.table_type == 1 %}テーブル{% endif %}
                                     {% if a.table_type == 2 %}ソファー{% endif %}
                                 </div>
-                                <div class="electrical_outlet">
+                                <div class="electrical_outlet" id="electrical_outlet_{{ a.table_number }}" data-outlet="{{ a.electrical_outlet }}">
                                     {% if not a.electrical_outlet %}コンセント無し{% endif %}
                                     {% if a.electrical_outlet %}コンセント有り{% endif %}
                                 </div>
-                                <div class="table_connect">
+                                <div class="table_connect" id="table_connect_{{ a.table_number }}" data-connect="{{ a.table_connect }}">
                                     {% if not a.table_connect %}隣の座席とつなげることはできません{% endif %}
                                     {% if a.table_connect %}隣の座席とつなげることが可能です{% endif %}
                                 </div>
@@ -196,22 +190,22 @@
                 <div class="section-title" id="section_title_2">その他の座席</div>
                 {% for seat in seats %}
                     <div class="table-card" data-table-number="{{ seat.table_number }}">
-                        <div class="table-status" id="table_status">座席番号：{{ seat.table_number }}</div>
+                        <div class="table-status" id="table_status_{{ seat.table_number }}" data-table-number="{{ seat.table_number }}">座席番号：{{ seat.table_number }}</div>
                         <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
-                            {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
+                            {% if seat.table_resevation == 0 %}空席{% else %}満席{% endif %}
                         </div>
-                        <div class="table-number" id="table_number">{{ seat.recommended_capacity }}人席</div>
+                        <div class="recommended_capacity" id="recommended_capacity">{{ seat.recommended_capacity }}人席</div>
                         <div class="table-details">
-                            <div class="table_type">
+                            <div class="table_type" id="table_type_{{ seat.table_number }}" data-type="{{ seat.table_type }}">
                                 {% if seat.table_type == 0 %}カウンター{% endif %}
                                 {% if seat.table_type == 1 %}テーブル{% endif %}
                                 {% if seat.table_type == 2 %}ソファー{% endif %}
                             </div>
-                            <div class="electrical_outlet">
+                            <div class="electrical_outlet" id="electrical_outlet_{{ seat.table_number }}" data-outlet="{{ seat.electrical_outlet }}">
                                 {% if not seat.electrical_outlet %}コンセント無し{% endif %}
                                 {% if seat.electrical_outlet %}コンセント有り{% endif %}
                             </div>
-                            <div class="table_connect">
+                            <div class="table_connect" id="table_connect_{{ seat.table_number }}" data-connect="{{ seat.table_connect }}">
                                 {% if not seat.table_connect %}隣の座席とつなげることはできません{% endif %}
                                 {% if seat.table_connect %}隣の座席とつなげることが可能です{% endif %}
                             </div>
@@ -224,8 +218,8 @@
 
         <div class="footer">
             <input type="hidden" name="reception_count" id="reception_count" value={{reception_count}}>
-            <a href="{% url 'reception_system:receptionNumber' %}">戻る</a>
-            <button type="submit" class="btn-next" onclick="return validateForm()">次へ</button>
+            <a href="{% url 'reception_system:receptionNumber' %}" id="footer_link">戻る</a>
+            <button type="submit" class="btn-next" onclick="return validateForm()" id="btn_next">次へ</button>
         </div>
     </form>
 
@@ -289,18 +283,28 @@
             const t = translations[language] || translations['ja'];
             document.getElementById('header-title').textContent = t.header;
             document.getElementById('section_title').textContent = t.section_title;
-            document.querySelectorAll('.table-status').forEach(el => el.textContent = t.table_status);
-            document.querySelectorAll('.table_resevation').forEach((el, index) => el.textContent = t.table_resevation[index % 2]);
-            document.querySelectorAll('.table-number').forEach(el => el.textContent = t.table_number);
-            document.querySelectorAll('.table_type').forEach((el, index) => el.textContent = t.table_type[index % 3]);
-            document.querySelectorAll('.electrical_outlet').forEach((el, index) => el.textContent = t.electrical_outlet[index % 2]);
-            document.querySelectorAll('.table_connect').forEach((el, index) => el.textContent = t.table_connect[index % 2]);
+            document.querySelectorAll('.table-status').forEach(el => el.textContent = t.table_status + "：" + el.dataset.tableNumber);
+            document.querySelectorAll('.table_resevation').forEach(el => el.textContent = t.table_resevation[el.dataset.status === "空席" ? 0 : 1]);
+            document.querySelectorAll('.table-number').forEach(el => el.textContent = el.dataset.capacity + t.table_number);
+            document.querySelectorAll('.table_type').forEach(el => el.textContent = t.table_type[el.dataset.type]);
+            document.querySelectorAll('.electrical_outlet').forEach(el => el.textContent = t.electrical_outlet[el.dataset.outlet === "True" ? 1 : 0]);
+            document.querySelectorAll('.table_connect').forEach(el => el.textContent = t.table_connect[el.dataset.connect === "True" ? 1 : 0]);
             document.getElementById('section_title_2').textContent = t.section_title_2;
-            document.querySelector('.footer a').textContent = t.footer;
-            document.querySelector('.btn-next').textContent = t.btn_next;
+            document.getElementById('footer_link').textContent = t.footer;
+            document.getElementById('btn_next').textContent = t.btn_next;
         }
 
         document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".table_resevation").forEach(el => {
+                console.log("座席:", el.textContent.trim(), "データ属性:", el.getAttribute("data-status"));
+                let status = el.getAttribute("data-status");
+ 
+                if (status === "空席") {
+                    el.style.color = "green";
+                } else if (status === "満席") {
+                    el.style.color = "red";
+                }
+            });
             const savedLanguage = localStorage.getItem("language") || "ja";
             applyTranslations(savedLanguage);
             
@@ -314,9 +318,30 @@
             }
 
             let selectedSeats = [];
+            function updateSelection() {
+                document.getElementById("selected_seats").value = selectedSeats.join(",");
+            }
+ 
             document.querySelectorAll(".table-card").forEach(card => {
                 card.addEventListener("click", function () {
                     const tableNumber = this.dataset.tableNumber;
+                    const isRecommended = this.closest('.recommended-section');
+                    const isOtherSeat = this.closest('.all-seats-section');
+ 
+                    if (isRecommended) {
+                        // おすすめ座席が選択された場合、他のおすすめ座席の選択を解除
+                        document.querySelectorAll(".recommended-section .table-card").forEach(seat => {
+                            seat.classList.remove("selected");
+                        });
+                        selectedSeats = [tableNumber]; // おすすめは1つだけ選択
+                    } else if (isOtherSeat) {
+                        // その他の座席が選択された場合、おすすめ座席の選択を解除
+                        document.querySelectorAll(".recommended-section .table-card").forEach(seat => {
+                            seat.classList.remove("selected");
+                        });
+                        selectedSeats = [];
+                    }
+ 
                     if (this.classList.contains("selected")) {
                         this.classList.remove("selected");
                         selectedSeats = selectedSeats.filter(num => num !== tableNumber);
@@ -324,7 +349,8 @@
                         this.classList.add("selected");
                         selectedSeats.push(tableNumber);
                     }
-                    document.getElementById("selected_seats").value = selectedSeats.join(",");
+ 
+                    updateSelection();
                 });
             });
         });
