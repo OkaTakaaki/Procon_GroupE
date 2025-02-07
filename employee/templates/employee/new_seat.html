@@ -25,7 +25,7 @@
             <select id="table_type" name="table_type">
                 <option value="0">カウンター席</option>
                 <option value="1">テーブル席</option>
-                <option value="2">ソファー席</option>
+                <option value="2">ソファ席</option>
             </select>
         
             <!-- テーブル番号 -->
@@ -47,7 +47,14 @@
                 <input type="radio" id="table_connect_yes" name="table_connect" value="True">座席連結する
                 <input type="radio" id="table_connect_no" name="table_connect" value="False">座席連結しない
             </div>
-        
+
+            <!--コンセント-->
+            <div class="checkbox-group">
+                <label>コンセント:</label>
+                <input type="radio" id="electrical_outlet_yes" name="electrical_outlet" value="True">コンセントあり
+                <input type="radio" id="electrical_outlet_no" name="electrical_outlet" value="False">コンセントなし
+            </div>
+
             <!-- 登録と戻るボタン -->
             <div class="button-container">
                 <button type="button" class="back-button" onclick="history.back()">戻る</button>

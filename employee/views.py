@@ -24,6 +24,7 @@ def new_seat(request):
         form = SeatForm(request.POST)
         if form.is_valid():
             seat = form.save(commit=False)
+            seat.electrical_outlet = request.POST.get('electrical_outlet') =='True'
             seat.save()
             print(seat)
 
