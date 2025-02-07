@@ -18,24 +18,20 @@
                 <h4>ご希望の座席の条件を入力してください</h4>
                 <form id="seatForm" method="post">
                     {% csrf_token %}
-                    <br><label>希望の座席を選択してください</label>
+                    <br><label>・希望の座席を選択してください</label>
                 <div class="seats button-container">
                     <button type="button" class="seat-button" data-value="カウンター">カウンター席 ({{ counter_seats }}席)</button>
                     <button type="button" class="seat-button" data-value="テーブル">テーブル席 ({{ table_seats }}席)</button>
                     <button type="button" class="seat-button" data-value="ソファー">ソファー席 ({{ sofa_seats }}席)</button>
                     <input type="hidden" name="seat_type" id="seat_type">
                 </div>
-                <br><label>コンセントは必要ですか</label>
+                <br><label>・コンセントは必要ですか</label>
                 <div class="outlet button-container">
                     <button type="button" class="outlet-button" data-value="True">必須</button>
                     <button type="button" class="outlet-button" data-value="False">無くてもよい</button>
                     <input type="hidden" name="outlet" id="outlet">
                 </div>
-                <div class="button-container">
-                    <button type="button" class="circle-button" onclick="window.location.href='{% url 'reception_system:index' %}'">戻る</button>
-                    <!-- <a href="{% url 'reception_system:seatsview' %}"><button class="circle-button" type="button">手動で座席選択</button></a> -->
-                    <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
-                </div>
+                
                 <div id="error-message" style="color: red; display: none;">すべての項目を選択してください。</div>
                 <div id="wait-time" style="color: blue; display: none;">待ち時間: <span id="wait-time-value"></span> 分</div>
             </form>
@@ -109,6 +105,11 @@
             }
         });
     </script>
+
+    <div class="button-container">
+        <a href="{% url 'reception_system:index' %}"><button class="circle-button">戻る</button></a>
+        <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
+    </div>
 
 </body>
 </html>
