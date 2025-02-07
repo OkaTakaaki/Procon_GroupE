@@ -162,10 +162,8 @@ def calculate_wait_time(request):
             print("seat_type = {}".format(seat_type))
             return JsonResponse({'wait_time': 0, 'error': 'Invalid seat_type'})
         # 待ち時間を計算するロジックを実装
-        # ここでは仮に待ち時間を計算する例を示します
-        # 実際のロジックは要件に応じて実装してください
+
         wait_time = 0
-        print("seat_type = {}".format(seat_type))
         # 条件に一致するReceptionの数を取得
         reception_count = Reception.objects.filter(
             table_type=seat_type,
@@ -231,7 +229,7 @@ def reserveSuccess(request):
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
 
 def customerCall(request):
-    waiting_call = Reception.objects.filter(seat=None,end_time=None)
+    waiting_call = Reception.objects.filter(seat1=None,end_time=None)
     vacasent_seat = Seat.objects.filter(table_resevation=False)
     for reception in waiting_call:
         for seat in vacasent_seat:
@@ -245,7 +243,7 @@ def customerCall(request):
                     table_type=seat.table_type,
                     electrical_outlet=seat.electrical_outlet,
                     table_connect=seat.table_connect,
-                    seat=None,
+                    seat1=None,
                     end_time=None
                 ).order_by('reception_time')
 

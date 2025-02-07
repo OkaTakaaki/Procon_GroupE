@@ -29,6 +29,15 @@
                         <span class="table-status">使用中</span>
                     {% endif %}
                 </p>
+                <p>座席種別:
+                    {% if table.table_type == 0 %}
+                        カウンター席
+                    {% elif table.table_type == 1 %}
+                        テーブル席
+                    {% elif table.table_type == 2 %}
+                        ソファ席
+                    {% endif %}
+                </p>
                 <!-- 情報詳細ボタン -->
                 <a href="{% url 'employee:employee_table_detail' table.id %}">
                     <button>情報詳細</button>
