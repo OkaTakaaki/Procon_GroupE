@@ -23,10 +23,10 @@
             <div class="table-item">
                 <p>テーブル{{ forloop.counter }}</p>
                 <p>使用状況:
-                    {% if table.is_reserved %}
-                        <span class="table-status">空席</span>
-                    {% else %}
+                    {% if table.table_resevation %}
                         <span class="table-status">使用中</span>
+                    {% else %}
+                        <span class="table-status">空席</span>
                     {% endif %}
                 </p>
                 <p>座席種別:

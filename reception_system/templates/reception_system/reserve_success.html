@@ -5,41 +5,76 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/reserve_styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予約完了画面</title>
+    <title id="title">予約完了画面</title>
 </head>
 <body>
-
-    <body>
-
-        <div class="container">
-            <div class="header-text">
-                ご利用いただきありがとうございます<br>
-                お呼び出しまでお待ちください
-            </div>
-        
-            <div class="reservation-number-circle">
-                <div>
-                    受付番号<br>
-                    <span class="number">{{receptionnumber}}</span>
-                </div>
-            </div>
-        
-            <div class="footer-text">
-                受付が完了しました<br>
-                発券された券を持ってお待ちください
+    <div class="container">
+        <div class="header_text" id="header_text">
+            ご利用いただきありがとうございます<br>
+            お呼び出しまでお待ちください
+        </div>
+    
+        <div class="reservation-number-circle">
+            <div class="uketuke" id="uketuke">
+                受付番号<br>
+                <span class="number">{{receptionnumber}}</span>
             </div>
         </div>
-        
-        </body>
+    
+        <div class="footer_text" id="footer_text">
+            受付が完了しました<br>
+            発券された券を持ってお待ちください
+        </div>
+    </div>
 
 <script>
+    const translations = {
+        ja: {
+            title: "予約完了画面",
+            header_text: "ご利用いただきありがとうございます<br>お呼び出しまでお待ちください",
+            uketuke: "受付番号<br>",
+            footer_text: "受付が完了しました<br>発券された券を持ってお待ちください",
+        },
+        ko: {
+            title: "예약 완료 화면",
+            header_text: "이용해 주셔서 감사합니다<br>호출될 때까지 기다려주세요",
+            uketuke: "접수 번호<br>",
+            footer_text: "접수가 완료되었습니다<br>발급된 표를 소지하고 기다려주세요",
+        },
+        zh: {
+            title: "预约完成画面",
+            header_text: "感谢您的使用<br>请等待呼叫",
+            uketuke: "接待号码<br>",
+            footer_text: "接待已完成<br>请持有发放的票据等待",
+        },
+        en: {
+            title: "Reservation Completion Screen",
+            header_text: "Thank you for using<br>Please wait for your call",
+            uketuke: "Reception number<br>",
+            footer_text: "Reception is complete<br>Please wait with the issued ticket",
+        }
+    };
+
+    function applyTranslations(language) {
+        const t = translations[language] || translations['ja'];
+        document.title = t.title;
+        document.getElementById('header_text').innerHTML = t.header_text;
+        document.getElementById('uketuke').innerHTML = t.uketuke + '<span class="number">{{receptionnumber}}</span>';
+        document.getElementById('footer_text').innerHTML = t.footer_text;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedLanguage = localStorage.getItem("language") || "ja";
+        applyTranslations(savedLanguage);
+    });
+
     // 画面クリックでリダイレクト
     document.body.addEventListener('click', function() {
         window.location.href = "{% url 'reception_system:index' %}"; 
     });
     // 5秒後に自動的にリダイレクト
     setTimeout(function(){
-    window.location.href = "{% url 'reception_system:index' %}";
+        window.location.href = "{% url 'reception_system:index' %}";
     }, 5*1000);
 </script>
 

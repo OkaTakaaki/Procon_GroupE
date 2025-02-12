@@ -32,10 +32,12 @@
                 <br><label id="seat_connect_label">隣の座席と席を繋げますか</label>
             </div>
             <div class="button-container">
-                <button type="button" class="circle-button" onclick="window.location.href='{% url 'reception_system:index' %}'" id="back_button">戻る</button>
-                <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button" id="next_button">次へ</button></a>
+                <a href="{% url 'reception_system:index' %}"><button class="circle-button">戻る</button></a>
+                <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
             </div>
-            <div id="error-message" style="color: red; display: none;">すべての項目を選択してください。</div>
+            {% if error_message %}
+            <div id="error-message" style="color: red;">{{ error_message }}</div>
+            {% endif %}
             <div id="wait-time" style="color: blue; display: none;">待ち時間: <span id="wait-time-value"></span> 分</div>
         </form>
     </div>
