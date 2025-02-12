@@ -35,7 +35,9 @@
                 <a href="{% url 'reception_system:index' %}"><button class="circle-button">戻る</button></a>
                 <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
             </div>
-            <div id="error-message" style="color: red; display: none;">すべての項目を選択してください。</div>
+            {% if error_message %}
+            <div id="error-message" style="color: red;">{{ error_message }}</div>
+            {% endif %}
             <div id="wait-time" style="color: blue; display: none;">待ち時間: <span id="wait-time-value"></span> 分</div>
         </form>
     </div>

@@ -115,29 +115,18 @@ def reserve(request):
             seat.save()
 
             return redirect('reception_system:reserve_success')
-        # # reception_numberの最大値を取得
-        # max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
-        # print(max_reception_number)
-        # if max_reception_number is not None:
-        #     max_reception_number = int(max_reception_number)
-        # else:
-        #     max_reception_number = 0
-        # print("最大のreception_number:", max_reception_number)
-
-        # print(seat_type, reception_count, outlet, seat_connect)
-
-        # # モデルにデータを保存
-        # Reception.objects.create(
-        #     reception_number=max_reception_number+1,
-        #     reception_count=reception_count,
-        #     table_type=seat_type,
-        #     electrical_outlet=outlet,
-        #     table_connect=seat_connect,
-        #     reception_time=timezone.now()
-        # )
-        # return redirect('reception_system:reserve_success')
 
 
+    # else:
+    #         # 座席が見つからない場合のエラーメッセージを表示
+    #         error_message = "座席のキャパシティを超えるため選択できません。"
+    #         context = {
+    #             'counter_seats': Seat.objects.filter(table_type=0).count(),
+    #             'table_seats': Seat.objects.filter(table_type=1).count(),
+    #             'sofa_seats': Seat.objects.filter(table_type=2).count(),
+    #             'error_message': error_message
+    #         }
+    #         return render(request, 'reception_system/condition.html', context)
     # 各seat_typeの座席数を取得
     counter_seats = Seat.objects.filter(table_type=0).count()
     table_seats = Seat.objects.filter(table_type=1).count()
