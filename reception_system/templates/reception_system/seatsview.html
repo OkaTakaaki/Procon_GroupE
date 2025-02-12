@@ -72,25 +72,18 @@
         }
 
         .footer {
-            position: fixed; /* 画面下に固定 */
-            bottom: 0; /* 下端に配置 */
-            left: 0;
-            width: 100%; /* 横幅いっぱいにする */
             background-color: #4CAF50;
             padding: 15px;
             text-align: center;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 上側に影をつけて浮いているように見せる */
         }
- 
-        .footer a, .footer .btn-next {
+
+        .footer a {
             color: white;
             text-decoration: none;
             font-size: 16px;
             padding: 10px 20px;
             border-radius: 5px;
             background-color: #388e3c;
-            display: inline-block;
-            margin: 0 10px;
         }
 
         .footer a:hover {
@@ -161,10 +154,10 @@
                     {% for a in recommended %}
                         <div class="table-card" data-table-number="{{ a.table_number }}">
                             <div class="table-status" id="table_status_{{ a.table_number }}" data-table-number="{{ a.table_number }}">座席番号：{{ a.table_number }}</div>
-                            <div class="table_resevation" data-status="{% if a.table_resevation == 0 %}空席{% else %}満席{% endif %}">
+                            <div class="table_resevation" data-status="{% if a.table_resevation == False %}空席{% else %}満席{% endif %}" id="table_resevation_{{ a.table_number }}">
                                 {% if a.table_resevation == False %}空席{% else %}満席{% endif %}
                             </div>
-                            <div class="recommended_capacity" id="recommended_capacity">{{ a.recommended_capacity }}人席</div>
+                            <div class="table-number" id="table_number_{{ a.table_number }}" data-capacity="{{ a.recommended_capacity }}">{{ a.recommended_capacity }}人席</div>
                             <div class="table-details">
                                 <div class="table_type" id="table_type_{{ a.table_number }}" data-type="{{ a.table_type }}">
                                     {% if a.table_type == 0 %}カウンター{% endif %}
@@ -191,10 +184,10 @@
                 {% for seat in seats %}
                     <div class="table-card" data-table-number="{{ seat.table_number }}">
                         <div class="table-status" id="table_status_{{ seat.table_number }}" data-table-number="{{ seat.table_number }}">座席番号：{{ seat.table_number }}</div>
-                        <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}">
-                            {% if seat.table_resevation == 0 %}空席{% else %}満席{% endif %}
+                        <div class="table_resevation" data-status="{% if seat.table_resevation == False %}空席{% else %}満席{% endif %}" id="table_resevation_{{ seat.table_number }}">
+                            {% if seat.table_resevation == False %}空席{% else %}満席{% endif %}
                         </div>
-                        <div class="recommended_capacity" id="recommended_capacity">{{ seat.recommended_capacity }}人席</div>
+                        <div class="table-number" id="table_number_{{ seat.table_number }}" data-capacity="{{ seat.recommended_capacity }}">{{ seat.recommended_capacity }}人席</div>
                         <div class="table-details">
                             <div class="table_type" id="table_type_{{ seat.table_number }}" data-type="{{ seat.table_type }}">
                                 {% if seat.table_type == 0 %}カウンター{% endif %}
@@ -250,6 +243,7 @@
                 section_title_2: "その他の座席",
                 specifyNumberMessage: "席を選んでください",
                 footer: "戻る",
+                recommended_capacity: "人席",
                 btn_next: "次へ"
             },
             en: {
@@ -264,6 +258,7 @@
                 section_title_2: "Other Seats",
                 specifyNumberMessage: "Please choose your seat",
                 footer: "Back",
+                recommended_capacity: "people",
                 btn_next: "Next"
             },
             zh: {
@@ -278,6 +273,7 @@
                 section_title_2: "其他座位",
                 specifyNumberMessage: "请选择座位",
                 footer: "返回",
+                recommended_capacity: "人",
                 btn_next: "下一个"
             },
             ko: {
@@ -292,6 +288,7 @@
                 section_title_2: "다른 좌석",
                 specifyNumberMessage: "자리를 선택하세요",
                 footer: "뒤로",
+                recommended_capacity: "명석",
                 btn_next: "다음"
             }
         };
@@ -302,7 +299,7 @@
             document.getElementById('section_title').textContent = t.section_title;
             document.querySelectorAll('.table-status').forEach(el => el.textContent = t.table_status + "：" + el.dataset.tableNumber);
             document.querySelectorAll('.table_resevation').forEach(el => el.textContent = t.table_resevation[el.dataset.status === "空席" ? 0 : 1]);
-            document.querySelectorAll('.table-number').forEach(el => el.textContent = el.dataset.capacity + t.table_number);
+            document.querySelectorAll('.table-number').forEach(el => el.textContent = el.dataset.capacity + " " + t.recommended_capacity);
             document.querySelectorAll('.table_type').forEach(el => el.textContent = t.table_type[el.dataset.type]);
             document.querySelectorAll('.electrical_outlet').forEach(el => el.textContent = t.electrical_outlet[el.dataset.outlet === "True" ? 1 : 0]);
             document.querySelectorAll('.table_connect').forEach(el => el.textContent = t.table_connect[el.dataset.connect === "True" ? 1 : 0]);
