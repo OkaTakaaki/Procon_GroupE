@@ -32,8 +32,8 @@
                 <br><label id="seat_connect_label">隣の座席と席を繋げますか</label>
             </div>
             <div class="button-container">
-                <a href="{% url 'reception_system:index' %}"><button class="circle-button">戻る</button></a>
-                <a href="{% url 'reception_system:reserve_success' %}"><button class="circle-button">次へ</button></a>
+                <button type="button" class="circle-button" id="back_button">戻る</button>
+                <button type="submit" class="circle-button" id="next_button">次へ</button>
             </div>
             {% if error_message %}
             <div id="error-message" style="color: red;">{{ error_message }}</div>
@@ -205,6 +205,10 @@
                 event.preventDefault(); // フォームの送信を停止
                 document.getElementById('error-message').style.display = 'block'; // エラーメッセージを表示
             }
+        });
+
+        document.getElementById('back_button').addEventListener('click', function() {
+            window.location.href = "{% url 'reception_system:index' %}";
         });
     </script>
 </body>
