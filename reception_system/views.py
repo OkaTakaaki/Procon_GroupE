@@ -115,29 +115,18 @@ def reserve(request):
             seat.save()
 
             return redirect('reception_system:reserve_success')
-        # # reception_numberの最大値を取得
-        # max_reception_number = Reception.objects.all().aggregate(Max('reception_number'))['reception_number__max']
-        # print(max_reception_number)
-        # if max_reception_number is not None:
-        #     max_reception_number = int(max_reception_number)
-        # else:
-        #     max_reception_number = 0
-        # print("最大のreception_number:", max_reception_number)
-
-        # print(seat_type, reception_count, outlet, seat_connect)
-
-        # # モデルにデータを保存
-        # Reception.objects.create(
-        #     reception_number=max_reception_number+1,
-        #     reception_count=reception_count,
-        #     table_type=seat_type,
-        #     electrical_outlet=outlet,
-        #     table_connect=seat_connect,
-        #     reception_time=timezone.now()
-        # )
-        # return redirect('reception_system:reserve_success')
 
 
+    # else:
+    #         # 座席が見つからない場合のエラーメッセージを表示
+    #         error_message = "座席のキャパシティを超えるため選択できません。"
+    #         context = {
+    #             'counter_seats': Seat.objects.filter(table_type=0).count(),
+    #             'table_seats': Seat.objects.filter(table_type=1).count(),
+    #             'sofa_seats': Seat.objects.filter(table_type=2).count(),
+    #             'error_message': error_message
+    #         }
+    #         return render(request, 'reception_system/condition.html', context)
     # 各seat_typeの座席数を取得
     counter_seats = Seat.objects.filter(table_type=0).count()
     table_seats = Seat.objects.filter(table_type=1).count()
@@ -183,11 +172,11 @@ def seatsview(request):
     print("---------seatsview---------")
     seats = Seat.objects.all()
     reception_count = request.POST.get('reception_count')
+    recommended_seats = []
+
     if not reception_count:
         reception_count = request.session.get('reception_count')
         reception_count = int(reception_count)
-
-        recommended_seats = []
 
         # 条件を満たす座席の組み合わせを見つける
         for i in range(len(seats)):
@@ -206,24 +195,43 @@ def seatsview(request):
         print("recommended_seats = {}".format(recommended_seats))
 
     if request.method == 'POST':
-        select_seat = request.POST.getlist('select_seat')
-        recommended_capacity = Seat.objects.filter(table_number__in=select_seat).values_list('recommended_capacity', flat=True)
-        print("select_seat = {}".format(select_seat))
-        print("reception_count = {}".format(reception_count))
-        print("recommended_capacity = {}".format(recommended_capacity))
-        context = {  
-        "reception_count": reception_count,
-        "seats": seats,
-        "recommended_seats": recommended_seats
+        select_seat = request.POST.get('select_seat', "").split(",")
+        selected_seats = Seat.objects.filter(table_number__in=select_seat)
+
+        # 選択された座席の情報を取得
+        seat_list = list(selected_seats[:2])  # 2つまで取得（それ以上は `seat1` と `seat2` に入らない）
+        seat1 = seat_list[0] if len(seat_list) > 0 else None
+        seat2 = seat_list[1] if len(seat_list) > 1 else None
+
+        table_type = seat1.table_type if seat1 else 0  # 座席種別（1つ目の席のタイプを採用）
+        electrical_outlet = seat1.electrical_outlet if seat1 else False  # コンセント有無
+        table_connect = seat1.table_connect if seat1 else False  # 連結有無
+
+        # reception_number の最大値を取得
+        max_reception_number_dict = Reception.objects.all().aggregate(Max('reception_number'))
+        max_reception_number = max_reception_number_dict['reception_number__max'] or 0
+
+        Reception.objects.create(
+            reception_number=max_reception_number + 1,
+            reception_count=reception_count,
+            seat1=seat1,
+            seat2=seat2,
+            table_type=table_type,
+            electrical_outlet=electrical_outlet,
+            table_connect=table_connect,
+            reception_time=timezone.now()
+        )
+
+        return redirect('reception_system:reserve_success')
+
+    else:
+        context = {
+            "reception_count": reception_count,
+            "seats": seats,
+            "recommended_seats": recommended_seats
         }
-
-    context = {  
-        "reception_count": reception_count,
-        "seats": seats,
-        "recommended_seats":recommended_seats
-    }
-    return render(request,'reception_system/seatsview.html', context)
-
+        return render(request, 'reception_system/seatsview.html', context)
+    
 def reserveSuccess(request):
     receptionnumber = Reception.objects.all().last().reception_number
     return render(request, 'reception_system/reserve_success.html',{'receptionnumber':receptionnumber})
