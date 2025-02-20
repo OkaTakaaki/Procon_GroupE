@@ -1,19 +1,109 @@
 {% extends 'base_app/base.html' %}
 {% load static %}
- 
+
 {% block title %}
 <title>座席状況確認</title>
+{% endblock %}
+
+{% block contents %}
 <head>
-    <link rel="stylesheet" href="{% static 'css/employee_styles.scss' %}">
     <style>
-        .header h1 {
-            text-align: center; /* タイトルを中央揃え */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .table-item {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin: 10px;
+            width: 250px;
+            text-align: center;
+        }
+
+        .table-status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .table-status.使用中 {
+            color: white;
+            background-color: red;
+        }
+
+        .table-status.空席 {
+            color: white;
+            background-color: green;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer a {
+        display: inline-block;
+        background-color: #007bff; /* 青色 */
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .footer a:hover {
+        background-color: #0056b3; /* 濃い青色 */
+        text-decoration: underline;
+    }
     </style>
 </head>
-{% endblock %}
- 
-{% block contents %}
 <body>
     <div class="header">
         <h1>座席状況確認</h1>
@@ -23,10 +113,10 @@
             <div class="table-item">
                 <p>テーブル{{ forloop.counter }}</p>
                 <p>使用状況:
-                    {% if table.is_reserved %}
-                        <span class="table-status">空席</span>
+                    {% if table.table_resevation %}
+                        <span class="table-status 使用中">使用中</span>
                     {% else %}
-                        <span class="table-status">使用中</span>
+                        <span class="table-status 空席">空席</span>
                     {% endif %}
                 </p>
                 <p>座席種別:
@@ -38,7 +128,6 @@
                         ソファ席
                     {% endif %}
                 </p>
-                <!-- 情報詳細ボタン -->
                 <a href="{% url 'employee:employee_table_detail' table.id %}">
                     <button>情報詳細</button>
                 </a>

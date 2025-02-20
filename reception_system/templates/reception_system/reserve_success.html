@@ -2,46 +2,87 @@
 {% load static %}
 
 {% block contents %}
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <link rel="stylesheet" href="{% static 'css/reserve_styles.css' %}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予約完了画面</title>
+    <title>Customer Call</title>
+    <link rel="stylesheet" href="{% static 'css/reserve_styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* ヘッダーのスタイル */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* メインコンテンツのスタイル */
+        main {
+            padding: 20px;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        /* フッターのスタイル */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </head>
 <body>
-
-    <body>
-
-        <div class="container">
-            <div class="header-text">
-                ご利用いただきありがとうございます<br>
-                お呼び出しまでお待ちください
-            </div>
-        
-            <div class="reservation-number-circle">
-                <div>
-                    受付番号<br>
-                    <span class="number">{{receptionnumber}}</span>
-                </div>
-            </div>
-        
-            <div class="footer-text">
-                受付が完了しました<br>
-                発券された券を持ってお待ちください
-            </div>
-        </div>
-        
-        </body>
-
-<script>
-    // 画面クリックでリダイレクト
-    document.body.addEventListener('click', function() {
-        window.location.href = "{% url 'reception_system:index' %}"; 
-    });
-    // 5秒後に自動的にリダイレクト
-    setTimeout(function(){
-    window.location.href = "{% url 'reception_system:index' %}";
-    }, 5*1000);
-</script>
-
+    <header>
+        <h1>Customer Call System</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Welcome to the Customer Call System</h2>
+            <p>Please wait for your turn to be called.</p>
+            <p>Now calling: {{ reception.reception_number }} / {{seat.table_number}}</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Procon Group E</p>
+    </footer>
+    <script>
+        // ページ全体クリック時の挙動
+        document.body.addEventListener('click', function() {
+            window.location.href = "{% url 'reception_system:index' %}"; 
+        });
+        // 5秒後に自動的にリダイレクト
+        setTimeout(function(){
+        window.location.href = "{% url 'reception_system:index' %}";
+        }, 5*1000);
+    </script>
 </body>
+</html>
 {% endblock %}
